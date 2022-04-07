@@ -1,20 +1,25 @@
-const { MongoClient } = require("mongodb");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const skillRouter = require('./routers/skill');
+
+const app = express();
+
+const PORT = 8080;
+const HOST_NAME = 'localhost';
+const DATABASE_NAME = 'Database';
+
 require("dotenv").config();
 
-// Replace the uri string with your MongoDB deployment's connection string.
-const client = new MongoClient(process.env.DB_KEY);
+mongoose.connect('mongodb://' + HOST_NAME + '/' + DATABASE_NAME);
 
-async function run() {
-    try {
-        await client.connect();
-        const database = client.db('Database');
-        const skills = database.collection('Skills');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-        const query = { title: 'MEDITATION' };
-        const skill = await skills.findOne(query);
-        console.log(skill);
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
-    }
-}
+app.use('/skills', skillRouter);
+
+app.listen(PORT, function () {
+    console.log('Listening on port ' + PORT);
+});
