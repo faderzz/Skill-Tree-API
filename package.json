@@ -1,5 +1,5 @@
 {
-  "name": "ASI-API-Platform",
+  "name": "asi_api_platform",
   "version": "1.0.0",
   "dependencies": {
     "body-parser": "^1.20.0",
