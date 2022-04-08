@@ -16,7 +16,7 @@ class SkillController {
     const skill = new Skill(req.body);
     skill.save();
 
-    response.status(201).json(skill);
+    res.status(201).json(skill);
   }
 
   editSkill(req, res) {}
