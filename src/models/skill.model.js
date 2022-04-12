@@ -49,7 +49,7 @@ const skillSchema = new Schema({
     type: String,
     required: true,
   },
-  requirements: {
+  requires: {
     type: [Schema.Types.ObjectId],
     required: true,
   },
