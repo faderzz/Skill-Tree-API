@@ -49,7 +49,7 @@ const skillSchema = new Schema({
     type: String,
     required: true,
   },
-  requirements: {
+  requires: {
     type: [Schema.Types.ObjectId],
     required: true,
   },
@@ -57,6 +57,6 @@ const skillSchema = new Schema({
     type: [Schema.Types.ObjectId],
     required: true,
   }
-}, { collection: 'dataItems' });
+}, { collection: 'Skills' });
 
 module.exports = mongoose.model('Skill', skillSchema);
