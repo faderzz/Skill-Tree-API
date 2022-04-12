@@ -11,7 +11,7 @@ async function startServer() {
   await mongooseLoader();
   await expressLoader(app);
 
-  app.listen(process.env.PORT, () => console.log('Listening on port ' + PORT));
+  app.listen(process.env.PORT, () => console.log('Listening on port ' + process.env.PORT));
 }
 
 startServer();
