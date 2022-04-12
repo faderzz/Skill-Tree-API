@@ -1,10 +1,8 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-const HOST_NAME = 'localhost';
-const DATABASE_NAME = 'Database';
-
 function load() {
-  mongoose.connect('mongodb://' + HOST_NAME + '/' + DATABASE_NAME);
+  mongoose.connect(process.env.DB_KEY);//'mongodb://' + HOST_NAME + '/' + DATABASE_NAME
   mongoose.connection.on('connect', () => console.log('MongoDB connected'));
 }
 
