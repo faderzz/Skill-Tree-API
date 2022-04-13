@@ -17,7 +17,6 @@ const Schema = mongoose.Schema;
 const skillSchema = new Schema({
   iconName: {
     type: String,
-    unique: true,
     required: true
   },
   title: {
