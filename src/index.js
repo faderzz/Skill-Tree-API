@@ -1,32 +1,32 @@
 require('dotenv').config();
 var log = require('npmlog')
 const express = require('express');
+
 const expressLoader = require('./loaders/expressLoader');
 const mongooseLoader = require('./loaders/mongooseLoader');
+
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('../swagger-output.json')
 
-const PORT = 8080;
+const PORT = process.env.APP_PORT;
 
 const app = express();
 app.disable('x-powered-by');
+
 
 mongooseLoader();
 expressLoader(app);
 
 app.listen(PORT, () => {
-  log.info('Server is running! \nListening on port ' + PORT)
+  log.info('Server is running!')
+  log.info(`Listening on port ${PORT}`)
 });
 
+// Check which environment we are in
 if (process.env.ENVIRONMENT_TYPE == "development"){
-  app.use(
-    '/api-docs',
-      swaggerUi.serve,
-      swaggerUi.setup(swaggerFile, { explorer: true })
-    );
-  log.info('API documentation:  http://localhost:' + PORT + '/api-docs/')
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, { explorer: true }));
+  log.info(`API documentation:  http://localhost:${PORT}/api-docs/`);
 }
-
 
 process.on('SIGTERM', () => {
   log.info('SIGTERM signal received: closing HTTP server')
