@@ -16,12 +16,12 @@ class UserController{
             description: 'User ID.' } 
     */
         log.verbose("GET USER")
-        let id = req.query.id;
-        const user = await userModel.find({id:id})
-
+        await userModel.validate(req.query, ['_id']);
+        const user = await userModel.find(req.query)
         if (user != null){
             res.status(200).json(user)
         } else {
+            log.warn(`Cannot find user with query: ${req.query}`)
             res.status(404)
         }
     }
