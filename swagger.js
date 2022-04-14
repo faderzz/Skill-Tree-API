@@ -1,5 +1,5 @@
 const swaggerAutogen = require("swagger-autogen")({openapi:"3.0.0"})
-
+var log = require('npmlog')
 const doc = {
   info: {
       version: "1.0.0",
@@ -36,5 +36,5 @@ const endpointsFiles = ['./src/api/routes/v1/*.routes.js']
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
     require("./src/index")
 }).catch((err) => {
-    console.log(err)
+    log.error(err)
 })

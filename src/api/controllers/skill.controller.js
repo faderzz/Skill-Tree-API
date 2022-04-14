@@ -1,5 +1,5 @@
 const Skill = require('../../models/skill.model');
-
+var log = require('npmlog')
 class SkillController {
   async getSkills(req, res) {
   /*
@@ -8,10 +8,10 @@ class SkillController {
     #swagger.responses[200] = { description: 'Skill retrieved successfully.' }
     #swagger.produces = ['application/json'] 
   */
-    console.log('GET /skills');
+    log.verbose('GET /skills');
 
     const skills = await Skill.find({});
-    console.log(skills)
+    log.verbose(skills)
 
     res.status(200).json(skills);
   }
@@ -28,7 +28,7 @@ class SkillController {
             type: 'integer',
             description: 'Skill ID.' } 
   */
-    console.log('POST /skills');
+    log.verbose('POST /skills');
 
     const skill = new Skill(req.body);
     skill.save();
@@ -49,7 +49,7 @@ class SkillController {
             type: 'integer',
             description: 'Skill ID.' } 
   */
-    console.log("UPDATE /skills")
+    log.verbose("UPDATE /skills")
     const skill = new Skill(this.getSkills(res.id))
     res.status(201).json(skill);
   }
@@ -62,6 +62,7 @@ class SkillController {
     #swagger.responses[201] = { description: 'Skill deleted successfully.' }
     #swagger.produces = ['application/json']
   */
+    log.verbose("DELETE skill")
     res.status(201).json(skill);
   }
 }

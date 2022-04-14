@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+var log = require('npmlog')
 const express = require('express');
 const expressLoader = require('./loaders/expressLoader');
 const mongooseLoader = require('./loaders/mongooseLoader');
@@ -15,7 +15,7 @@ mongooseLoader();
 expressLoader(app);
 
 app.listen(PORT, () => {
-  console.log('Server is running! \nListening on port ' + PORT)
+  log.info('Server is running! \nListening on port ' + PORT)
 });
 
 if (process.env.ENVIRONMENT_TYPE == "development"){
@@ -24,13 +24,13 @@ if (process.env.ENVIRONMENT_TYPE == "development"){
       swaggerUi.serve,
       swaggerUi.setup(swaggerFile, { explorer: true })
     );
-  console.log('API documentation:  http://localhost:' + PORT + '/api-docs/')
+  log.info('API documentation:  http://localhost:' + PORT + '/api-docs/')
 }
 
 
 process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server')
+  log.info('SIGTERM signal received: closing HTTP server')
   server.close(() => {
-    console.log('HTTP server closed')
+    log.info('HTTP server closed')
   })
 })

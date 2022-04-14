@@ -1,4 +1,5 @@
 const userModel = require('../../models/user.model');
+var log = require('npmlog')
 
 class UserController{
 
@@ -14,8 +15,9 @@ class UserController{
             type: 'string',
             description: 'User ID.' } 
     */
-        console.log("GET USER")
-        const user = await userModel.find()
+        log.verbose("GET USER")
+        let id = req.query.id;
+        const user = await userModel.find({id:id})
 
         if (user != null){
             res.status(200).json(user)
@@ -31,15 +33,15 @@ class UserController{
         #swagger.responses[201] = { description: 'User created successfully.' }
         #swagger.produces = ['application/json']
     */
-        console.log("CREATE USER")
+        log.verbose("CREATE USER")
             
         // You can use a Model to create new documents using `new`:
         const userDoc = new userModel(req.body)
         userModel.create(req.body).then(() => {
-            console.log("created user")
+            log.verbose("created user")
             res.status(201).json(userDoc);
         }).catch((err) => {
-            console.log(err)
+            log.error(err)
             res.status(500).json(err);
         })
     }
