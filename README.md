@@ -20,6 +20,18 @@ To start the api-platform server execute:
 npm start
 ```
 
+## Development
+
+### Locally hosting MongoDB (Docker)
+
+To locally run a MongoDB server that is containerized, you will need [docker-desktop](https://www.docker.com/products/docker-desktop/) installed. You can run the following command from the same location as the `docker-compose.yml` file to start the container:
+
+```console
+docker compose up
+```
+
+After the command is run, then you should have a local mongodb server running in container. To connect to it review the configuration in the `docker-compose.yml` file.
+
 ### Building the  swagger documentation
 
 To create the swagger-docs execute the following;
