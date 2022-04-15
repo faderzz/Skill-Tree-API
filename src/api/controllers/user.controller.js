@@ -46,7 +46,6 @@ class UserController{
     */
         log.verbose("CREATE USER")
             
-        // You can use a Model to create new documents using `new`:
         const userDoc = new userModel(req.body)
         await userModel.create(userDoc).then(() => {
             log.verbose("created user")

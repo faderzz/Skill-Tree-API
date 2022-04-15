@@ -6,7 +6,7 @@ const prefix = "/v1/users"
 
 router.get(prefix + '/', userController.getUser);
 router.post(prefix + '/', userController.createUser);
-router.put(prefix + '/{id}', userController.updateUser);     // Obviously needs elevated perms
-router.delete(prefix + '/{id}', userController.deleteUser);  // Obviosuly needs elevated perms
+router.put(prefix + '/{id}', userController.updateUser);     
+router.delete(prefix + '/{id}', userController.deleteUser);  
 
 module.exports = router;

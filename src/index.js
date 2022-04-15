@@ -22,7 +22,6 @@ app.listen(PORT, () => {
   log.info(`Listening on port ${PORT}`)
 });
 
-// Check which environment we are in
 if (process.env.ENVIRONMENT_TYPE == "development"){
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, { explorer: true }));
   log.info(`API documentation:  http://localhost:${PORT}/api-docs/`);

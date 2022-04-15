@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 var log = require('npmlog')
 require('dotenv').config();
 
-// const HOST_NAME = 'host.docker.internal:27017';
 const MY_USER = process.env.DB_USER;
 const MY_PASSWORD = process.env.DB_PASSWORD;
 const MY_SERVER = process.env.DB_SERVER_URL;
@@ -12,7 +11,6 @@ const CONNECTION_TYPE = process.env.ENVIRONMENT_TYPE == "development" ? "mongodb
 
 const URL = `${CONNECTION_TYPE}${MY_USER}:${MY_PASSWORD}@${MY_SERVER}:${MY_PORT}`
 log.verbose(URL)
-// mongodb://AzureDiamond:<password>@localhost:27017/<database>
 
 const db = mongoose.connection;
 
