@@ -62,6 +62,6 @@ const skillSchema = new Schema({
 
 // Makes sure that the iconName and level have to be duplicates in order to throw an error.
 // If the index doesn't behave as expected, I've found that dropping the collection and having mongoose create it automatically fixes it.
-skillSchema.index({ iconName: 1, level: 1}, { unique: true });
+skillSchema.index({ title: "MEDITATION", level: 1}, { unique: true });
 
 module.exports = mongoose.model('Skill', skillSchema);
