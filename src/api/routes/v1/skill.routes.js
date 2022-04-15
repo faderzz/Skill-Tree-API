@@ -2,10 +2,12 @@ const express = require('express');
 const skillController = require('../../controllers/skill.controller');
 
 const router = express.Router();
+const prefix = "/v1/skills"
 
-router.get('/', skillController.getSkills);
-router.post('/', skillController.createSkill);
-router.put('/:id', skillController.editSkill);
-router.delete('/:id', skillController.deleteSkill);
+
+router.get(prefix + '/', skillController.getSkills);
+router.post(prefix + '/', skillController.createSkill);
+router.put(prefix + '/:id', skillController.editSkill);
+router.delete(prefix + '/:id', skillController.deleteSkill);
 
 module.exports = router;
