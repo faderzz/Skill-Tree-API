@@ -18,6 +18,7 @@ const db = mongoose.connection;
 
 function load() {
   mongoose.connect(URL, {useNewUrlParser: true, useUnifiedTopology: true});
+  db.useDb(DB_NAME);
   db.on('connect', () => log.info('MongoDB connected'));
   db.on('error', (error) => {
     log.warn('Warning', error);
