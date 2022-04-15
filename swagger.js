@@ -10,6 +10,16 @@ const doc = {
   schemes: ['http', 'https'],
   consumes: ['application/json'],
   produces: ['application/json'],
+  tags: [
+      {
+            "name": "User",
+            "description": "The endpoints for User information"
+      },
+      {
+            "name": "Skills",
+            "description": "The endpoints for Skills"
+    }
+  ],
   securityDefinitions: {
       apiKeyAuth:{
           type: "apiKey",
@@ -18,6 +28,38 @@ const doc = {
           description: "A key used to communicate with the API"
       }
   },
+  definitions: {
+    User: {
+        username: "a_user",
+        password: "mias87dh32d7h36gdasdghyh1ds8326ga6w8d",
+        skill_data: ["a","b","c"]
+    },
+    Skill: {
+        iconName: "Icon_A",
+        title: "Example_I",
+        level: "",
+        goal: "",
+        time: "",
+        frequency: ["daily","weekly","monthly", "annually"],
+        xp: 10,
+        category: "",
+        requirements: [],
+        children: []
+    },
+    AddSkill: {
+        skill_name: "Example_A",
+        category: "Category_A",
+        parent_skill: "Example_0"
+    },
+    AddUser: {
+        $username: "Jhon Doe",
+        $password: "mias87dh32d7h36gdasdghyh1ds8326ga6w8d",
+        skill_data: ["a","b","c"]
+    }
+
+  },
+
+
   servers: [
         {
             url: "http://localhost:8080/",
