@@ -1,44 +1,52 @@
-const Skill = require('../../models/skill.model');
+const skillModel = require('../../models/skill.model');
 var log = require('npmlog')
 class SkillController {
   async getSkills(req, res) {
   /*
     #swagger.description = 'Endpoint for getting a skill'
     #swagger.tags = ['Skills']
-    #swagger.responses[200] = { description: 'Skill retrieved successfully.' }
     #swagger.produces = ['application/json'] 
+    #swagger.responses[200] = {
+      schema: { "$ref": "#/definitions/Skill" },
+      description: "Skill registered successfully." 
+    }
   */
-    log.verbose('GET /skills');
-
-    const skills = await Skill.find({});
-    log.verbose(skills)
+    log.info('GET /skills');
+    const skills = await Skill.find(req.query);
+    log.info(skills)
 
     res.status(200).json(skills);
   }
 
   
-  createSkill(req, res) {
+  async createSkill(req, res) {
   /*
     #swagger.description = 'Endpoint for creating a skill'
     #swagger.tags = ['Skills']
     #swagger.responses[201] = { description: 'Skill created successfully.' }
     #swagger.produces = ['application/json']
-    #swagger.parameters['id'] = {
-            in: 'path',
-            type: 'integer',
-            description: 'Skill ID.' } 
+    #swagger.parameters['obj'] = { 
+            in: 'body',
+            description: 'Skill details.',
+            required: true,
+            schema: { $ref: "#/definitions/AddSkill" }
+        }
   */
-    log.verbose('POST /skills');
+    log.info('POST /skills');
 
-    const skill = new Skill(req.body);
-    skill.save();
-    
+    const skill = new skillModel(req.body)
+    await skillModel.create(skill).then(() => {
+      log.info("created skill")
+      res.status(201).json(userDoc)
+    }).catch((err) => {
+      log.error(err)
+      res.status(404).json(err)
+    })
 
-    res.status(201).json(skill);
   }
 
 
-  editSkill(req, res) {
+  async editSkill(req, res) {
   /* 
     #swagger.description = 'Endpoint for editing a skill'
     #swagger.tags = ['Skills']
@@ -55,7 +63,7 @@ class SkillController {
   }
 
  
-  deleteSkill(req, res) {
+  async deleteSkill(req, res) {
    /* 
     #swagger.description = 'Endpoint for deleting a skill'
     #swagger.tags = ['Skills']
