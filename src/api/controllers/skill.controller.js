@@ -17,7 +17,7 @@ class SkillController {
     skill.validate(async err => {
       if (err) return res.status(400).json({ errCode: 400, message: "Validation failed. Please check your input.", error: err });
       
-      if(await Skill.findOne({ iconName: skill.iconName, level: skill.level }).exec()) return res.status(409).json({ errCode: 409, message: "Skill already exists." });
+      if(await Skill.findOne({ title: skill.title, level: skill.level }).exec()) return res.status(409).json({ errCode: 409, message: "Skill already exists." });
 
       skill.save();
 
