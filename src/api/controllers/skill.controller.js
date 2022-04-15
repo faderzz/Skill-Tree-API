@@ -18,7 +18,6 @@ class SkillController {
     res.status(200).json(skills);
   }
 
-  
   async createSkill(req, res) {
   /*
     #swagger.description = 'Endpoint for creating a skill'

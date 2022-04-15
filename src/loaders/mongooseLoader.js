@@ -1,6 +1,8 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 var log = require('npmlog')
 require('dotenv').config();
+
 
 const MY_USER = process.env.DB_USER;
 const MY_PASSWORD = process.env.DB_PASSWORD;
