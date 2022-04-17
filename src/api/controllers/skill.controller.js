@@ -24,11 +24,14 @@ class SkillController {
     #swagger.tags = ['Skills']
     #swagger.responses[201] = { description: 'Skill created successfully.' }
     #swagger.produces = ['application/json']
-    #swagger.parameters['obj'] = { 
-            in: 'body',
-            description: 'Skill details.',
+    #swagger.requestBody = { 
             required: true,
-            schema: { $ref: "#/definitions/AddSkill" }
+            description: 'User information.',
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/definitions/AddSkill" }
+                }
+            }
         }
   */
     log.info('POST /skills');

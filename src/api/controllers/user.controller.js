@@ -37,11 +37,14 @@ class UserController{
         #swagger.tags = ['User']
         #swagger.responses[201] = { description: 'User created successfully.' }
         #swagger.produces = ['application/json']
-        #swagger.parameters['obj'] = { 
-            in: 'body',
-            description: 'User information.',
+        #swagger.requestBody = { 
             required: true,
-            schema: { $ref: "#/definitions/User" }
+            description: 'User information.',
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/definitions/AddUser" }
+                }
+            }
         }
     */
         log.verbose("CREATE USER")
