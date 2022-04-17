@@ -59,15 +59,10 @@ const doc = {
 
   },
 
-
   servers: [
         {
             url: "http://localhost:8080/",
             description: 'Development server',
-        },
-        {
-            url: "http://xxx:xxx/",
-            description: 'Production server'
         }
   ]
 }
