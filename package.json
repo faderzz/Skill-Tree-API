@@ -16,8 +16,5 @@
     "swagger-autogen": "^2.20.8",
     "swagger-jsdoc": "^6.2.0",
     "swagger-ui-express": "^4.1.4"
-  },
-  "scripts": {
-    "start": "node src/index.js"
   }
 }
