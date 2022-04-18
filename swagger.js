@@ -47,9 +47,16 @@ const doc = {
         children: []
     },
     AddSkill: {
-        skill_name: "Example_A",
-        category: "Category_A",
-        parent_skill: "Example_0"
+        iconName: "Icon_A",
+        title: "Example_I",
+        level: "",
+        goal: "",
+        time: "",
+        frequency: ["daily","weekly","monthly", "annually"],
+        xp: 10,
+        category: "",
+        requirements: [],
+        children: []
     },
     AddUser: {
         $username: "Jhon Doe",
