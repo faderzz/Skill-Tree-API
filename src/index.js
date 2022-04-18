@@ -9,19 +9,20 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('../swagger-output.json')
 
 const PORT = process.env.APP_PORT;
+const app = express();
+
 
 mongooseLoader();
 expressLoader(app);
 
-async function startServer() {
-  const app = express();
-  app.disable('x-powered-by');
+app.disable('x-powered-by');
+log.info(`Environment-type: ${process.env.ENVIRONMENT_TYPE}`)
 
 
 if (process.env.ENVIRONMENT_TYPE == "development"){
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, { explorer: true }));
   log.info(`API documentation:  http://localhost:${PORT}/api-docs/`);
-  app.listen(process.env.PORT, () => console.log('Listening on port ' + process.env.PORT));
+  app.listen(PORT, () => log.info(`Listening on port ${PORT}`));
 }
 
 process.on('SIGTERM', () => {
