@@ -5,6 +5,7 @@ const router = express.Router();
 const prefix = "/v1/skills"
 
 router.get(prefix + '/', skillController.getSkills);
+router.get(prefix + '/all', skillController.getAllSkills)
 router.post(prefix + '/', skillController.createSkill);
 router.put(prefix + '/:id', skillController.editSkill);
 router.delete(prefix + '/:id', skillController.deleteSkill);

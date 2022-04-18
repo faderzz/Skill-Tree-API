@@ -11,11 +11,38 @@ class SkillController {
       description: "Skill registered successfully." 
     }
   */
-    log.info('GET /skills');
-    const skills = await Skill.find(req.query);
-    log.info(skills)
 
-    res.status(200).json(skills);
+    await skillModel.validate(req.query, ['_id'])
+    const skills = await skillModel.findById(req.query,{maxTimeMS:500}).catch((err) => log.warn(err))
+
+    if (skills != null){
+        res.status(200).json(skills)
+    } else {
+        log.warn(`Cannot find user with query: ${req.query}`)
+        res.status(404)
+    }
+
+  }
+
+  async getAllSkills(req, res){
+  /*
+    #swagger.description = 'Endpoint for getting a skill'
+    #swagger.tags = ['Skills']
+    #swagger.produces = ['application/json'] 
+    #swagger.responses[200] = {
+      schema: { "$ref": "#/definitions/Skill" },
+      description: "Skill registered successfully." 
+    }
+  */
+    log.info("GET /skills/all")
+    const skills = await skillModel.find({},{maxTimeMS:500}).catch((err) => log.warn(err))
+
+    if (skills != null){
+        res.status(200).json(skills)
+    } else {
+        log.warn(`Cannot find user with query: ${req.query}`)
+        res.status(404)
+    }
   }
 
   async createSkill(req, res) {
@@ -39,10 +66,12 @@ class SkillController {
     const skill = new skillModel(req.body)
     await skillModel.create(skill).then(() => {
       log.info("created skill")
-      res.status(201).json(userDoc)
+      res.status(201).json(skill)
     }).catch((err) => {
       log.error(err)
       res.status(404).json(err)
+    }).finally(() => {
+      log.info(`Finished. Skill: ${skill}`)
     })
 
   }
@@ -66,7 +95,7 @@ class SkillController {
 
  
   async deleteSkill(req, res) {
-   /* 
+  /* 
     #swagger.description = 'Endpoint for deleting a skill'
     #swagger.tags = ['Skills']
     #swagger.responses[201] = { description: 'Skill deleted successfully.' }
