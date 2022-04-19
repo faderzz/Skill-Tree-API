@@ -3,13 +3,14 @@ const bcrypt =require("bcryptjs");
 
 /**
  * User Object
- * @param username - the name of the user
- * @param password - the password of the user
- * @param pic - the avatar of the user 
- * @param exp - Total experience earned by the user
+ * @param username - the name of the user.
+ * @param password - the password of the user.
+ * @param pic - the avatar of the user .
+ * @param exp - Total experience earned by the user.
  * @param level - The currrent level of the user.
- * @param badges - The list of badges owned by the user/skills completed by the user
- * @param items - The list of items owned by the user
+ * @param items - The list of items owned by the user.
+ * @param skillscompleted - The list of skills completed by the user.
+ * @param skillsinprogress - The list of skills currently being trained by the user.
  */
 const UserSchema=mongoose.Schema({
     username: {
@@ -37,7 +38,7 @@ const UserSchema=mongoose.Schema({
         default:0,
     },
     items:{ 
-        type:[String],
+        type:[Schema.Types.ObjectId],
         required:false,
     },
     skillscompleted:{
