@@ -5,10 +5,10 @@ const bcrypt =require("bcryptjs");
  * User Object
  * @param username - the name of the user
  * @param password - the password of the user
- * @param pic - the name of the icon of the account relative to /icon/ (probably)
+ * @param pic - the avatar of the user 
  * @param exp - Total experience earned by the user
  * @param level - The currrent level of the user.
- * @param badges - The list of badges owned by the user
+ * @param badges - The list of badges owned by the user/skills completed by the user
  * @param items - The list of items owned by the user
  */
 const UserSchema=mongoose.Schema({
@@ -24,7 +24,7 @@ const UserSchema=mongoose.Schema({
         type:String,
         required:true,
         default:
-            "https://icon-library.com/images/anonymous-avatar-icon-25.jpg"
+            "https://icon-library.com/icon/anonymous-avatar-icon-25.html"
     },
     exp:{
         type:Number,
@@ -36,12 +36,16 @@ const UserSchema=mongoose.Schema({
         required:true,
         default:0,
     },
-    badges:{
+    items:{ 
         type:[String],
         required:false,
     },
-    items:{ 
-        type:[String],
+    skillscompleted:{
+        type:[Schema.Types.ObjectId],
+        required:false,
+    },
+    skillsinprogress:{
+        type:[Schema.Types.ObjectId],
         required:false,
     }
 
