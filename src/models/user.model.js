@@ -45,7 +45,7 @@ const UserSchema=mongoose.Schema({
         required:false,
     }
 
-}
+},{ collection:userInfo}
 )
 UserSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
