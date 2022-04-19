@@ -71,12 +71,23 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
 
 const removeUser = asyncHandler(async (req,res) =>{
-    try{
 
-        const removedUser = await User.remove({username:req.body.username})
-        res.json(removedUser)
-        }catch(error){
-          res.json({message:error})
+        const UserExists = await User.findOne({username:req.body.username});
+
+        if (UserExists){
+            try {
+                const removedUser = await User.remove({username:req.body.username,password:req.body.password});
+                res.json({
+                    _id:removedUser._id,
+                    username:removedUser.username,
+                    pic: removedUser.pic,
+            })
+            }catch(error){
+                res.json({message:error});
+            }
+       }else{
+          res.status(404);
+          throw new Error("User Not Found");
         }
       })
 
