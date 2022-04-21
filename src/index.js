@@ -18,7 +18,7 @@ expressLoader(app);
 app.disable('x-powered-by');
 log.info(`Environment-type:${process.env.ENVIRONMENT_TYPE}`)
 
-if (process.env.ENVIRONNEMENT_TYPE === 'development'){
+if (process.env.ENVIRONMENT_TYPE == 'development'){
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerFile, {explorer:true}));
   log.info(`API documentation: http://localhost:${PORT}/api-docs`);
   app.listen(PORT, () => log.info(`Listening on port ${PORT}`));
