@@ -1,10 +1,10 @@
-const {authUser,registerUser, updateUserProfile,removeUser} = require("../../controllers/user.controller")
+const UserController = require("../../controllers/user.controller")
 var express = require('express');
 var router = express.Router();
 
 
-router.route("/").post(registerUser);
-router.post("/login", authUser);
-router.route("/profile").post(updateUserProfile)
-router.delete('/',removeUser);
+router.route("/").post(UserController.registerUser);
+router.post("/login", UserController.authUser);
+router.route("/profile").post(UserController.updateUserProfile)
+router.delete('/',UserController.removeUser);
 module.exports = router;

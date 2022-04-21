@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt =require("bcryptjs");
+const Schema = mongoose.Schema;
+
 
 /**
  * User Object
@@ -12,7 +14,7 @@ const bcrypt =require("bcryptjs");
  * @param skillscompleted - The list of skills completed by the user.
  * @param skillsinprogress - The list of skills currently being trained by the user.
  */
-const UserSchema=mongoose.Schema({
+const UserSchema=new Schema({
     username: {
         type: String,
         required:true

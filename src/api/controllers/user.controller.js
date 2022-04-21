@@ -1,9 +1,25 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../../models/user.model");
+var log = require('npmlog')
 
 
-
-const authUser = asyncHandler(async (req, res) => {
+class UserController {
+ authUser = asyncHandler(async (req, res) => {
+       /*
+        #swagger.description = 'Endpoint for authentifying a User'
+        #swagger.tags = ['User']
+        #swagger.responses[200] = {
+            schema: { "$ref": "#/definitions/User" },
+            description: "User authentified successfully." 
+        } 
+        #swagger.produces = ['application/json']
+        #swagger.parameters['username','password'] = {
+            in: 'query',
+            required: 'false',
+            type: 'string',
+            description: 'User ID.' 
+        } 
+    */
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
@@ -12,21 +28,38 @@ const authUser = asyncHandler(async (req, res) => {
     res.json({
       _id: user._id,
       username: user.username,
+
     });
   } else {
     res.status(401);
-    throw new Error("Invalid Username or Password");
+    log.warn(`Cannot find user with query:  ${req.query}`);
   }
 });
 
 
-const registerUser = asyncHandler(async (req, res) => {
+registerUser = asyncHandler(async (req, res) => {
+      /*
+        #swagger.description = 'Endpoint for creating a User'
+        #swagger.tags = ['User']
+        #swagger.responses[201] = { description: 'User created successfully.' }
+        #swagger.produces = ['application/json']
+        #swagger.requestBody = { 
+            required: true,
+            description: 'User information.',
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/definitions/AddUser" }
+                }
+            }
+        }
+    */
   const {username, password } = req.body;
 
   const userExists = await User.findOne({ username });
 
   if (userExists) {
-    res.status(404);
+    res.status(400);
+    log.warn('Already found a user with the specified username')
     throw new Error("User already exists");
   }
 
@@ -41,12 +74,23 @@ const registerUser = asyncHandler(async (req, res) => {
       username: user.username,
     });
   } else {
-    res.status(400);
-    throw new Error("User not found");
+    log.warn(`Cannot find user with query:  ${req.query}`);
+    res.status(404);
   }
 });
 
-const updateUserProfile = asyncHandler(async (req, res) => {
+updateUserProfile = asyncHandler(async (req, res) => {
+      /* 
+    #swagger.description = 'Endpoint for editing a User'
+    #swagger.tags = ['User']
+    #swagger.responses[201] = { description: 'User edited successfully.' }
+    #swagger.produces = ['application/json']
+    #swagger.parameters['username','password'] = {
+                in: 'path',
+                type: 'integer',
+                description: 'User ID.' } 
+    */
+  log.verbose("UPDATE USER")
   const user = await User.findOne({username},{password});
 
   if (user) {
@@ -63,15 +107,22 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       username: updatedUser.username,
       pic: updatedUser.pic,
     });
+    log.verbose("User updated")
   } else {
+    log.warn(`Cannot find user with query:  ${req.query}`);
     res.status(404);
-    throw new Error("User Not Found");
   }
 });
 
 
-const removeUser = asyncHandler(async (req,res) =>{
-
+removeUser = asyncHandler(async (req,res) =>{
+      /* 
+        #swagger.description = 'Endpoint for deleting a User'
+        #swagger.tags = ['User']
+        #swagger.responses[201] = { description: 'User deleted successfully.' }
+        #swagger.produces = ['application/json']
+    */
+        log.verbose("DELETE USER")
         const UserExists = await User.findOne({username:req.body.username});
 
         if (UserExists){
@@ -82,15 +133,16 @@ const removeUser = asyncHandler(async (req,res) =>{
                     username:removedUser.username,
                     pic: removedUser.pic,
             })
+                log.verbose("User deleted")
             }catch(error){
-                res.json({message:error});
+                log.warn(error)
             }
        }else{
           res.status(404);
           throw new Error("User Not Found");
         }
       })
+    }
 
 
-
-module.exports= { authUser, updateUserProfile, registerUser, removeUser }
+module.exports= new UserController;
