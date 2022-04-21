@@ -15,6 +15,7 @@ const Schema = mongoose.Schema;
  * @param skillsinprogress - The list of skills currently being trained by the user.
  */
 const UserSchema=new Schema({
+
     username: {
         type: String,
         required:true

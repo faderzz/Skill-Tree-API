@@ -1,5 +1,7 @@
 const swaggerAutogen = require("swagger-autogen")({openapi:"3.0.0"})
 var log = require('npmlog')
+var mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const doc = {
   info: {
       version: "1.0.0",
@@ -30,9 +32,14 @@ const doc = {
   },
   definitions: {
     User: {
-        username: "a_user",
+        username: "John_Doe",
         password: "mias87dh32d7h36gdasdghyh1ds8326ga6w8d",
-        skill_data: ["a","b","c"]
+        pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+        exp:1500,
+        level:5,
+        items:[Schema.Types.ObjectId],
+        skillscompleted:[Schema.Types.ObjectId],
+        skillsinprogress:[Schema.Types.ObjectId],
     },
     Skill: {
         iconName: "Icon_A",
@@ -59,10 +66,15 @@ const doc = {
         children: []
     },
     AddUser: {
-        $username: "John Doe",
-        $password: "mias87dh32d7h36gdasdghyh1ds8326ga6w8d",
-        skill_data: ["a","b","c"]
-    }
+        username: "John_Doe",
+        password: "mias87dh32d7h36gdasdghyh1ds8326ga6w8d",
+        pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+        exp:1500,
+        level:5,
+        items:[Schema.Types.ObjectId],
+        skillscompleted:[Schema.Types.ObjectId],
+        skillsinprogress:[Schema.Types.ObjectId],
+    },
 
   },
 

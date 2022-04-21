@@ -28,28 +28,30 @@
           "User"
         ],
         "description": "Endpoint for creating a User",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "User created successfully."
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "description": "name of the user",
+            "schema": {
+              "type": "string"
+            }
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "User information.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddUser"
-              }
+          {
+            "name": "password",
+            "in": "query",
+            "required": true,
+            "description": "password of the user",
+            "schema": {
+              "type": "string"
             }
           }
+        ],
+        "responses": {},
+        "requestBody": {
+          "required": true,
+          "description": "User information."
         }
       },
       "delete": {
@@ -126,10 +128,19 @@
         "description": "Endpoint for authentifying a User",
         "parameters": [
           {
-            "name": "username,password",
+            "name": "username",
             "in": "query",
             "required": false,
-            "description": "User ID.",
+            "description": "Username",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": false,
+            "description": "password",
             "schema": {
               "type": "string"
             }
@@ -137,19 +148,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User authentified successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -161,10 +160,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "schema": {
+                  "username": {
                     "example": "any"
                   },
-                  "description": {
+                  "password": {
                     "example": "any"
                   }
                 }
@@ -232,26 +231,51 @@
         "properties": {
           "username": {
             "type": "string",
-            "example": "a_user"
+            "example": "John_Doe"
           },
           "password": {
             "type": "string",
             "example": "mias87dh32d7h36gdasdghyh1ds8326ga6w8d"
           },
-          "skill_data": {
+          "pic": {
+            "type": "string",
+            "example": "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+          },
+          "exp": {
+            "type": "number",
+            "example": 1500
+          },
+          "level": {
+            "type": "number",
+            "example": 5
+          },
+          "items": {
             "type": "array",
             "example": [
-              "a",
-              "b",
-              "c"
+              null
             ],
             "items": {
-              "type": "string"
+              "type": "function"
+            }
+          },
+          "skillscompleted": {
+            "type": "array",
+            "example": [
+              null
+            ],
+            "items": {
+              "type": "function"
+            }
+          },
+          "skillsinprogress": {
+            "type": "array",
+            "example": [
+              null
+            ],
+            "items": {
+              "type": "function"
             }
           }
-        },
-        "xml": {
-          "name": "User"
         }
       },
       "Skill": {
@@ -307,9 +331,6 @@
             "example": [],
             "items": {}
           }
-        },
-        "xml": {
-          "name": "Skill"
         }
       },
       "AddSkill": {
@@ -365,9 +386,6 @@
             "example": [],
             "items": {}
           }
-        },
-        "xml": {
-          "name": "AddSkill"
         }
       },
       "AddUser": {
@@ -375,30 +393,51 @@
         "properties": {
           "username": {
             "type": "string",
-            "example": "John Doe"
+            "example": "John_Doe"
           },
           "password": {
             "type": "string",
             "example": "mias87dh32d7h36gdasdghyh1ds8326ga6w8d"
           },
-          "skill_data": {
+          "pic": {
+            "type": "string",
+            "example": "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+          },
+          "exp": {
+            "type": "number",
+            "example": 1500
+          },
+          "level": {
+            "type": "number",
+            "example": 5
+          },
+          "items": {
             "type": "array",
             "example": [
-              "a",
-              "b",
-              "c"
+              null
             ],
             "items": {
-              "type": "string"
+              "type": "function"
+            }
+          },
+          "skillscompleted": {
+            "type": "array",
+            "example": [
+              null
+            ],
+            "items": {
+              "type": "function"
+            }
+          },
+          "skillsinprogress": {
+            "type": "array",
+            "example": [
+              null
+            ],
+            "items": {
+              "type": "function"
             }
           }
-        },
-        "required": [
-          "username",
-          "password"
-        ],
-        "xml": {
-          "name": "AddUser"
         }
       }
     },

@@ -8,17 +8,27 @@ class UserController {
        /*
         #swagger.description = 'Endpoint for authentifying a User'
         #swagger.tags = ['User']
-        #swagger.responses[200] = {
-            schema: { "$ref": "#/definitions/User" },
-            description: "User authentified successfully." 
-        } 
         #swagger.produces = ['application/json']
-        #swagger.parameters['username','password'] = {
+        #swagger.parameters['username'] = {
             in: 'query',
             required: 'false',
             type: 'string',
-            description: 'User ID.' 
+            description: 'Username' 
+        }
+        #swagger.parameters['password'] = {
+            in: 'query',
+            required: 'false',
+            type: 'string',
+            description: 'password' 
         } 
+        #swagger.responses[200] = {
+            out: ['username','_id']
+            description: "User authentified successfully." 
+        }
+        #swagger.responses[401] = {
+          description: "User not found."
+        }
+        
     */
   const { username, password } = req.body;
 
@@ -41,17 +51,29 @@ registerUser = asyncHandler(async (req, res) => {
       /*
         #swagger.description = 'Endpoint for creating a User'
         #swagger.tags = ['User']
-        #swagger.responses[201] = { description: 'User created successfully.' }
+        #swagger.responses[201] = {
+          description: 'User created successfully.'
+           }
         #swagger.produces = ['application/json']
+        #swagger.parameters['username'] = {
+          in:'query',
+          required:true,
+          type:'string',
+          description:'name of the user'
+        }
+          #swagger.parameters['password'] = {
+            in:'query',
+            required:true,
+            type:'string',
+            description:'password of the user'
+        }
         #swagger.requestBody = { 
             required: true,
             description: 'User information.',
-            content: {
-                "application/json": {
-                    schema: { $ref: "#/definitions/AddUser" }
-                }
-            }
         }
+        #swagger.security=[{
+          "apiKeyAuth":[]
+        }]
     */
   const {username, password } = req.body;
 
@@ -60,7 +82,6 @@ registerUser = asyncHandler(async (req, res) => {
   if (userExists) {
     res.status(400);
     log.warn('Already found a user with the specified username')
-    throw new Error("User already exists");
   }
 
   const user = await User.create({
