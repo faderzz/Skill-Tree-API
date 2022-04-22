@@ -1,8 +1,8 @@
-const Skill = require('../../models/skill.model');
+const Skill = require("../../models/skill.model");
 
 class SkillController {
   async getSkills(req, res) {
-    console.log('GET /skills');
+    console.log("GET /skills");
 
     const skills = await Skill.find({});
     console.log(skills);
@@ -11,13 +11,13 @@ class SkillController {
   }
 
   createSkill(req, res) {
-    console.log('POST /skills');
+    console.log("POST /skills");
     const skill = new Skill(req.body);
 
     skill.validate(async err => {
-      if (err) return res.status(400).json({ errCode: 400, message: 'Validation failed. Please check your input.', error: err });
+      if (err) return res.status(400).json({ errCode: 400, message: "Validation failed. Please check your input.", error: err });
       
-      if (await Skill.findOne({ title: skill.title, level: skill.level }).exec()) return res.status(409).json({ errCode: 409, message: 'Skill already exists.' });
+      if (await Skill.findOne({ title: skill.title, level: skill.level }).exec()) return res.status(409).json({ errCode: 409, message: "Skill already exists." });
 
       skill.save();
 
