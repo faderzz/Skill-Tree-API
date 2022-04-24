@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 /**
@@ -58,10 +58,10 @@ const skillSchema = new Schema({
     type: [Schema.Types.ObjectId],
     required: true,
   }
-}, { collection: 'Skills' });
+}, { collection: "Skills" });
 
 // Makes sure that the iconName and level have to be duplicates in order to throw an error.
 // If the index doesn't behave as expected, I've found that dropping the collection and having mongoose create it automatically fixes it.
 skillSchema.index({ title: "MEDITATION", level: 1}, { unique: true });
 
-module.exports = mongoose.model('Skill', skillSchema);
+module.exports = mongoose.model("Skill", skillSchema);
