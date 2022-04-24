@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const bcrypt =require("bcryptjs");
 const Schema = mongoose.Schema;
 
@@ -16,57 +16,57 @@ const Schema = mongoose.Schema;
  */
 const UserSchema=new Schema({
 
-    username: {
-        type: String,
-        required:true
-    },
-    password: {
-        type:String,
-        required:true,
-    },
-    pic:{
-        type:String,
-        required:true,
-        default:
+  username: {
+    type: String,
+    required:true
+  },
+  password: {
+    type:String,
+    required:true,
+  },
+  pic:{
+    type:String,
+    required:true,
+    default:
             "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-    },
-    exp:{
-        type:Number,
-        required:true,
-        default:0,
-    },
-    level:{
-        type:Number,
-        required:true,
-        default:0,
-    },
-    items:{ 
-        type:[Schema.Types.ObjectId],
-        required:false,
-    },
-    skillscompleted:{
-        type:[Schema.Types.ObjectId],
-        required:false,
-    },
-    skillsinprogress:{
-        type:[Schema.Types.ObjectId],
-        required:false,
-    }
+  },
+  exp:{
+    type:Number,
+    required:true,
+    default:0,
+  },
+  level:{
+    type:Number,
+    required:true,
+    default:0,
+  },
+  items:{ 
+    type:[Schema.Types.ObjectId],
+    required:false,
+  },
+  skillscompleted:{
+    type:[Schema.Types.ObjectId],
+    required:false,
+  },
+  skillsinprogress:{
+    type:[Schema.Types.ObjectId],
+    required:false,
+  }
 
-}, {collection:'userInfo'}
-)
-UserSchema.methods.matchPassword = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
-  };
+}, {collection:"userInfo"}
+);
+UserSchema.methods.matchPassword = async function(enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
   
-  // will encrypt password everytime its saved
-  UserSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) {
-      next();
-    }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-  });
+// will encrypt password everytime its saved
+UserSchema.pre("save", async function(next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
 
-module.exports = mongoose.model('User',UserSchema);
+module.exports = mongoose.model("User",UserSchema);
