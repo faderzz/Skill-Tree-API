@@ -1,5 +1,7 @@
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
+const Task = require("../../models/task.model");
+const mongoose = require("mongoose");
 
 class SkillController {
   async getSkills(req, res) {
@@ -12,7 +14,6 @@ class SkillController {
     }
 
     const skills = await Skill.find({});
-    console.log(skills);
 
     res.status(200).json(skills);
   }
@@ -46,11 +47,11 @@ class SkillController {
     }
 
     //Get skill to start
-    const skill = Skill.findById(req.body.skillID);
+    const skill = Skill.findById({title: req.body.title, level: req.body.level});
     //Get user starting skill
     const user = User.findOne({ userId: req.body.userID});
     //If the user has not already started the skill
-    if (user.find({skillsinprogress: req.body.skillID})) {
+    if (user.find({skillsinprogress: skill.get("id")})) {
       res.status(409).json({ errCode: 409, message: "Skill already in progress" });
     }
     //Check if user has requirements for this skill
@@ -58,10 +59,14 @@ class SkillController {
       res.status(409).json({ errCode: 409, message: "Skill not available" });
     }
 
-    //Update the user to start the skill
-    user.get("skillsinprogress").push(req.body.skillID);
+    //add task
+    const task = Task.create({userID: req.body.userID, skillID: skill.get("id"), startDate: new Date()});
+    await mongoose.connection.collection("Task").insertOne(task);
 
+    //Update the user to start the skill
+    user.get("skillsinprogress").push(skill.get("id"));
     user.save();
+
   }
 }
 

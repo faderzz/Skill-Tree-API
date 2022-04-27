@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
  * Task Object
  * @param skillID - The ID of the skill object
  * @param user - The ID of the user completing this task
- * @param habits - List of boolean values representing completed/uncompleted skills each time period from the start date
+ * @param tasks - List of boolean values representing completed/uncompleted skills for each time period from the start date
  * @param startDate - The date that this skill was started
  */
 const taskSchema = new Schema({
@@ -14,12 +14,12 @@ const taskSchema = new Schema({
     required: true,
     unique: false
   },
-  user: {
+  userID: {
     type: Schema.Types.ObjectId,
     required: true,
     unique: false
   },
-  habits: {
+  tasks: {
     type: [Boolean],
     required: true,
     unique: false

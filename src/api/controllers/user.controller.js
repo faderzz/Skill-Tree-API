@@ -29,7 +29,28 @@ class UserController {
         }
         
     */
-    const { username, password } = req.body;
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+
+    if (req.body.discordid != null) {
+      const user = await User.findOne({ discordid: req.body.discordid });
+      if (user) {
+        res.json({
+          _id: user._id,
+          discordid: user.discordid,
+        });
+      } else {
+        res.status(401);
+        log.warn(`Cannot find user with query:  ${req.query}`);
+      }
+      return;
+    }
+
+    const username = req.body.username;
+    const password = req.body.password;
 
     const user = await User.findOne({ username });
 
@@ -45,7 +66,7 @@ class UserController {
     }
   }
 
-  async registerUser(req, res) {
+  async register(req, res) {
     /*
         #swagger.description = 'Endpoint for creating a User'
         #swagger.tags = ['User']
@@ -55,15 +76,21 @@ class UserController {
         #swagger.produces = ['application/json']
         #swagger.parameters['username'] = {
           in:'query',
-          required:true,
+          required:false,
           type:'string',
           description:'name of the user'
         }
-          #swagger.parameters['password'] = {
+        #swagger.parameters['password'] = {
             in:'query',
-            required:true,
+            required:false,
             type:'string',
             description:'password of the user'
+        }
+        #swagger.parameters['discordid'] = {
+            in:'query',
+            required:false,
+            type:'string',
+            description:'discord ID of the user'
         }
         #swagger.requestBody = { 
             required: true,
@@ -73,7 +100,39 @@ class UserController {
           "apiKeyAuth":[]
         }]
     */
-    const {username, password } = req.body;
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+
+    //Discord account
+    if (req.body.discordid != null) {
+      console.log("Register type: DISCORD");
+      const userExists = await User.findOne({ discordid: req.body.discordid });
+
+      if (userExists) {
+        res.status(400);
+        log.warn("Already found a user with the specified username");
+      }
+
+      const user = await User.create({
+        discordid: req.body.discordid,
+      });
+
+      if (user) {
+        res.status(201).json({
+          _id: user._id,
+        });
+      } else {
+        log.warn(`Cannot create user:  ${req.query}`);
+        res.status(404);
+      }
+      return;
+    }
+
+    const username = req.body.username;
+    const password = req.body.password;
 
     const userExists = await User.findOne({ username });
 
@@ -109,6 +168,11 @@ class UserController {
                 type: 'integer',
                 description: 'User ID.' } 
     */
+    // Validate API-KEY
+    //     if (req.headers["api_key"] !== process.env.API_KEY) {
+    //       res.status(401);//Unauthorised
+    //       return;
+    //     }
     // log.verbose("UPDATE USER");
     // const user = await User.findOne({username},{password});
 
@@ -140,6 +204,12 @@ class UserController {
         #swagger.responses[201] = { description: 'User deleted successfully.' }
         #swagger.produces = ['application/json']
     */
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+
     log.verbose("DELETE USER");
     const UserExists = await User.findOne({username:req.body.username});
 
@@ -162,5 +232,4 @@ class UserController {
   }
 }
 
-
-module.exports= new UserController;
+module.exports = new UserController();
