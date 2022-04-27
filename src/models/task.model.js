@@ -21,13 +21,17 @@ const taskSchema = new Schema({
   },
   tasks: {
     type: [Boolean],
-    required: true,
+    required: false,
     unique: false
   },
   startDate: {
     type: Date,
     required: true,
   },
+  completeDate: {
+    type: Date,
+    required: false,
+  }
 }, { collection: "Tasks" });
 
 module.exports = mongoose.model("Task", taskSchema);

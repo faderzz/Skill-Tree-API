@@ -1,7 +1,6 @@
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Task = require("../../models/task.model");
-const mongoose = require("mongoose");
 
 class SkillController {
   async getSkills(req, res) {
@@ -14,6 +13,28 @@ class SkillController {
     }
 
     const skills = await Skill.find({});
+
+    res.status(200).json(skills);
+  }
+  async getAvailableSKills(req, res) {
+    console.log("GET skills/available");
+
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401); //Unauthorised
+      return;
+    }
+
+    const user = await User.findOne({discordid: req.headers.discordid});
+
+    const completedSkills = await Skill.find({skillID: user.get("skillscompleted")});
+
+    const skills = await Skill.find({
+      _id: {$ne : user.get("skillsinprogress")}, //skill not in progress
+      $expr: {$setIsSubset: ["$requires", completedSkills]},
+    });
+
+    console.log(skills);
 
     res.status(200).json(skills);
   }
@@ -47,24 +68,31 @@ class SkillController {
     }
 
     //Get skill to start
-    const skill = Skill.findById({title: req.body.title, level: req.body.level});
-    //Get user starting skill
-    const user = User.findOne({ userId: req.body.userID});
-    //If the user has not already started the skill
-    if (user.find({skillsinprogress: skill.get("id")})) {
-      res.status(409).json({ errCode: 409, message: "Skill already in progress" });
-    }
-    //Check if user has requirements for this skill
-    if (!user.find({skillscompleted: {$all : skill.get("requirements")}})) {
-      res.status(409).json({ errCode: 409, message: "Skill not available" });
+    const skill = await Skill.findOne({title: req.body.title, level: req.body.level});
+
+    const filter = {
+      discordid: req.body.discordid,
+      skillsinprogress: {$ne : skill.get("id")}, //skill not in progress
+    };
+
+    //Add requirement if necessary
+    if (skill.get("requires").length !== 0) {
+      filter["skillscompleted"] = {$all : skill.get("requires")};
     }
 
-    //add task
-    const task = Task.create({userID: req.body.userID, skillID: skill.get("id"), startDate: new Date()});
-    await mongoose.connection.collection("Task").insertOne(task);
+    const user = await User.findOne(filter);
+
+    //If no user found
+    if (!user) {
+      res.status(409).json({ errCode: 409, message: "No available skills." });
+      return;
+    }
+
+    const task = new Task({userID: user.get("_id"), skillID: skill.get("_id"), startDate: new Date()});
+    task.save();
 
     //Update the user to start the skill
-    user.get("skillsinprogress").push(skill.get("id"));
+    user.get("skillsinprogress").push(skill.get("_id"));
     user.save();
 
   }

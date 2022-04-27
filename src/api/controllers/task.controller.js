@@ -1,5 +1,6 @@
 const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
+const User = require("../../models/user.model");
 
 class TaskController {
   async currentTasks(req, res) {
@@ -8,6 +9,15 @@ class TaskController {
       res.status(401);//Unauthorised
       return;
     }
+
+    const user = await User.findOne({discordid: req.headers.discordid});
+    const date = req.headers.date;
+    const tasks = await Task.find({
+      userID: user.get("_id"),
+      $expr : {$gt : "$startDate" - date}
+    });
+
+    res.status(200).json(tasks);
   }
   
   async updateTask(req, res) {

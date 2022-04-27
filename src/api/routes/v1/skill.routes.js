@@ -4,6 +4,7 @@ const skillController = require("../../controllers/skill.controller");
 const router = express.Router();
 
 router.get("/", skillController.getSkills);
+router.get("/available", skillController.getAvailableSKills);
 router.post("/createSkill", skillController.createSkill);
 router.post("/startSkill", skillController.startSkill);
 //router.put("/:id", skillController.editSkill);

@@ -3,6 +3,25 @@ const log = require("npmlog");
 
 
 class UserController {
+  async authUserDiscord(req, res) {
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+
+    const user = await User.findOne({ discordid: req.body.discordid });
+    
+    if (user) {
+      res.status(200).json({
+        _id: user._id,
+      });
+    } else {
+      res.status(401);
+      log.warn(`Cannot find user with query:  ${req.query}`);
+    }
+  }
+
   async authUser(req, res) {
     /*
         #swagger.description = 'Endpoint for authentifying a User'
@@ -32,20 +51,6 @@ class UserController {
     //Validate API-KEY
     if (req.headers["api_key"] !== process.env.API_KEY) {
       res.status(401);//Unauthorised
-      return;
-    }
-
-    if (req.body.discordid != null) {
-      const user = await User.findOne({ discordid: req.body.discordid });
-      if (user) {
-        res.json({
-          _id: user._id,
-          discordid: user.discordid,
-        });
-      } else {
-        res.status(401);
-        log.warn(`Cannot find user with query:  ${req.query}`);
-      }
       return;
     }
 
@@ -100,34 +105,11 @@ class UserController {
           "apiKeyAuth":[]
         }]
     */
+    console.log("POST /register");
+
     //Validate API-KEY
     if (req.headers["api_key"] !== process.env.API_KEY) {
       res.status(401);//Unauthorised
-      return;
-    }
-
-    //Discord account
-    if (req.body.discordid != null) {
-      console.log("Register type: DISCORD");
-      const userExists = await User.findOne({ discordid: req.body.discordid });
-
-      if (userExists) {
-        res.status(400);
-        log.warn("Already found a user with the specified username");
-      }
-
-      const user = await User.create({
-        discordid: req.body.discordid,
-      });
-
-      if (user) {
-        res.status(201).json({
-          _id: user._id,
-        });
-      } else {
-        log.warn(`Cannot create user:  ${req.query}`);
-        res.status(404);
-      }
       return;
     }
 
@@ -153,6 +135,36 @@ class UserController {
       });
     } else {
       log.warn(`Cannot find user with query:  ${req.query}`);
+      res.status(404);
+    }
+  }
+
+  async registerDiscord(req, res) {
+    console.log("POST /registerDiscord");
+
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+
+    const userExists = await User.findOne({ discordid: req.body.discordid });
+
+    if (userExists) {
+      res.status(400);
+      log.warn("Already found a user with the specified username");
+    }
+
+    const user = await User.create({
+      discordid: req.body.discordid,
+    });
+
+    if (user) {
+      res.status(201).json({
+        _id: user._id,
+      });
+    } else {
+      log.warn(`Cannot create user:  ${req.query}`);
       res.status(404);
     }
   }
