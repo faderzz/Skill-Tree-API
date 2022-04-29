@@ -35,7 +35,7 @@ const skillSchema = new Schema({
   },
   frequency: {
     type: String,
-    enum: ["DAILY", "WEEKLY", "2x/WEEK", "MONTHLY"],
+    enum: ["DAILY", "2x/DAY", "5x/WEEK", "3x/WEEK", "2x/WEEK", "WEEKLY", "MONTHLY"],
     required: true,
   },
   timelimit: {
