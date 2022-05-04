@@ -19,7 +19,7 @@ const taskSchema = new Schema({
     required: true,
     unique: false
   },
-  tasks: {
+  data: {
     type: [Boolean],
     required: false,
     unique: false
@@ -28,9 +28,9 @@ const taskSchema = new Schema({
     type: Date,
     required: true,
   },
-  completeDate: {
-    type: Date,
-    required: false,
+  completed: {
+    type: Boolean,
+    required: true,
   }
 }, { collection: "Tasks" });
 
