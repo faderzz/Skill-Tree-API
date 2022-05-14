@@ -31,7 +31,7 @@ process.on("SIGTERM", () =>{
 });
 
 app.listen(PORT, () => console.log("Listening on port " + process.env.PORT))
-  .on("error", function(err) {
+  .on("error", function() {
     process.once("SIGUSR2", function() {
       process.kill(process.pid, "SIGUSR2");
     });
