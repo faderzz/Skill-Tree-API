@@ -1,7 +1,7 @@
 const Task = require("../../models/task.model");
-const Skill = require("../../models/skill.model");
+//const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
-const {intervalToInt} = require("../../modules/TaskHelper");
+//const {intervalToInt} = require("../../modules/TaskHelper");
 
 class TaskController {
   async currentTasks(req, res) {
