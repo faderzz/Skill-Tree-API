@@ -8,7 +8,7 @@ const mongooseLoader = require("./loaders/mongooseLoader");
 const swaggerUI = require("swagger-ui-express");
 const swaggerFile = require("../swagger-output.json");
 
-const PORT = process.env.APP_PORT;
+const PORT = process.env.PORT;
 
 const app = express();
 
@@ -24,9 +24,19 @@ if (process.env.ENVIRONMENT_TYPE == "development") {
   app.listen(PORT, () => log.info(`Listening on port ${PORT}`));
 }
 
+
 process.on("SIGTERM", () =>{
   log.info("SIGTERM signal received: closing HTTP server");
   app.close(() => log.info("HTTP server closed"));
 });
 
-app.listen(process.env.PORT, () => console.log("Listening on port " + process.env.PORT));
+app.listen(PORT, () => console.log("Listening on port " + process.env.PORT))
+  .on("error", function() {
+    process.once("SIGUSR2", function() {
+      process.kill(process.pid, "SIGUSR2");
+    });
+    process.on("SIGINT", function() {
+    // this is only called on ctrl+c, not restart
+      process.kill(process.pid, "SIGINT");
+    });
+  });
