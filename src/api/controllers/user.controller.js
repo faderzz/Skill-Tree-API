@@ -168,9 +168,8 @@ class UserController {
     const userFound = await User.findOne({ discordid: req.body.discordid });
 
     if (userFound) {
-      res.status(400).json({userFound:true}); // bad request
       log.warn("Already found a user with the specified username");
-      return;
+      return res.json({"userFound": true});
     }
 
     const user = await User.create(req.body);
@@ -191,8 +190,7 @@ class UserController {
       return;
     }
     console.log("POST /updateUser");
-    const user = await User.findOne({ discordid: req.headers["discordid"] });
-    user.update(req.body,(err)=>{log.warn(err);});
+    await User.findOneAndUpdate({discordid: req.body.discordid},req.body);
   }
   async updateUserProfile() {
     /* 

@@ -14,7 +14,7 @@ const Schema = mongoose.Schema;
  * @param items - The list of items owned by the user.
  * @param skillscompleted - The list of skills completed by the user.
  * @param skillsinprogress - The list of skills currently being trained by the user.
- * @param difficulty_level - the difficulty level of the user (easy,medium,hard)
+ * @param difficulty - the difficulty level of the user (easy,medium,hard)
  * @param dm_enabled - whether or not the user wants to receive DM's (DISCORD EXCLUSIVE)
  * @param gender - the gender of the in-game character
  */
@@ -59,7 +59,7 @@ const UserSchema=new Schema({
     type:[Schema.Types.ObjectId],
     required: false,
   },
-  difficulty_level:{
+  difficulty:{
     type:String,
     required:false,
   },
