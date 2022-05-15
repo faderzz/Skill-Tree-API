@@ -1,8 +1,6 @@
 const User = require("../../models/user.model");
 const Item = require("../../models/item.model");
 const log = require("npmlog");
-
-
 class UserController {
   async profile(req, res) {
     if (req.headers["api_key"] !== process.env.API_KEY) {
@@ -167,16 +165,15 @@ class UserController {
       return;
     }
 
-    const userExists = await User.findOne({ discordid: req.body.discordid });
+    const userFound = await User.findOne({ discordid: req.body.discordid });
 
-    if (userExists) {
-      res.status(400);
+    if (userFound) {
+      res.status(400).json({userFound:true}); // bad request
       log.warn("Already found a user with the specified username");
+      return;
     }
 
-    const user = await User.create({
-      discordid: req.body.discordid,
-    });
+    const user = await User.create(req.body);
 
     if (user) {
       res.status(201).json({
@@ -187,7 +184,16 @@ class UserController {
       res.status(404);
     }
   }
-
+  async updateUser(req, res) {
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+    console.log("POST /updateUser");
+    const user = await User.findOne({ discordid: req.headers["discordid"] });
+    user.update(req.body,(err)=>{log.warn(err);});
+  }
   async updateUserProfile() {
     /* 
     #swagger.description = 'Endpoint for editing a User'

@@ -40,6 +40,9 @@ const doc = {
       items:[Schema.Types.ObjectId],
       skillscompleted:[Schema.Types.ObjectId],
       skillsinprogress:[Schema.Types.ObjectId],
+      difficulty_level:"easy",
+      dm_enabled: true,
+      gender: "male",
     },
     Skill: {
       iconName: "Icon_A",

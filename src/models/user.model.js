@@ -14,6 +14,9 @@ const Schema = mongoose.Schema;
  * @param items - The list of items owned by the user.
  * @param skillscompleted - The list of skills completed by the user.
  * @param skillsinprogress - The list of skills currently being trained by the user.
+ * @param difficulty_level - the difficulty level of the user (easy,medium,hard)
+ * @param dm_enabled - whether or not the user wants to receive DM's (DISCORD EXCLUSIVE)
+ * @param gender - the gender of the in-game character
  */
 const UserSchema=new Schema({
   username: {
@@ -55,13 +58,28 @@ const UserSchema=new Schema({
   skillsinprogress:{
     type:[Schema.Types.ObjectId],
     required: false,
+  },
+  difficulty_level:{
+    type:String,
+    required:false,
+  },
+  dm_enabled:{
+    type:Boolean,
+    required:false,
+    default:true,
+  },
+  gender:{
+    type:String,
+    required:false,
+    default:"male",
   }
-}, {collection:"Users"}
+
+},
+{collection:"Users"}
 );
 UserSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-  
 // will encrypt password everytime its saved
 UserSchema.pre("save", async function(next) {
   if (!this.isModified("password")) {

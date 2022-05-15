@@ -8,20 +8,23 @@ const mongooseLoader = require("./loaders/mongooseLoader");
 const swaggerUI = require("swagger-ui-express");
 const swaggerFile = require("../swagger-output.json");
 
-const PORT = process.env.APP_PORT;
+const PORT = process.env.PORT;
 
 const app = express();
 
 mongooseLoader(); 
 expressLoader(app);
 
+
+
 app.disable("x-powered-by");
 log.info(`Environment-type:${process.env.ENVIRONMENT_TYPE}`);
 
 if (process.env.ENVIRONMENT_TYPE == "development") {
+  const swagger_port = parseInt(PORT)+1;
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile, {explorer:true}));
-  log.info(`API documentation: http://localhost:${PORT}/api-docs`);
-  app.listen(PORT, () => log.info(`Listening on port ${PORT}`));
+  log.info(`API documentation: http://localhost:${swagger_port}/api-docs`);
+  app.listen(swagger_port, () => log.info(`Swagger: Listening on port ${swagger_port}`));
 }
 
 process.on("SIGTERM", () =>{
