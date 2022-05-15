@@ -1,7 +1,7 @@
 const Task = require("../../models/task.model");
-const Skill = require("../../models/skill.model");
+//const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
-const {intervalToInt} = require("../../modules/TaskHelper");
+//const {intervalToInt} = require("../../modules/TaskHelper");
 
 class TaskController {
   async currentTasks(req, res) {
@@ -30,7 +30,7 @@ class TaskController {
       return;
     }
 
-    const updateDate = req.body.date;
+    /*const updateDate = req.body.date;
     const task = Task.find({id: req.body.id});
     const skill = Skill.find({id: task.get("skillID")});
     const data = task.get("data"); //array of booleans
@@ -45,7 +45,7 @@ class TaskController {
     const daysDiff = timeDiff / (1000 * 3600 * 24);
     const blockSize = frequency / interval;
     const period = Math.floor(daysDiff / blockSize) * blockSize;
-
+    */
 
 
     //Update task

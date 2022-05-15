@@ -9,7 +9,7 @@ class SkillController {
 
     //Validate API-KEY
     if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401); //Unauthorised
+      res.status(401);//Unauthorised
       return;
     }
 
