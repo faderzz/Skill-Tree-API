@@ -2,6 +2,17 @@ const User = require("../../models/user.model");
 const Item = require("../../models/item.model");
 const log = require("npmlog");
 class UserController {
+  // adds  XP to a given user
+  async addXP(req, res) {
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+    console.log("POST /addXP");
+    const user = await User.findOne({ discordid: req.body.discordid});
+    await user.updateOne({xp: parseInt(user.xp) + parseInt(req.body.xp)});
+  }
+
   async profile(req, res) {
     if (req.headers["api_key"] !== process.env.API_KEY) {
       res.status(401);//Unauthorised
