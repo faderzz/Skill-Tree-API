@@ -8,9 +8,10 @@ class UserController {
       res.status(401);//Unauthorised
       return;
     }
+    const new_xp = parseInt(user.xp) + parseInt(req.body.xp);
     console.log("POST /addXP");
     const user = await User.findOne({ discordid: req.body.discordid});
-    await user.updateOne({xp: parseInt(user.xp) + parseInt(req.body.xp)});
+    await user.updateOne({xp: new_xp}); // updates xp
   }
 
   async profile(req, res) {
@@ -42,11 +43,17 @@ class UserController {
       res.status(401);//Unauthorised
       return;
     }
+    console.log("GET /authUserDiscord");
 
-    const userExists = await User.exists({ discordid: req.headers["discordid"] });
-
+    const userExists = await User.exists({ discordid: req.headers.discordid});
+    let userID;
+    if (userExists) {
+      const user = await User.findOne({discordid: req.headers.discordid});
+      userID = user.get("_id");
+    }
     res.status(200).json({
       userExists: userExists,
+      _id: userID,
     });
   }
 

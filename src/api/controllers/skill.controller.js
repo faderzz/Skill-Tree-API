@@ -3,7 +3,21 @@ const User = require("../../models/user.model");
 const Task = require("../../models/task.model");
 const {intervalToInt} = require("../../modules/TaskHelper");
 
+
 class SkillController {
+  async getSkillsInProgress(req, res) {
+    console.log("GET /skillsInProgress");
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+    const user = await User.findById(req.headers["userid"]);
+    const skills = await Skill.find({
+      _id: {$in : user.get("skillsinprogress")}, 
+    });
+    res.status(200).json(skills);
+  }
   async getSkills(req, res) {
     console.log("GET /skills");
 
@@ -18,7 +32,7 @@ class SkillController {
     res.status(200).json(skills);
   }
 
-  async getAvailableSKills(req, res) {
+  async getAvailableSkills(req, res) {
     console.log("GET skills/available");
 
     //Validate API-KEY
@@ -26,9 +40,7 @@ class SkillController {
       res.status(401); //Unauthorised
       return;
     }
-
-    const user = await User.findOne({discordid: req.headers.discordid});
-
+    const user = await User.findById(req.headers["userid"]);
     const completed = user.get("skillscompleted");
 
     const skills = await Skill.find({
@@ -51,7 +63,7 @@ class SkillController {
 
     skill.validate(async err => {
       if (err) return res.status(400).json({ errCode: 400, message: "Validation failed. Please check your input.", error: err });
-      
+
       if (await Skill.findOne({ title: skill.title, level: skill.level }).exec()) return res.status(409).json({ errCode: 409, message: "Skill already exists." });
 
       skill.save();
