@@ -1,4 +1,5 @@
 const User = require("../../models/user.model");
+const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
 const log = require("npmlog");
 
@@ -12,7 +13,7 @@ class UserController {
 
     console.log("GET /profile");
 
-    const user = await User.findOne({ discordid: req.headers["discordid"] });
+    const user = await User.findOne({ _id: req.headers["id"] });
     const items = await Item.find({
       _id: {$in : user.get("items")}
     });
@@ -34,10 +35,13 @@ class UserController {
       return;
     }
 
-    const userExists = await User.exists({ discordid: req.headers["discordid"] });
-
+    const user = await User.findOne({ discordid: req.headers["discordid"] });
+    let id = null;
+    if (user) {
+      id = user.get("_id");
+    }
     res.status(200).json({
-      userExists: userExists,
+      id: id
     });
   }
 
@@ -82,7 +86,6 @@ class UserController {
       res.json({
         _id: user._id,
         username: user.username,
-
       });
     } else {
       res.status(401);
@@ -260,6 +263,27 @@ class UserController {
       res.status(404);
       throw new Error("User Not Found");
     }
+  }
+
+  /**
+   * Complete user's skill
+   * @param userID
+   * @param skillID
+   * @return {Promise<void>}
+   */
+  async completeSkill(userID, skillID) {
+    const skill = await Skill.findOne({_id: skillID});
+
+    console.log("complete!");
+    User.findOneAndUpdate({
+      _id: userID
+    },{
+      $inc : {"totalXP" : skill.get("XP")},
+      $pull: { skillsinprogress: skillID },
+      $addToSet: { skillscompleted: skillID }
+    });
+
+
   }
 }
 

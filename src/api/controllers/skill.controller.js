@@ -1,7 +1,6 @@
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Task = require("../../models/task.model");
-const {intervalToInt} = require("../../modules/TaskHelper");
 
 class SkillController {
   async getSkills(req, res) {
@@ -27,13 +26,31 @@ class SkillController {
       return;
     }
 
-    const user = await User.findOne({discordid: req.headers.discordid});
+    const user = await User.findOne({_id: req.headers["id"]});
 
     const completed = user.get("skillscompleted");
 
     const skills = await Skill.find({
       _id: {$nin : user.get("skillsinprogress")}, //skill not in progress
       $expr: {$setIsSubset: ["$requires", completed]},
+    });
+
+    res.status(200).json(skills);
+  }
+
+  async getSkillsInProgress(req, res) {
+    console.log("GET skills/inProgress");
+
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401); //Unauthorised
+      return;
+    }
+
+    const user = await User.findOne({_id: req.headers["userid"]});
+
+    const skills = await Skill.find({
+      _id: {$in : user.get("skillsinprogress")},
     });
 
     res.status(200).json(skills);
@@ -71,7 +88,7 @@ class SkillController {
     const skill = await Skill.findOne({title: req.body.title, level: req.body.level});
 
     const filter = {
-      discordid: req.body.discordid,
+      id: req.body.id,
       skillsinprogress: {$ne : skill.get("id")}, //skill not in progress
     };
 
@@ -90,12 +107,8 @@ class SkillController {
 
     //Convert skill to frequency
     //if freq=5 interval=week, becomes 5/7=0.71....
-    const freq = skill.get("frequency") / intervalToInt(skill.get("interval"));
-
-    //Get number of instances of skill
-    //if timelimit=30 freq=0.71..., 30*0.71 = 21
-    const numTasks = Math.floor(skill.get("timelimit") * freq);
-    const tasks = new Array(numTasks).fill(0);
+    //const freq = skill.get("frequency") / intervalToInt(skill.get("interval"));
+    const tasks = [];
 
     const task = new Task({
       userID: user.get("_id"),
