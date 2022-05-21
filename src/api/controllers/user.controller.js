@@ -1,18 +1,10 @@
 const User = require("../../models/user.model");
+const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
 const log = require("npmlog");
+
+
 class UserController {
-  // adds  XP to a given user
-  async addXP(req, res) {
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-    const new_xp = parseInt(user.xp) + parseInt(req.body.xp);
-    console.log("POST /addXP");
-    const user = await User.findOne({ discordid: req.body.discordid});
-    await user.updateOne({xp: new_xp}); // updates xp
-  }
 
   async profile(req, res) {
     if (req.headers["api_key"] !== process.env.API_KEY) {
@@ -22,7 +14,7 @@ class UserController {
 
     console.log("GET /profile");
 
-    const user = await User.findOne({ discordid: req.headers["discordid"] });
+    const user = await User.findOne({ _id: req.headers["id"] });
     const items = await Item.find({
       _id: {$in : user.get("items")}
     });
@@ -43,17 +35,14 @@ class UserController {
       res.status(401);//Unauthorised
       return;
     }
-    console.log("GET /authUserDiscord");
 
-    const userExists = await User.exists({ discordid: req.headers.discordid});
-    let userID;
-    if (userExists) {
-      const user = await User.findOne({discordid: req.headers.discordid});
-      userID = user.get("_id");
+    const user = await User.findOne({ discordid: req.headers["discordid"] });
+    let id = null;
+    if (user) {
+      id = user.get("_id");
     }
     res.status(200).json({
-      userExists: userExists,
-      _id: userID,
+      id: id
     });
   }
 
@@ -98,7 +87,6 @@ class UserController {
       res.json({
         _id: user._id,
         username: user.username,
-
       });
     } else {
       res.status(401);
@@ -183,14 +171,16 @@ class UserController {
       return;
     }
 
-    const userFound = await User.findOne({ discordid: req.body.discordid });
+    const userExists = await User.findOne({ discordid: req.body.discordid });
 
-    if (userFound) {
+    if (userExists) {
+      res.status(400);
       log.warn("Already found a user with the specified username");
-      return res.json({"userFound": true});
     }
 
-    const user = await User.create(req.body);
+    const user = await User.create({
+      discordid: req.body.discordid,
+    });
 
     if (user) {
       res.status(201).json({
@@ -201,15 +191,7 @@ class UserController {
       res.status(404);
     }
   }
-  async updateUser(req, res) {
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-    console.log("POST /updateUser");
-    await User.findOneAndUpdate({discordid: req.body.discordid},req.body);
-  }
+
   async updateUserProfile() {
     /* 
     #swagger.description = 'Endpoint for editing a User'
@@ -282,6 +264,49 @@ class UserController {
       res.status(404);
       throw new Error("User Not Found");
     }
+  }
+
+  /**
+   * Complete user's skill
+   * @param userID
+   * @param skillID
+   * @return {Promise<void>}
+   */
+  async completeSkill(userID, skillID) {
+    const skill = await Skill.findOne({_id: skillID});
+
+    console.log("complete!");
+    User.findOneAndUpdate({
+      _id: userID
+    },{
+      $inc : {"totalXP" : skill.get("XP")},
+      $pull: { skillsinprogress: skillID },
+      $addToSet: { skillscompleted: skillID }
+    });
+
+
+  }
+
+  // adds  XP to a given user
+  async addXP(req, res) {
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+    const new_xp = parseInt(user.xp) + parseInt(req.body.xp);
+    console.log("POST /addXP");
+    const user = await User.findOne({ discordid: req.body.discordid});
+    await user.updateOne({xp: new_xp}); // updates xp
+  }
+
+  async updateUser(req, res) {
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+    console.log("POST /updateUser");
+    await User.findOneAndUpdate({discordid: req.body.discordid},req.body);
   }
 }
 
