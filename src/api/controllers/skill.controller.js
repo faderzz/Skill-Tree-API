@@ -1,8 +1,6 @@
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Task = require("../../models/task.model");
-const {intervalToInt} = require("../../modules/TaskHelper");
-
 
 class SkillController {
   async getSkillsInProgress(req, res) {
@@ -40,7 +38,7 @@ class SkillController {
       res.status(401); //Unauthorised
       return;
     }
-    const user = await User.findById(req.headers["userid"]);
+    const user = await User.findById(req.headers["id"]);
     const completed = user.get("skillscompleted");
 
     const skills = await Skill.find({
@@ -52,6 +50,8 @@ class SkillController {
   }
 
   async createSkill(req, res) {
+    console.log("POST skills/create");
+
     //Validate API-KEY
     if (req.headers["api_key"] !== process.env.API_KEY) {
       res.status(401);//Unauthorised
@@ -64,7 +64,9 @@ class SkillController {
     skill.validate(async err => {
       if (err) return res.status(400).json({ errCode: 400, message: "Validation failed. Please check your input.", error: err });
 
-      if (await Skill.findOne({ title: skill.title, level: skill.level }).exec()) return res.status(409).json({ errCode: 409, message: "Skill already exists." });
+      if (await Skill.findOne({ title: skill.title, level: skill.level }).exec()) {
+        return res.status(409).json({ errCode: 409, message: "Skill already exists." });
+      }
 
       skill.save();
 
@@ -73,6 +75,8 @@ class SkillController {
   }
 
   async startSkill(req, res) {
+    console.log("POST skills/startSkill");
+
     //Validate API-KEY
     if (req.headers["api_key"] !== process.env.API_KEY) {
       res.status(401);//Unauthorised
@@ -80,11 +84,11 @@ class SkillController {
     }
 
     //Get skill to start
-    const skill = await Skill.findOne({title: req.body.title, level: req.body.level});
+    const skill = await Skill.findById(req.body.skillid);
 
     const filter = {
-      discordid: req.body.discordid,
-      skillsinprogress: {$ne : skill.get("id")}, //skill not in progress
+      id: req.body.id,
+      skillsinprogress: {$ne : skill.get("_id")}, //skill not in progress
     };
 
     //Add requirement if necessary
@@ -100,20 +104,11 @@ class SkillController {
       return;
     }
 
-    //Convert skill to frequency
-    //if freq=5 interval=week, becomes 5/7=0.71....
-    const freq = skill.get("frequency") / intervalToInt(skill.get("interval"));
-
-    //Get number of instances of skill
-    //if timelimit=30 freq=0.71..., 30*0.71 = 21
-    const numTasks = Math.floor(skill.get("timelimit") * freq);
-    const tasks = new Array(numTasks).fill(0);
-
     const task = new Task({
       userID: user.get("_id"),
       skillID: skill.get("_id"),
       startDate: new Date(),
-      data: tasks,
+      data: [],
       completed: false,
     });
     task.save();
@@ -121,7 +116,6 @@ class SkillController {
     //Update the user to start the skill
     user.get("skillsinprogress").push(skill.get("_id"));
     user.save();
-
   }
 }
 

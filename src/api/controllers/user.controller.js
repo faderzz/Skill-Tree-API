@@ -14,7 +14,7 @@ class UserController {
 
     console.log("GET /profile");
 
-    const user = await User.findOne({ _id: req.headers["id"] });
+    const user = await User.findById(req.headers["id"]);
     const items = await Item.find({
       _id: {$in : user.get("items")}
     });
@@ -279,12 +279,10 @@ class UserController {
     User.findOneAndUpdate({
       _id: userID
     },{
-      $inc : {"totalXP" : skill.get("XP")},
+      $inc : {"xp" : skill.get("xp")},
       $pull: { skillsinprogress: skillID },
       $addToSet: { skillscompleted: skillID }
     });
-
-
   }
 
   // adds  XP to a given user

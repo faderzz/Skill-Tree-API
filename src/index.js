@@ -12,7 +12,7 @@ const PORT = process.env.PORT;
 
 const app = express();
 
-mongooseLoader(); 
+mongooseLoader();
 expressLoader(app);
 
 
