@@ -144,7 +144,6 @@ class UserController {
 
     if (userExists) {
       res.status(400);
-      log.warn("Already found a user with the specified username");
     }
 
     const user = await User.create({
@@ -176,7 +175,6 @@ class UserController {
 
     if (userExists) {
       res.status(400);
-      log.warn("Already found a user with the specified username");
     }
 
     const user = await User.create({
@@ -203,7 +201,7 @@ class UserController {
                 in: 'path',
                 type: 'integer',
                 description: 'User ID.' } 
-    */
+    /
     // Validate API-KEY
     //     if (req.headers["api_key"] !== process.env.API_KEY) {
     //       res.status(401);//Unauthorised
@@ -300,7 +298,11 @@ class UserController {
       return;
     }
     console.log("POST /updateUser");
-    await User.findOneAndUpdate({discordid: req.body.discordid},req.body);
+    User.findOneAndUpdate({"_id": req.body.userid}, {"$set":{
+      gender: req.body.gender,
+      difficulty: req.body.difficulty,
+      dms_enabled: req.body.dms_enabled
+    }});
   }
 }
 

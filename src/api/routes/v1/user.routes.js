@@ -8,6 +8,5 @@ router.post("/registerDiscord",UserController.registerDiscord);
 router.post("/login", UserController.authUser);
 router.get("/loginDiscord", UserController.authUserDiscord);
 //router.post("/profile", UserController.updateUserProfile);
-router.delete("/",UserController.removeUser);
 router.post("/updateUser",UserController.updateUser);
 module.exports = router;
