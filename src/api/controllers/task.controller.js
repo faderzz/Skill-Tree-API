@@ -59,10 +59,18 @@ class TaskController {
     newTask.save();
 
     const numChecked = data.slice(-timelimit).filter((value) => value).length;
+    let levelUp = false;
+    let unlocked = {};
     if (data.length > timelimit &&
         numChecked > timelimit * (frequency / interval) * 0.8) {
-      await UserController.completeSkill(task.get("userID"), task.get("skillID"));
+      levelUp = await UserController.completeSkill(task.get("userID"), task.get("skillID"));
+      unlocked = await skill.populate("children").get("children");
     }
+
+    res.status(200).json({
+      levelUp: levelUp,
+      unlocked: unlocked,
+    });
   }
 }
 

@@ -10,5 +10,4 @@ router.get("/loginDiscord", UserController.authUserDiscord);
 //router.post("/profile", UserController.updateUserProfile);
 router.delete("/",UserController.removeUser);
 router.post("/updateUser",UserController.updateUser);
-router.post("/addXP",UserController.addXP);
 module.exports = router;

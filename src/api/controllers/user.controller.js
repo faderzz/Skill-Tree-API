@@ -2,6 +2,7 @@ const User = require("../../models/user.model");
 const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
 const log = require("npmlog");
+const {levelDiff} = require("../../modules/XPHandler");
 
 
 class UserController {
@@ -270,31 +271,26 @@ class UserController {
    * Complete user's skill
    * @param userID
    * @param skillID
-   * @return {Promise<void>}
+   * @return {Promise<number>}
    */
   async completeSkill(userID, skillID) {
     const skill = await Skill.findOne({_id: skillID});
 
-    console.log("complete!");
-    User.findOneAndUpdate({
-      _id: userID
-    },{
-      $inc : {"xp" : skill.get("xp")},
+    const user = await User.findByIdAndUpdate(userID, {
       $pull: { skillsinprogress: skillID },
       $addToSet: { skillscompleted: skillID }
     });
+    user.save();
+    return await this.addXP(userID, skill.get("xp"));
   }
 
   // adds  XP to a given user
-  async addXP(req, res) {
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-    const new_xp = parseInt(user.xp) + parseInt(req.body.xp);
-    console.log("POST /addXP");
-    const user = await User.findOne({ discordid: req.body.discordid});
-    await user.updateOne({xp: new_xp}); // updates xp
+  async addXP(id, xp) {
+    const user = await User.findByIdAndUpdate(id, {
+      $inc : {"xp" : xp}
+    });
+    const lastXP = user.get("xp") - xp;
+    return levelDiff(lastXP, user.get("xp"));
   }
 
   async updateUser(req, res) {
