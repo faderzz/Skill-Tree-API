@@ -9,5 +9,4 @@ router.post("/login", UserController.authUser);
 router.get("/loginDiscord", UserController.authUserDiscord);
 //router.post("/profile", UserController.updateUserProfile);
 router.post("/updateUser",UserController.updateUser);
-router.post("/addXP",UserController.addXP);
 module.exports = router;
