@@ -83,7 +83,7 @@ class SkillController {
       return;
     }
 
-    //Get skill to start
+    //Get skill to star
     const skill = await Skill.findById(req.body.skillid);
 
     const filter = {
