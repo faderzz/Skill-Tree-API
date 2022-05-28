@@ -14,7 +14,7 @@ const app = express();
 
 mongooseLoader();
 expressLoader(app);
-
+const cors = require("cors");
 
 
 app.disable("x-powered-by");
@@ -22,6 +22,7 @@ log.info(`Environment-type:${process.env.ENVIRONMENT_TYPE}`);
 
 if (process.env.ENVIRONMENT_TYPE === "development") {
   const swagger_port = parseInt(PORT)+1;
+  app.use(cors());
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile, {explorer:true}));
   log.info(`API documentation: http://localhost:${swagger_port}/api-docs`);
   app.listen(swagger_port, () => log.info(`Swagger: Listening on port ${swagger_port}`));

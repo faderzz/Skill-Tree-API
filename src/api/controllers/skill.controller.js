@@ -22,6 +22,7 @@ class SkillController {
 
     //Validate API-KEY
     if (req.headers["api_key"] !== process.env.API_KEY) {
+      console.log(req.headers["api_key"]);
       res.status(401);//Unauthorised
       return;
     }
@@ -30,9 +31,7 @@ class SkillController {
     const root = await Skill.find({
       requires: []
     });
-
-    console.log(skills, root);
-
+    
     res.status(200).json({
       skills: skills,
       root: root
@@ -51,7 +50,7 @@ class SkillController {
     const completed = user.get("skillscompleted");
 
     const skills = await Skill.find({
-      _id: {$nin : user.get("skillsinprogress")}, //skill not in progress
+      _id: {$nin : user.get("skillsinprogress").concat(completed)}, //skill not in progress
       $expr: {$setIsSubset: ["$requires", completed]},
     });
 

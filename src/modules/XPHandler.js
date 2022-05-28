@@ -4,7 +4,7 @@
  * @returns {number} - XP required to level up
  */
 exports.calcXPFromLevel = function(level) {
-  return -2550*(1 - Math.pow(1.02, level));
+  return Math.floor(-2550*(1 - Math.pow(1.02, level)));
 };
 
 
@@ -14,7 +14,7 @@ exports.calcXPFromLevel = function(level) {
  * @returns {number} - XP required to level up
  */
 exports.calcLevelFromXP = function(xp) {
-  return Math.log(0.00039*xp + 1) / Math.log(1.02);
+  return Math.floor(Math.log(0.00039*xp + 1) / Math.log(1.02));
 };
 
 /**
@@ -24,6 +24,6 @@ exports.calcLevelFromXP = function(xp) {
  * @return {number} levelDifference
  */
 exports.levelDiff = function(oldXP, newXP) {
-  return Math.max(this.calcLevelFromXP(newXP) -
-      this.calcLevelFromXP(oldXP), 0);
+  return Math.max(exports.calcLevelFromXP(newXP) -
+      exports.calcLevelFromXP(oldXP), 0);
 };

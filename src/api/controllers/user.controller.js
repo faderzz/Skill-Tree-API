@@ -201,7 +201,7 @@ class UserController {
                 in: 'path',
                 type: 'integer',
                 description: 'User ID.' } 
-    /
+    */
     // Validate API-KEY
     //     if (req.headers["api_key"] !== process.env.API_KEY) {
     //       res.status(401);//Unauthorised
