@@ -69,9 +69,8 @@ class TaskController {
     }
 
     const task = await Task.findById(req.body.taskid);
-    const skill = await Skill.findById(task.get("skillID"))
-      .populate("children.list", null, [Item, Skill]);
-    console.log(await skill.populate());
+    const skill = await Skill.findById(task.get("skillID"));
+
     let data = task.get("data"); //array of booleans
     if (data === undefined) {
       data = [];

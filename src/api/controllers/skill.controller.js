@@ -142,7 +142,7 @@ class SkillController {
   }
 
   async deleteSkill(req, res) {
-    console.log("POST skills/create");
+    console.log("POST skills/delete");
 
     //Validate API-KEY
     if (req.headers["api_key"] !== process.env.API_KEY) {

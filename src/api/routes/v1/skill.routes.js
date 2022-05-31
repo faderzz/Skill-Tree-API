@@ -8,7 +8,7 @@ router.get("/available", skillController.getAvailableSkills);
 router.post("/createSkill", skillController.createSkill);
 router.post("/startSkill", skillController.startSkill);
 router.get("/inProgress", skillController.getSkillsInProgress);
-//router.put("/:id", skillController.editSkill);
-//router.delete("/:id", skillController.deleteSkill);
+router.put("/updateSkill", skillController.updateSkill);
+router.delete("/deleteSkill", skillController.deleteSkill);
 
 module.exports = router;
