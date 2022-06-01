@@ -1,17 +1,12 @@
 const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
-const Item = require("../../models/item.model");
 const UserController = require("../../api/controllers/user.controller");
 const {intervalToInt} = require("../../modules/TaskHelper");
 const {getDaysBetweenDates} = require("../../modules/DateHandler");
 
 class TaskController {
   async currentTasks(req, res) {
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("GET /tasks/currentTasks");
 
     const tasks = await Task.find({
       completed: false,
@@ -39,11 +34,7 @@ class TaskController {
   }
 
   async recentTasks(req, res) {
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("GET /tasks/recentTasks");
 
     const tasks = await Task.find({
       userID: req.headers["userid"],
@@ -60,13 +51,7 @@ class TaskController {
   }
 
   async updateTask(req, res) {
-    console.log("POST tasks/updateTask");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /tasks/updateTask");
 
     const task = await Task.findById(req.body.taskid);
     const skill = await Skill.findById(task.get("skillID"));
@@ -83,7 +68,7 @@ class TaskController {
     const timelimit = skill.get("timelimit");
 
     const startDate = task.get("startDate");
-    const indexOfChange = new Date(req.body.date).getDate() - new Date(startDate).getDate();
+    const indexOfChange = getDaysBetweenDates(new Date(startDate), new Date(req.body.date));
     data[indexOfChange] = checked;
 
     const newTask = await Task.findByIdAndUpdate(req.body.taskid,
@@ -105,7 +90,41 @@ class TaskController {
     if (data.length > timelimit &&
         numChecked > timelimit * (frequency / interval) * 0.8) {
       levelUp = await UserController.completeSkill(task.get("userID"), task.get("skillID"));
-      unlocked = await skill.populate("children").get("children");
+      if (levelUp !== 0) {
+        //Get skills/items/challenges which have been unlocked
+        //Weird lookup fuckery - do not touch
+        unlocked = await Skill.aggregate([
+          {"$match": {"_id": {"$eq": task.get("skillID")}}},
+          {$limit: 1},
+          //Find all items
+          { $lookup: {
+            from: "Items", let: {"id": "$children"},
+            pipeline: [
+              {$match: {$expr: {"$in": ["$_id", "$$id"]}}},
+              {$set: {type: "Item"}}
+            ], as: "items"
+          }},
+          //Find all skills
+          { $lookup: {
+            from: "Skills", let: {"id": "$children"},
+            pipeline: [
+              {$match: {$expr: {"$in": ["$_id", "$$id"]}}},
+              {$set: {type: "Skill"}}
+            ], as: "skills"
+          }},
+          //Find all challenges
+          { $lookup: {
+            from: "Challenges",let: {"id": "$children"},
+            pipeline: [
+              {$match: {$expr: {"$in": ["$_id", "$$id"]}}},
+              {$set: {type: "Challenge"}}
+            ], as: "challenges"
+          }
+          },
+        ]);
+        //Concatenate each item
+        unlocked = [].concat(unlocked[0].skills, unlocked[0].challenges, unlocked[0].items);
+      }
     }
 
     res.status(200).json({

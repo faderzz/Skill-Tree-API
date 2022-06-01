@@ -8,12 +8,7 @@ const {levelDiff} = require("../../modules/XPHandler");
 class UserController {
 
   async profile(req, res) {
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-
-    console.log("GET /profile");
+    console.log("GET /users/profile");
 
     const user = await User.findById(req.headers["id"]);
     const items = await Item.find({
@@ -31,11 +26,7 @@ class UserController {
   }
 
   async authUserDiscord(req, res) {
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("GET /users/loginDiscord");
 
     const user = await User.findOne({ discordid: req.headers["discordid"] });
     let id = null;
@@ -73,11 +64,7 @@ class UserController {
         }
         
     */
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("GET /users/loginUser");
 
     const username = req.body.username;
     const password = req.body.password;
@@ -129,13 +116,7 @@ class UserController {
           "apiKeyAuth":[]
         }]
     */
-    console.log("POST /register");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /users/register");
 
     const username = req.body.username;
     const password = req.body.password;
@@ -163,13 +144,7 @@ class UserController {
   }
 
   async registerDiscord(req, res) {
-    console.log("POST /registerDiscord");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /users/registerDiscord");
 
     const userExists = await User.findOne({ discordid: req.body.discordid });
 
@@ -202,11 +177,6 @@ class UserController {
                 type: 'integer',
                 description: 'User ID.' } 
     */
-    // Validate API-KEY
-    //     if (req.headers["api_key"] !== process.env.API_KEY) {
-    //       res.status(401);//Unauthorised
-    //       return;
-    //     }
     // log.verbose("UPDATE USER");
     // const user = await User.findOne({username},{password});
 
@@ -238,13 +208,7 @@ class UserController {
         #swagger.responses[201] = { description: 'User deleted successfully.' }
         #swagger.produces = ['application/json']
     */
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-
-    log.verbose("DELETE USER");
+    console.log("GET /users/profile");
     const UserExists = await User.findOne({username:req.body.username});
 
     if (UserExists) {
@@ -292,17 +256,14 @@ class UserController {
   }
 
   async updateUser(req, res) {
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-    console.log("POST /updateUser");
+    console.log("POST /users/updateUser");
+
     User.findOneAndUpdate({"_id": req.body.userid}, {"$set":{
       gender: req.body.gender,
       difficulty: req.body.difficulty,
       dms_enabled: req.body.dms_enabled
     }});
+    res.status(201);
   }
 }
 
