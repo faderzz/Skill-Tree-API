@@ -21,13 +21,6 @@ class SkillController {
   async getSkills(req, res) {
     console.log("GET /skills");
 
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      console.log(req.headers["api_key"]);
-      res.status(401);//Unauthorised
-      return;
-    }
-
     const skills = await Skill.find({});
     const root = await Skill.find({
       requires: []
@@ -40,13 +33,8 @@ class SkillController {
   }
 
   async getAvailableSkills(req, res) {
-    console.log("GET skills/available");
+    console.log("GET /skills/available");
 
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401); //Unauthorised
-      return;
-    }
     const user = await User.findById(req.headers["id"]);
     const completed = user.get("skillscompleted");
 
@@ -59,13 +47,7 @@ class SkillController {
   }
 
   async startSkill(req, res) {
-    console.log("POST skills/startSkill");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /skills/startSkill");
 
     //Get skill to star
     const skill = await Skill.findById(req.body.skillid);
@@ -118,13 +100,7 @@ class SkillController {
   }
 
   async createSkill(req, res) {
-    console.log("POST skills/create");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /skills/create");
 
     const skill = new Skill(req.body);
 
@@ -142,31 +118,21 @@ class SkillController {
   }
 
   async updateSkill(req, res) {
-    console.log("POST skills/update");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /skills/update");
 
     const skill = Skill.findByIdAndUpdate(req.body.id,
       {$set: req.body},
     );
 
     skill.save();
+    res.status(201);
   }
 
   async deleteSkill(req, res) {
-    console.log("POST skills/create");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /skills/delete");
 
     Skill.findByIdAndDelete(req.body.id);
+    res.status(201);
   }
 }
 

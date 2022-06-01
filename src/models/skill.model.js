@@ -59,9 +59,11 @@ const skillSchema = new Schema({
     required: true,
   },
   children: {
-    type: [Schema.Types.ObjectId],
+    type: [{
+      type: Schema.Types.ObjectId,
+    }],
     required: true,
-  }
+  },
 }, { collection: "Skills" });
 
 // Makes sure that the iconName and level have to be duplicates in order to throw an error.
