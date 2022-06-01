@@ -1,6 +1,7 @@
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Task = require("../../models/task.model");
+const mongoose = require("mongoose");
 
 class SkillController {
   async getSkillsInProgress(req, res) {
@@ -98,6 +99,21 @@ class SkillController {
 
     //Update the user to start the skill
     user.get("skillsinprogress").push(skill.get("_id"));
+    user.save();
+  }
+
+  async completeSkill(req, res) { 
+    console.log("POST skills/complete");
+    //Validate API-KEY
+    if (req.headers["api_key"] !== process.env.API_KEY) {
+      res.status(401);//Unauthorised
+      return;
+    }
+    const userid = req.body.userid;
+    const skillid = req.body.skillid;
+    //update the completedskills feild of the user
+    const user = await User.findById(userid);
+    user.get("skillscompleted").push(mongoose.Types.ObjectId(skillid));
     user.save();
   }
 
