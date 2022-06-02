@@ -1,5 +1,5 @@
-# ASI-API-Platform
-The repository that will handle the API Platform.
+# Skill-Tree-API
+API Platform for the Skill Tree project, allowing different services to interact with the backend database
 
 [Tech-Stack](https://www.technologystacker.com/#/stack/sharelink/AdonisAPI-ts506)
 
