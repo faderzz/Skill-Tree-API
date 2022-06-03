@@ -73,6 +73,11 @@ const UserSchema=new Schema({
     required:false,
     default:true,
   },
+  gender:{
+    type:String,
+    required:false,
+    default:"male",
+  },
   lastTracked:{
     type: Date,
   },
