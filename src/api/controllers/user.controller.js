@@ -19,11 +19,12 @@ class UserController {
 
     if (user) {
       res.status(200).json({
+        response: "success",
         user: user,
         items: items,
       });
     } else {
-      res.status(409);
+      res.status(409).json({response: "error", error: "Invalid user"});
     }
   }
 
@@ -36,6 +37,7 @@ class UserController {
       id = user.get("_id");
     }
     res.status(200).json({
+      response: "success",
       id: id
     });
   }
@@ -79,7 +81,7 @@ class UserController {
         username: user.username,
       });
     } else {
-      res.status(401);
+      res.status(401).json({response: "error", error: "cannot find user"});
       log.warn(`Cannot find user with query:  ${req.query}`);
     }
   }
@@ -126,7 +128,7 @@ class UserController {
     const userExists = await User.findOne({ username });
 
     if (userExists) {
-      res.status(400);
+      res.status(400).json({response: "error", error: "User already exists"});
     }
 
     const user = await User.create({
@@ -136,12 +138,13 @@ class UserController {
 
     if (user) {
       res.status(201).json({
+        response: "success",
         _id: user._id,
         username: user.username,
       });
     } else {
       log.warn(`Cannot find user with query:  ${req.query}`);
-      res.status(404);
+      res.status(404).json({response: "error", error: "Cannot find user"});
     }
   }
 
@@ -151,7 +154,7 @@ class UserController {
     const userExists = await User.findOne({ discordid: req.body.discordid });
 
     if (userExists) {
-      res.status(400);
+      res.status(400).json({response: "error", error: "User already exists"});
     }
 
     const user = await User.create({
@@ -160,11 +163,12 @@ class UserController {
 
     if (user) {
       res.status(201).json({
+        response: "success",
         _id: user._id,
       });
     } else {
       log.warn(`Cannot create user:  ${req.query}`);
-      res.status(404);
+      res.status(404).json({response: "error", error: "User already exists"});
     }
   }
 
@@ -226,8 +230,8 @@ class UserController {
         log.warn(error);
       }
     } else {
-      res.status(404);
-      throw new Error("User Not Found");
+      res.status(404).json({response: "error", error: "User not found"});
+      throw new Error("User not Found");
     }
   }
 
@@ -256,7 +260,7 @@ class UserController {
       difficulty: req.body.difficulty,
       dms_enabled: req.body.dms_enabled
     }});
-    res.status(201);
+    res.status(201).json({response: "success", error: ""});
   }
 
   // adds  XP to a given user
@@ -276,7 +280,7 @@ class UserController {
       difficulty: req.body.difficulty,
       dms_enabled: req.body.dms_enabled
     }});
-    res.status(201);
+    res.status(201).json({response: "success", error: ""});
   }
 }
 

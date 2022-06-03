@@ -6,7 +6,9 @@ class ChallengeController {
 
     const challenges = await Challenge.find({});
     
-    res.status(200).json(challenges);
+    res.status(200).json({
+      response: "success",
+      challenges: challenges});
   }
 
   async createChallenge(req, res) {
@@ -15,7 +17,9 @@ class ChallengeController {
     const challenge = new Challenge(req.body);
 
     challenge.save();
-    return res.status(201).json(challenge);
+    return res.status(201).json({
+      response: "success",
+      challenge: challenge});
   }
 
   async updateChallenge(req, res) {
@@ -26,14 +30,14 @@ class ChallengeController {
     );
 
     challenge.save();
-    res.status(201);
+    res.status(201).json({response: "success"});
   }
 
   async deleteChallenge(req, res) {
     console.log("POST /challenges/delete");
 
     Challenge.findByIdAndDelete(req.body.id);
-    res.status(201);
+    res.status(201).json({response: "success"});
   }
 }
 

@@ -14,6 +14,7 @@ class Controller {
     });
 
     res.status(200).json({
+      response: "success",
       skills: skills,
       items: items,
       challenges: challenges,

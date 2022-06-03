@@ -5,16 +5,14 @@ const Task = require("../../models/task.model");
 class SkillController {
   async getSkillsInProgress(req, res) {
     console.log("GET /skillsInProgress");
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+
     const user = await User.findById(req.headers["userid"]);
     const skills = await Skill.find({
       _id: {$in : user.get("skillsinprogress")}, 
     });
-    res.status(200).json(skills);
+    res.status(200).json({
+      response: "success",
+      skills: skills});
   }
 
   async getSkills(req, res) {
@@ -26,6 +24,7 @@ class SkillController {
     });
     
     res.status(200).json({
+      response: "success",
       skills: skills,
       root: root
     });
@@ -42,7 +41,10 @@ class SkillController {
       $expr: {$setIsSubset: ["$requires", completed]},
     });
 
-    res.status(200).json(skills);
+    res.status(200).json({
+      response: "success",
+      skills: skills
+    });
   }
 
   async startSkill(req, res) {
@@ -64,7 +66,7 @@ class SkillController {
     //Update the user to start the skill
     user.get("skillsinprogress").push(skill.get("_id"));
     user.save();
-    res.status(200);
+    res.status(200).json({response: "success"});
   }
 
   async skipSkill(req, res) {
@@ -76,7 +78,7 @@ class SkillController {
       $addToSet: { skillscompleted: req.body.skillID }
     });
     user.save();
-    res.status(200);
+    res.status(200).json({response: "success"});
   }
 
   async revertSkill(req, res) {
@@ -90,7 +92,7 @@ class SkillController {
       $pullAll: { skillsinprogress: skill.get("requires")},
     });
     user.save();
-    res.status(200);
+    res.status(200).json({response: "success"});
   }
 
   async createSkill(req, res) {
@@ -99,15 +101,22 @@ class SkillController {
     const skill = new Skill(req.body);
 
     skill.validate(async err => {
-      if (err) return res.status(400).json({ errCode: 400, message: "Validation failed. Please check your input.", error: err });
+      if (err) return res.status(400).json({
+        response: "error",
+        error: err });
 
       if (await Skill.findOne({ title: skill.title, level: skill.level }).exec()) {
-        return res.status(409).json({ errCode: 409, message: "Skill already exists." });
+        return res.status(409).json({
+          response: "error",
+          error: "Skill already exists." });
       }
 
       skill.save();
 
-      return res.status(200).json(skill);
+      return res.status(200).json({
+        response: "success",
+        skill: skill
+      });
     });
   }
 
@@ -119,14 +128,14 @@ class SkillController {
     );
 
     skill.save();
-    res.status(200);
+    res.status(200).json({response: "success"});
   }
 
   async deleteSkill(req, res) {
     console.log("POST /skills/delete");
 
     Skill.findByIdAndDelete(req.body.id);
-    res.status(200);
+    res.status(200).json({response: "success"});
   }
 }
 

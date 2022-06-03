@@ -6,7 +6,9 @@ class ItemController {
 
     const items = await Item.find({});
 
-    res.status(200).json(items);
+    res.status(200).json({
+      response: "success",
+      items: items});
   }
 
   async createItem(req, res) {
@@ -15,7 +17,10 @@ class ItemController {
     const item = new Item(req.body);
 
     item.save();
-    return res.status(201).json(item);
+    return res.status(201).json({
+      response: "success",
+      item: item
+    });
   }
 
   async updateItem(req, res) {
@@ -26,14 +31,14 @@ class ItemController {
     );
 
     item.save();
-    res.status(201);
+    res.status(201).json({response: "success"});
   }
 
   async deleteItem(req, res) {
     console.log("POST /items/delete");
 
     Item.findByIdAndDelete(req.body.id);
-    res.status(201);
+    res.status(201).json({response: "success"});
   }
 }
 

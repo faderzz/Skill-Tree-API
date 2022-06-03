@@ -31,7 +31,10 @@ class TaskController {
         skill["goal"] = skill["goal"][goalIndex];
       }
     }
-    res.status(200).json(tasks);
+    res.status(200).json({
+      response: "success",
+      tasks: tasks
+    });
   }
 
   async recentTasks(req, res) {
@@ -48,7 +51,10 @@ class TaskController {
       }
     }).populate({path: "skillID", model: Skill});
 
-    res.status(200).json(tasks);
+    res.status(200).json({
+      response: "success",
+      tasks: tasks
+    });
   }
 
   async updateTask(req, res) {
@@ -140,6 +146,7 @@ class TaskController {
     }
 
     res.status(200).json({
+      response: "success",
       levelUp: levelUp,
       unlocked: unlocked,
     });
