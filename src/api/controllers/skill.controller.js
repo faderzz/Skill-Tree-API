@@ -125,10 +125,17 @@ class SkillController {
 
     const skill = Skill.findByIdAndUpdate(req.body.id,
       {$set: req.body},
-    );
+      (err, skill) => {
+        if (err) return res.status(400).json({
+          response: "error",
+          error: err });
 
-    skill.save();
-    res.status(200).json({response: "success"});
+        return res.status(200).json({
+          response: "success",
+          skill: skill
+        });
+      }
+    );
   }
 
   async deleteSkill(req, res) {
