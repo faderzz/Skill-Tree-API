@@ -10,7 +10,9 @@ class UserController {
   async profile(req, res) {
     console.log("GET /users/profile");
 
-    const user = await User.findById(req.headers["id"]);
+    const user = await User.findById(req.headers["id"])
+      .populate({path: "skillscompleted", model: Skill})
+      .populate({path: "skillsinprogress", model: Skill});
     const items = await Item.find({
       _id: {$in : user.get("items")}
     });
