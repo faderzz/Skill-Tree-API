@@ -113,7 +113,7 @@ class SkillController {
 
       skill.save();
 
-      return res.status(200).json({
+      return res.status(201).json({
         response: "success",
         skill: skill
       });

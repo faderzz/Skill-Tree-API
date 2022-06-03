@@ -255,12 +255,11 @@ class UserController {
   async updateXPHistory(req, res) {
     console.log("POST /users/updateXPHistory");
 
-    User.findByIdAndUpdate(req.body.id, {"$set":{
-      gender: req.body.gender,
-      difficulty: req.body.difficulty,
-      dms_enabled: req.body.dms_enabled
-    }});
-    res.status(201).json({response: "success", error: ""});
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      $addToSet: { xpHistory: req.body.xp }
+    });
+    user.save();
+    res.status(200).json({response: "success", error: ""});
   }
 
   // adds  XP to a given user
@@ -275,12 +274,24 @@ class UserController {
   async updateUser(req, res) {
     console.log("POST /users/updateUser");
 
-    User.findByIdAndUpdate(req.body.userid, {"$set":{
+    const user = await User.findByIdAndUpdate(req.body.userid, {"$set":{
       gender: req.body.gender,
       difficulty: req.body.difficulty,
-      dms_enabled: req.body.dms_enabled
+      dms_enabled: req.body.dms_enabled,
+      timezone: req.body.timezone,
     }});
-    res.status(201).json({response: "success", error: ""});
+    user.save();
+    res.status(200).json({response: "success", error: ""});
+  }
+
+  async updateTimezone(req, res) {
+    console.log("POST /users/updateTimezone");
+
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      timezone: req.body.timezone,
+    });
+    user.save();
+    res.status(200).json({response: "success", error: ""});
   }
 }
 

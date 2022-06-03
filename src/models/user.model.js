@@ -78,6 +78,11 @@ const UserSchema=new Schema({
     required:false,
     default:"male",
   },
+  timezone:{
+    type: Number,
+    required: true,
+    default: 0,
+  },
   lastTracked:{
     type: Date,
   },

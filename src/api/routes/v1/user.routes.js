@@ -9,4 +9,6 @@ router.post("/registerDiscord", auth, UserController.registerDiscord);
 router.post("/login", auth, UserController.authUser);
 router.get("/loginDiscord", auth, UserController.authUserDiscord);
 router.post("/updateUser", auth, UserController.updateUser);
+router.post("/updateXPHistory", auth, UserController.updateXPHistory);
+router.post("/updateTimezone", auth, UserController.updateTimezone);
 module.exports = router;

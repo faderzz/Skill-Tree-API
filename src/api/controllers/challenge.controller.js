@@ -30,14 +30,14 @@ class ChallengeController {
     );
 
     challenge.save();
-    res.status(201).json({response: "success"});
+    res.status(200).json({response: "success"});
   }
 
   async deleteChallenge(req, res) {
     console.log("POST /challenges/delete");
 
     Challenge.findByIdAndDelete(req.body.id);
-    res.status(201).json({response: "success"});
+    res.status(200).json({response: "success"});
   }
 }
 
