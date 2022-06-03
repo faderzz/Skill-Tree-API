@@ -1,7 +1,6 @@
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Task = require("../../models/task.model");
-const mongoose = require("mongoose");
 
 class SkillController {
   async getSkillsInProgress(req, res) {
@@ -51,24 +50,7 @@ class SkillController {
 
     //Get skill to star
     const skill = await Skill.findById(req.body.skillid);
-
-    const filter = {
-      id: req.body.id,
-      skillsinprogress: {$ne : skill.get("_id")}, //skill not in progress
-    };
-
-    //Add requirement if necessary
-    if (skill.get("requires").length !== 0) {
-      filter["skillscompleted"] = {$all : skill.get("requires")};
-    }
-
-    const user = await User.findOne(filter);
-
-    //If no user found
-    if (!user) {
-      res.status(409).json({ errCode: 409, message: "No available skills." });
-      return;
-    }
+    const user = await User.findById(req.body.id);
 
     const task = new Task({
       userID: user.get("_id"),
@@ -82,21 +64,33 @@ class SkillController {
     //Update the user to start the skill
     user.get("skillsinprogress").push(skill.get("_id"));
     user.save();
+    res.status(200);
   }
 
-  async completeSkill(req, res) { 
-    console.log("POST skills/complete");
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-    const userid = req.body.userid;
-    const skillid = req.body.skillid;
-    //update the completedskills feild of the user
-    const user = await User.findById(userid);
-    user.get("skillscompleted").push(mongoose.Types.ObjectId(skillid));
+  async skipSkill(req, res) {
+    console.log("POST /skills/skipSkill");
+
+    //complete without XP
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      $pull: { skillsinprogress: req.body.skillID },
+      $addToSet: { skillscompleted: req.body.skillID }
+    });
     user.save();
+    res.status(200);
+  }
+
+  async revertSkill(req, res) {
+    console.log("POST /skills/revertSkill");
+
+    //Get skill to revoke
+    const skill = await Skill.findById(req.body.skillID);
+
+    //complete without XP
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      $pullAll: { skillsinprogress: skill.get("requires")},
+    });
+    user.save();
+    res.status(200);
   }
 
   async createSkill(req, res) {
@@ -113,7 +107,7 @@ class SkillController {
 
       skill.save();
 
-      return res.status(201).json(skill);
+      return res.status(200).json(skill);
     });
   }
 
@@ -125,14 +119,14 @@ class SkillController {
     );
 
     skill.save();
-    res.status(201);
+    res.status(200);
   }
 
   async deleteSkill(req, res) {
     console.log("POST /skills/delete");
 
     Skill.findByIdAndDelete(req.body.id);
-    res.status(201);
+    res.status(200);
   }
 }
 

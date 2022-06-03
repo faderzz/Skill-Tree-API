@@ -236,7 +236,7 @@ class UserController {
    * @return {Promise<number>}
    */
   async completeSkill(userID, skillID) {
-    const skill = await Skill.findOne({_id: skillID});
+    const skill = await Skill.findById(skillID);
 
     const user = await User.findByIdAndUpdate(userID, {
       $pull: { skillsinprogress: skillID },
@@ -244,6 +244,17 @@ class UserController {
     });
     user.save();
     return await this.addXP(userID, skill.get("xp"));
+  }
+
+  async updateXPHistory(req, res) {
+    console.log("POST /users/updateXPHistory");
+
+    User.findByIdAndUpdate(req.body.id, {"$set":{
+      gender: req.body.gender,
+      difficulty: req.body.difficulty,
+      dms_enabled: req.body.dms_enabled
+    }});
+    res.status(201);
   }
 
   // adds  XP to a given user
@@ -258,7 +269,7 @@ class UserController {
   async updateUser(req, res) {
     console.log("POST /users/updateUser");
 
-    User.findOneAndUpdate({"_id": req.body.userid}, {"$set":{
+    User.findByIdAndUpdate(req.body.userid, {"$set":{
       gender: req.body.gender,
       difficulty: req.body.difficulty,
       dms_enabled: req.body.dms_enabled
