@@ -1,5 +1,6 @@
 const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
+const User = require("../../models/user.model");
 const UserController = require("../../api/controllers/user.controller");
 const {intervalToInt} = require("../../modules/TaskHelper");
 const {getDaysBetweenDates} = require("../../modules/DateHandler");
@@ -55,6 +56,16 @@ class TaskController {
 
     const task = await Task.findById(req.body.taskid);
     const skill = await Skill.findById(task.get("skillID"));
+    const user = await User.findOneAndUpdate({
+      _id : {$eq: task.get("userID")},
+      $expr : {
+        $gt: [getDaysBetweenDates(new Date("$lastTracked"), new Date()), 0],
+      }
+    }, {
+      lastTracked: new Date(),
+      $inc : {numDaysTracked : 1},
+    });
+    user.save();
 
     let data = task.get("data"); //array of booleans
     if (data === undefined) {
@@ -90,6 +101,7 @@ class TaskController {
     if (data.length > timelimit &&
         numChecked > timelimit * (frequency / interval) * 0.8) {
       levelUp = await UserController.completeSkill(task.get("userID"), task.get("skillID"));
+      //TODO: Publish and subscribe levelup instead of returning from specific methods
       if (levelUp !== 0) {
         //Get skills/items/challenges which have been unlocked
         //Weird lookup fuckery - do not touch

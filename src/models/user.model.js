@@ -73,12 +73,14 @@ const UserSchema=new Schema({
     required:false,
     default:true,
   },
-  gender:{
-    type:String,
-    required:false,
-    default:"male",
+  lastTracked:{
+    type: Date,
+  },
+  numDaysTracked:{
+    type: Number,
+    default: 0,
+    required: true,
   }
-
 },
 {collection:"Users"}
 );
