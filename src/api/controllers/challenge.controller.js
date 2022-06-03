@@ -29,7 +29,7 @@ class ChallengeController {
     res.status(201);
   }
 
-  async deleteSkill(req, res) {
+  async deleteChallenge(req, res) {
     console.log("POST /challenges/delete");
 
     Challenge.findByIdAndDelete(req.body.id);
