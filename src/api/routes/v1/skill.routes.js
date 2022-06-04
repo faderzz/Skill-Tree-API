@@ -10,6 +10,7 @@ router.post("/createSkill", auth, skillController.createSkill);
 router.post("/startSkill", auth, skillController.startSkill);
 router.post("/skipSkill", auth, skillController.skipSkill);
 router.post("/revertSkill", auth, skillController.revertSkill);
+router.post("/cancelSkill", auth, skillController.cancelSkill);
 router.get("/inProgress", auth, skillController.getSkillsInProgress);
 router.put("/updateSkill", auth, skillController.updateSkill);
 router.delete("/deleteSkill", auth, skillController.deleteSkill);
