@@ -12,16 +12,12 @@ class UserController {
 
     const user = await User.findById(req.headers["id"])
       .populate({path: "skillscompleted", model: Skill})
-      .populate({path: "skillsinprogress", model: Skill});
-    const items = await Item.find({
-      _id: {$in : user.get("items")}
-    });
-
+      .populate({path: "skillsinprogress", model: Skill})
+      .populate({path: "items", model: Item});
     if (user) {
       res.status(200).json({
         response: "success",
         user: user,
-        items: items,
       });
     } else {
       res.status(409).json({response: "error", error: "Invalid user"});
@@ -155,6 +151,7 @@ class UserController {
 
     if (userExists) {
       res.status(400).json({response: "error", error: "User already exists"});
+      return;
     }
 
     const user = await User.create({
@@ -292,6 +289,39 @@ class UserController {
     });
     user.save();
     res.status(200).json({response: "success", error: ""});
+  }
+
+  async updateBaseLocation(req, res) {
+    console.log("POST /users/updateBaseLocation");
+
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      baselocation: req.body.baselocation,
+    });
+    user.save();
+    res.status(200).json({response: "success", error: ""});
+  }
+
+  async getAll(req, res) {
+    console.log("GET /users/getAll");
+
+    const users = await User.find({});
+
+    res.status(200).json({
+      response: "success",
+      users: users,
+    });
+  }
+
+  async getAllInTimezone(req, res) {
+    console.log("GET /users/getAllInTimezone");
+
+    const users = await User.find({
+      timezone: req.headers["offset"],
+    });
+    res.status(200).json({
+      response: "success",
+      users: users,
+    });
   }
 }
 

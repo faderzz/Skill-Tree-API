@@ -30,6 +30,20 @@ class SkillController {
     });
   }
 
+  async getAllInList(req, res) {
+    console.log("GET /skills/getAllInList");
+
+    const skillIDs = req.headers.skills.replace(/\s/g, "").split(",");
+    const skills = await Skill.find({
+      _id : {$in : skillIDs}
+    });
+
+    res.status(200).json({
+      response: "success",
+      skills: skills,
+    });
+  }
+
   async getAvailableSkills(req, res) {
     console.log("GET /skills/available");
 
@@ -123,7 +137,7 @@ class SkillController {
   async updateSkill(req, res) {
     console.log("POST /skills/update");
 
-    const skill = Skill.findByIdAndUpdate(req.body.id,
+    Skill.findByIdAndUpdate(req.body.id,
       {$set: req.body},
       (err, skill) => {
         if (err) return res.status(400).json({

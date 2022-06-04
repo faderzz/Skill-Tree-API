@@ -11,4 +11,7 @@ router.get("/loginDiscord", auth, UserController.authUserDiscord);
 router.post("/updateUser", auth, UserController.updateUser);
 router.post("/updateXPHistory", auth, UserController.updateXPHistory);
 router.post("/updateTimezone", auth, UserController.updateTimezone);
+router.post("/updateBaseLocation", auth, UserController.updateBaseLocation);
+router.get("/getAllInTimezone", auth, UserController.getAllInTimezone);
+router.get("/getAll", auth, UserController.getAll);
 module.exports = router;

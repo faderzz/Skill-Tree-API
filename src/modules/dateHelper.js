@@ -29,3 +29,25 @@ exports.getDaysBetweenDates = function(d0, d1) {
   // Round to remove daylight saving errors
   return Math.round( (x1 - x0) / msPerDay );
 };
+
+/**
+ * Formats a written day nem into a date object
+ * Today -> new Date()
+ * Yesterday -> new Date() - 1
+ * @param day - written day [yesterday, today, tomorrow]
+ * @return {Date} - date object
+ */
+exports.dayToDate = function(day) {
+  if (day === "today") {
+    return new Date();
+  } else if (day === "yesterday") {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday;
+  } else if (day === "tomorrow") {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  }
+  return new Date();
+};

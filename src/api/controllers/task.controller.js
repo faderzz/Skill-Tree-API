@@ -2,8 +2,8 @@ const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const UserController = require("../../api/controllers/user.controller");
-const {intervalToInt} = require("../../modules/TaskHelper");
-const {getDaysBetweenDates} = require("../../modules/DateHandler");
+const {intervalToInt} = require("../../modules/taskHelper");
+const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
 
 class TaskController {
   async currentTasks(req, res) {
@@ -14,6 +14,10 @@ class TaskController {
       userID: req.headers["userid"],
     }).populate({path: "skillID", model: Skill}).lean();
 
+    const user = await User.findById(req.headers["userid"]);
+    const offset = user.get("timezone") * 3600000;
+    const userDate = new Date(new Date().getTime() + offset);
+
     //Show only current goals from goal list
     for (let i = 0; i < tasks.length; i++) {
       const skill = tasks[i]["skillID"];
@@ -21,7 +25,7 @@ class TaskController {
         skill["goal"] = skill["goal"][0];
       } else {
         const startDate = new Date(tasks[i]["startDate"]);
-        const daysDiff = getDaysBetweenDates(new Date(), startDate);
+        const daysDiff = getDaysBetweenDates(userDate, startDate);
         //Split goals into equal sections covering the time limit for the given frequency
         const blockSize = skill["goal"].length * (skill["frequency"] / intervalToInt(skill["interval"])) / skill["timelimit"];
         //get number of completions within the last block period
@@ -40,13 +44,17 @@ class TaskController {
   async recentTasks(req, res) {
     console.log("GET /tasks/recentTasks");
 
+    const user = await User.findById(req.headers["userid"]);
+    const offset = user.get("timezone") * 3600000;
+    const userDate = new Date(new Date().getTime() + offset);
+
     const tasks = await Task.find({
       userID: req.headers["userid"],
       //find tasks
       $cond: {
         if: {$eq: ["$complete", true]},
         then: {
-          $lt: [getDaysBetweenDates(new Date("$endDate"), new Date()), req.body.timelimit]
+          $lt: [getDaysBetweenDates(new Date("$endDate"), userDate), req.body.timelimit]
         },
       }
     }).populate({path: "skillID", model: Skill});
@@ -62,16 +70,18 @@ class TaskController {
 
     const task = await Task.findById(req.body.taskid);
     const skill = await Skill.findById(task.get("skillID"));
-    const user = await User.findOneAndUpdate({
+    const updateuser = await User.findOneAndUpdate({
       _id : {$eq: task.get("userID")},
       $expr : {
-        $gt: [getDaysBetweenDates(new Date("$lastTracked"), new Date()), 0],
+        $gt: [getDaysBetweenDates(new Date("$lastTracked"), new Date(new Date().getTime() + "$timezone"*360000)), 0],
       }
     }, {
       lastTracked: new Date(),
       $inc : {numDaysTracked : 1},
     });
-    user.save();
+    if (updateuser) updateuser.save();
+
+    const user = await User.findById(task.get("userID"));
 
     let data = task.get("data"); //array of booleans
     if (data === undefined) {
@@ -85,7 +95,11 @@ class TaskController {
     const timelimit = skill.get("timelimit");
 
     const startDate = task.get("startDate");
-    const indexOfChange = getDaysBetweenDates(new Date(startDate), new Date(req.body.date));
+
+    const offset = user.get("timezone") * 3600000;
+    const userDate = new Date(dayToDate(req.body.date).getTime() - offset);
+
+    const indexOfChange = getDaysBetweenDates(new Date(startDate), userDate);
     data[indexOfChange] = checked;
 
     const newTask = await Task.findByIdAndUpdate(req.body.taskid,

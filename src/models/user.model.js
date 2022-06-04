@@ -90,6 +90,9 @@ const UserSchema=new Schema({
     type: Number,
     default: 0,
     required: true,
+  },
+  baselocation:{
+    type: String,
   }
 },
 {collection:"Users"}
