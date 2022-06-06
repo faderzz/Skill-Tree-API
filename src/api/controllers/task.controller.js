@@ -40,6 +40,22 @@ class TaskController {
     });
   }
 
+  async getTasks(req, res) {
+    console.log("GET /tasks/getTasks");
+    const tasks = await Task.find({
+      userID: req.headers["userid"],
+      skillID: req.headers["skillid"]
+    });
+    if (tasks) {
+      res.status(200).json({
+        response: "success",
+        tasks: tasks
+      });
+    }
+    else {
+      res.status(404);
+    }
+  }
   async recentTasks(req, res) {
     console.log("GET /tasks/recentTasks");
 
@@ -163,6 +179,11 @@ class TaskController {
       levelUp: levelUp,
       unlocked: unlocked,
     });
+  }
+  async deleteTask(req,res) {
+    console.log("POST /tasks/deleteTask");
+    await Task.findByIdAndDelete(req.body.taskid);
+    res.status(200).json({response: "success"});
   }
 }
 
