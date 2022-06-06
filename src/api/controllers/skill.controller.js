@@ -29,7 +29,7 @@ class SkillController {
       root: root
     });
   }
-
+  
   async getAllInList(req, res) {
     console.log("GET /skills/getAllInList");
 
@@ -43,7 +43,7 @@ class SkillController {
       skills: skills,
     });
   }
-
+  
   async getAvailableSkills(req, res) {
     console.log("GET /skills/available");
 
@@ -67,7 +67,7 @@ class SkillController {
     //Get skill to star
     const skill = await Skill.findById(req.body.skillid);
     const user = await User.findById(req.body.id);
-
+    
     const task = new Task({
       userID: user.get("_id"),
       skillID: skill.get("_id"),
@@ -108,6 +108,7 @@ class SkillController {
   }
   async cancelSkill(req,res) {
     console.log("POST /skills/cancel");
+
     await User.findByIdAndUpdate(req.body.userid,{
       $pull: {skillsinprogress: mongoose.Types.ObjectId(req.body.skillid)},
     });

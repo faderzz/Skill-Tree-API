@@ -6,10 +6,9 @@ const {levelDiff} = require("../../modules/XPHandler");
 
 
 class UserController {
-
+  
   async profile(req, res) {
     console.log("GET /users/profile");
-
     const user = await User.findById(req.headers["id"])
       .populate({path: "skillscompleted", model: Skill})
       .populate({path: "skillsinprogress", model: Skill})
@@ -236,7 +235,6 @@ class UserController {
    * Complete user's skill
    * @param userID
    * @param skillID
-   * @return {Promise<number>}
    */
   async completeSkill(userID, skillID) {
     const skill = await Skill.findById(skillID);

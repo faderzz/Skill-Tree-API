@@ -8,7 +8,6 @@ const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
 class TaskController {
   async currentTasks(req, res) {
     console.log("GET /tasks/currentTasks");
-
     const tasks = await Task.find({
       completed: false,
       userID: req.headers["userid"],
@@ -88,8 +87,7 @@ class TaskController {
       data = [];
     }
 
-    const checked = req.body.checked;
-
+    console.log(data);
     const frequency = skill.get("frequency");
     const interval = intervalToInt(skill.get("interval"));
     const timelimit = skill.get("timelimit");
@@ -99,6 +97,7 @@ class TaskController {
     const offset = user.get("timezone") * 3600000;
     const userDate = new Date(dayToDate(req.body.date).getTime() - offset);
 
+    const checked = req.body.checked;
     const indexOfChange = getDaysBetweenDates(new Date(startDate), userDate);
     data[indexOfChange] = checked;
 
