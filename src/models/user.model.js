@@ -47,11 +47,6 @@ const UserSchema=new Schema({
     required: true,
     default: [0],
   },
-  level:{
-    type:Number,
-    required:true,
-    default:0,
-  },
   items:{ 
     type:[Schema.Types.ObjectId],
     required:false,
