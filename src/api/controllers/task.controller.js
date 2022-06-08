@@ -6,56 +6,42 @@ const {intervalToInt} = require("../../modules/taskHelper");
 const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
 
 class TaskController {
+
   async currentTasks(req, res) {
     console.log("GET /tasks/currentTasks");
+
     const tasks = await Task.find({
       completed: false,
       userID: req.headers["userid"],
-    }).populate({path: "skillID", model: Skill}).lean();
+    }, {
 
-    const user = await User.findById(req.headers["userid"]);
-    const offset = user.get("timezone") * 3600000;
-    const userDate = new Date(new Date().getTime() + offset);
+    }).populate({path: "skillID", model: Skill}).lean();
 
     //Show only current goals from goal list
     for (let i = 0; i < tasks.length; i++) {
       const skill = tasks[i]["skillID"];
+
       if (skill["goal"].length === 1) {
         skill["goal"] = skill["goal"][0];
       } else {
-        const startDate = new Date(tasks[i]["startDate"]);
-        const daysDiff = getDaysBetweenDates(userDate, startDate);
         //Split goals into equal sections covering the time limit for the given frequency
-        const blockSize = skill["goal"].length * (skill["frequency"] / intervalToInt(skill["interval"])) / skill["timelimit"];
+        const blockSize = ((skill["frequency"] / intervalToInt(skill["interval"])) * skill["timelimit"]) / skill["goal"].length;
         //get number of completions within the last block period
-        const numChecked = tasks[i]["data"].splice(0,daysDiff).filter((v) => v).length;
+        //hacky fix
+        const data = tasks[i]["data"].map((x) => x);
+        const numChecked = data.splice(-skill["timelimit"]).filter((v) => v).length;
         
         const goalIndex = numChecked / blockSize;
         skill["goal"] = skill["goal"][goalIndex];
       }
     }
+
     res.status(200).json({
       response: "success",
       tasks: tasks
     });
   }
 
-  async getTasks(req, res) {
-    console.log("GET /tasks/getTasks");
-    const tasks = await Task.find({
-      userID: req.headers["userid"],
-      skillID: req.headers["skillid"]
-    });
-    if (tasks) {
-      res.status(200).json({
-        response: "success",
-        tasks: tasks
-      });
-    }
-    else {
-      res.status(404);
-    }
-  }
   async recentTasks(req, res) {
     console.log("GET /tasks/recentTasks");
 
@@ -69,8 +55,9 @@ class TaskController {
       $cond: {
         if: {$eq: ["$complete", true]},
         then: {
-          $lt: [getDaysBetweenDates(new Date("$endDate"), userDate), req.body.timelimit]
+          $lt: [getDaysBetweenDates(new Date("$endDate" + offset), userDate), req.body.timelimit]
         },
+        else: true,
       }
     }).populate({path: "skillID", model: Skill});
 
@@ -85,57 +72,55 @@ class TaskController {
 
     const task = await Task.findById(req.body.taskid);
     const skill = await Skill.findById(task.get("skillID"));
-    const updateuser = await User.findOneAndUpdate({
-      _id : {$eq: task.get("userID")},
-      $expr : {
-        $gt: [getDaysBetweenDates(new Date("$lastTracked"), new Date(new Date().getTime() + "$timezone"*360000)), 0],
-      }
-    }, {
-      lastTracked: new Date(),
-      $inc : {numDaysTracked : 1},
-    });
-    if (updateuser) updateuser.save();
-
     const user = await User.findById(task.get("userID"));
+    const offset = user.get("timezone") * 3600000;
+
+    if (user) {
+      if (getDaysBetweenDates(user.get("lastTracked").getTime()+offset,
+        new Date(new Date().getTime() + offset)) > 0) {
+
+        user.lastTracked = new Date().getTime() + offset;
+        user.numDaysTracked += 1;
+        user.save();
+      }
+    }
 
     let data = task.get("data"); //array of booleans
     if (data === undefined) {
       data = [];
     }
-
-    console.log(data);
+    
     const frequency = skill.get("frequency");
     const interval = intervalToInt(skill.get("interval"));
     const timelimit = skill.get("timelimit");
 
     const startDate = task.get("startDate");
 
-    const offset = user.get("timezone") * 3600000;
-    const userDate = new Date(dayToDate(req.body.date).getTime() - offset);
+    const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
 
     const checked = req.body.checked;
-    const indexOfChange = getDaysBetweenDates(new Date(startDate), userDate);
+    const indexOfChange = getDaysBetweenDates(new Date(startDate + offset), userDate);
     data[indexOfChange] = checked;
 
-    const newTask = await Task.findByIdAndUpdate(req.body.taskid,
+    await Task.findByIdAndUpdate(req.body.taskid,
       {
-        $set : {[`data.${indexOfChange}`]: checked}
+        $set : {
+          data: data.map(d => (d === null) ? false : d)
+        }
       }, {
-        upsert: true, 
-        new: true, 
         setDefaultsOnInsert: true,
-        multi: true,
       });
-
-    newTask.data = newTask.data.map(d => (d === null) ? false : d);
-    newTask.save();
 
     const numChecked = data.slice(-timelimit).filter((value) => value).length;
     let levelUp = false;
     let unlocked = {};
-    if (data.length > timelimit &&
-        numChecked > timelimit * (frequency / interval) * 0.8) {
+
+    if ((skill.get("goal").length !== 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval)) ||
+    (data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
+      console.log("completed");
+
       levelUp = await UserController.completeSkill(task.get("userID"), task.get("skillID"));
+
       //TODO: Publish and subscribe levelup instead of returning from specific methods
       if (levelUp !== 0) {
         //Get skills/items/challenges which have been unlocked
@@ -180,6 +165,7 @@ class TaskController {
       unlocked: unlocked,
     });
   }
+
   async deleteTask(req,res) {
     console.log("POST /tasks/deleteTask");
     await Task.findByIdAndDelete(req.body.taskid);

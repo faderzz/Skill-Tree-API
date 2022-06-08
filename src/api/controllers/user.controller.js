@@ -10,8 +10,8 @@ class UserController {
   async profile(req, res) {
     console.log("GET /users/profile");
     const user = await User.findById(req.headers["id"])
-      .populate({path: "skillscompleted", model: Skill})
-      .populate({path: "skillsinprogress", model: Skill})
+      .populate({path: "completed", model: Skill})
+      .populate({path: "inprogress", model: Skill})
       .populate({path: "items", model: Item});
     if (user) {
       res.status(200).json({
@@ -155,6 +155,10 @@ class UserController {
 
     const user = await User.create({
       discordid: req.body.discordid,
+      character: req.body.character,
+      difficulty: req.body.difficulty,
+      timezone: req.body.timezone,
+      baselocation: req.body.baselocation,
     });
 
     if (user) {
@@ -240,9 +244,10 @@ class UserController {
     const skill = await Skill.findById(skillID);
 
     const user = await User.findByIdAndUpdate(userID, {
-      $pull: { skillsinprogress: skillID },
-      $addToSet: { skillscompleted: skillID }
+      $pull: { inprogress: skillID },
+      $addToSet: { completed: skillID }
     });
+
     user.save();
     return await this.addXP(userID, skill.get("xp"));
   }
@@ -270,10 +275,10 @@ class UserController {
     console.log("POST /users/updateUser");
 
     const user = await User.findByIdAndUpdate(req.body.userid, {"$set":{
-      gender: req.body.gender,
+      character: req.body.character,
       difficulty: req.body.difficulty,
-      dms_enabled: req.body.dms_enabled,
       timezone: req.body.timezone,
+      baselocation: req.body.baselocation,
     }});
     user.save();
     res.status(200).json({response: "success", error: ""});

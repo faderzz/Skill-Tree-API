@@ -12,13 +12,13 @@ const Schema = mongoose.Schema;
  * @param exp - Total experience earned by the user.
  * @param level - The currrent level of the user.
  * @param items - The list of items owned by the user.
- * @param skillscompleted - The list of skills completed by the user.
- * @param skillsinprogress - The list of skills currently being trained by the user.
+ * @param completed - The list of skills completed by the user.
+ * @param inprogress - The list of skills currently being trained by the user.
  * @param difficulty - the difficulty level of the user (easy,medium,hard)
  * @param dm_enabled - whether or not the user wants to receive DM's (DISCORD EXCLUSIVE)
  * @param gender - the gender of the in-game character
  */
-const UserSchema=new Schema({
+const UserSchema = new Schema({
   username: {
     type: String,
     required: false
@@ -30,12 +30,6 @@ const UserSchema=new Schema({
   discordid: {
     type: String,
     required: false,
-  },
-  pic:{
-    type:String,
-    required:true,
-    default:
-      "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
   },
   xp:{
     type:Number,
@@ -51,11 +45,11 @@ const UserSchema=new Schema({
     type:[Schema.Types.ObjectId],
     required:false,
   },
-  skillscompleted:{
+  completed:{
     type:[Schema.Types.ObjectId],
     required: false,
   },
-  skillsinprogress:{
+  inprogress:{
     type:[Schema.Types.ObjectId],
     required: false,
   },
@@ -63,12 +57,7 @@ const UserSchema=new Schema({
     type:String,
     required:false,
   },
-  dm_enabled:{
-    type:Boolean,
-    required:false,
-    default:true,
-  },
-  gender:{
+  character:{
     type:String,
     required:false,
     default:"male",
@@ -78,17 +67,23 @@ const UserSchema=new Schema({
     required: true,
     default: 0,
   },
+  baselocation:{
+    type: String,
+    default: function() {
+      return this.discordid;
+    },
+    required: true,
+  },
   lastTracked:{
     type: Date,
+    default: new Date(),
+    required: true,
   },
   numDaysTracked:{
     type: Number,
     default: 0,
     required: true,
   },
-  baselocation:{
-    type: String,
-  }
 },
 {collection:"Users"}
 );

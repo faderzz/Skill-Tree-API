@@ -2,13 +2,14 @@ const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Task = require("../../models/task.model");
 const mongoose = require("mongoose");
+
 class SkillController {
   async getSkillsInProgress(req, res) {
     console.log("GET /skillsInProgress");
 
     const user = await User.findById(req.headers["userid"]);
     const skills = await Skill.find({
-      _id: {$in : user.get("skillsinprogress")}, 
+      _id: {$in : user.get("inprogress")},
     });
     res.status(200).json({
       response: "success",
@@ -48,10 +49,10 @@ class SkillController {
     console.log("GET /skills/available");
 
     const user = await User.findById(req.headers["id"]);
-    const completed = user.get("skillscompleted");
+    const completed = user.get("completed");
 
     const skills = await Skill.find({
-      _id: {$nin : user.get("skillsinprogress").concat(completed)}, //skill not in progress
+      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
       $expr: {$setIsSubset: ["$requires", completed]},
     });
 
@@ -66,7 +67,7 @@ class SkillController {
 
     //Get skill to star
     const skill = await Skill.findById(req.body.skillid);
-    const user = await User.findById(req.body.id);
+    const user = await User.findById(req.body.userid);
     
     const task = new Task({
       userID: user.get("_id"),
@@ -78,7 +79,7 @@ class SkillController {
     task.save();
 
     //Update the user to start the skill
-    user.get("skillsinprogress").push(skill.get("_id"));
+    user.get("inprogress").push(skill.get("_id"));
     user.save();
     res.status(200).json({response: "success"});
   }
@@ -87,10 +88,10 @@ class SkillController {
     console.log("POST /skills/skipSkill");
 
     //complete without XP
-    const user = await User.findByIdAndUpdate(req.body.userid, {
-      $pull: { skillsinprogress: req.body.skillid },
+    await User.findByIdAndUpdate(req.body.userid, {
+      $addToSet: { completed: req.body.skillid },
     });
-    user.save();
+
     res.status(200).json({response: "success"});
   }
 
@@ -100,20 +101,29 @@ class SkillController {
     const skill = await Skill.findById(req.body.skillID);
 
     //complete without XP
-    const user = await User.findByIdAndUpdate(req.body.id, {
-      $pullAll: { skillsinprogress: skill.get("requires")},
+    const user = await User.findByIdAndUpdate(req.body.userid, {
+      $pullAll: { inprogress: skill.get("requires")},
     });
     user.save();
     res.status(200).json({response: "success"});
   }
+
   async cancelSkill(req,res) {
     console.log("POST /skills/cancel");
 
     await User.findByIdAndUpdate(req.body.userid,{
-      $pull: {skillsinprogress: mongoose.Types.ObjectId(req.body.skillid)},
+      $pull: {inprogress: mongoose.Types.ObjectId(req.body.skillid)},
     });
-    res.status(200).json({response: "success"});
 
+    await Task.findOneAndUpdate({
+      userID: req.body.userid,
+      skillID: req.body.skillid,
+      completed: false,
+    },{
+      completed: true,
+    });
+
+    res.status(200).json({response: "success"});
   }
 
   async createSkill(req, res) {
