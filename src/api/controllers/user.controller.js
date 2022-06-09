@@ -1,6 +1,7 @@
 const User = require("../../models/user.model");
 const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
+const Challenge = require("../../models/challenge.model");
 const log = require("npmlog");
 const {levelDiff} = require("../../modules/XPHandler");
 
@@ -324,6 +325,34 @@ class UserController {
     res.status(200).json({
       response: "success",
       users: users,
+    });
+  }
+
+  async getAvailable(req, res) {
+    console.log("GET /users/available");
+
+    const user = await User.findById(req.headers["id"]);
+    const completed = user.get("completed");
+
+    let skills = await Skill.find({
+      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
+      $expr: {$setIsSubset: ["$requires", completed]},
+    });
+    skills = skills.forEach(skill => {
+      skill.type = "Skill";
+    });
+
+    let challenges = await Challenge.find({
+      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
+      $expr: {$setIsSubset: ["$requires", completed]},
+    });
+    challenges = challenges.forEach(skill => {
+      skill.type = "Challenge";
+    });
+
+    res.status(200).json({
+      response: "success",
+      available: [].concat(skills, challenges),
     });
   }
 }

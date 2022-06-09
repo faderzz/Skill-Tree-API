@@ -44,23 +44,6 @@ class SkillController {
       skills: skills,
     });
   }
-  
-  async getAvailableSkills(req, res) {
-    console.log("GET /skills/available");
-
-    const user = await User.findById(req.headers["id"]);
-    const completed = user.get("completed");
-
-    const skills = await Skill.find({
-      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
-      $expr: {$setIsSubset: ["$requires", completed]},
-    });
-
-    res.status(200).json({
-      response: "success",
-      skills: skills
-    });
-  }
 
   async startSkill(req, res) {
     console.log("POST /skills/startSkill");

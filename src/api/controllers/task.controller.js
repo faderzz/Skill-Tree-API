@@ -117,7 +117,6 @@ class TaskController {
 
     if ((skill.get("goal").length !== 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval)) ||
     (data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
-      console.log("completed");
 
       levelUp = await UserController.completeSkill(task.get("userID"), task.get("skillID"));
 
