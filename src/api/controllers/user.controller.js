@@ -1,43 +1,40 @@
 const User = require("../../models/user.model");
+const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
+const Challenge = require("../../models/challenge.model");
 const log = require("npmlog");
+const {levelDiff} = require("../../modules/XPHandler");
 
 
 class UserController {
+  
   async profile(req, res) {
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-
-    console.log("GET /profile");
-
-    const user = await User.findOne({ discordid: req.headers["discordid"] });
-    const items = await Item.find({
-      _id: {$in : user.get("items")}
-    });
-
+    console.log("GET /users/profile");
+    const user = await User.findById(req.headers["id"])
+      .populate({path: "completed", model: Skill})
+      .populate({path: "inprogress", model: Skill})
+      .populate({path: "items", model: Item});
     if (user) {
       res.status(200).json({
+        response: "success",
         user: user,
-        items: items,
       });
     } else {
-      res.status(409);
+      res.status(409).json({response: "error", error: "Invalid user"});
     }
   }
 
   async authUserDiscord(req, res) {
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
+    console.log("GET /users/loginDiscord");
+
+    const user = await User.findOne({ discordid: req.headers["discordid"] });
+    let id = null;
+    if (user) {
+      id = user.get("_id");
     }
-
-    const userExists = await User.exists({ discordid: req.headers["discordid"] });
-
     res.status(200).json({
-      userExists: userExists,
+      response: "success",
+      id: id
     });
   }
 
@@ -67,11 +64,7 @@ class UserController {
         }
         
     */
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("GET /users/loginUser");
 
     const username = req.body.username;
     const password = req.body.password;
@@ -82,10 +75,9 @@ class UserController {
       res.json({
         _id: user._id,
         username: user.username,
-
       });
     } else {
-      res.status(401);
+      res.status(401).json({response: "error", error: "cannot find user"});
       log.warn(`Cannot find user with query:  ${req.query}`);
     }
   }
@@ -124,13 +116,7 @@ class UserController {
           "apiKeyAuth":[]
         }]
     */
-    console.log("POST /register");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /users/register");
 
     const username = req.body.username;
     const password = req.body.password;
@@ -138,8 +124,7 @@ class UserController {
     const userExists = await User.findOne({ username });
 
     if (userExists) {
-      res.status(400);
-      log.warn("Already found a user with the specified username");
+      res.status(400).json({response: "error", error: "User already exists"});
     }
 
     const user = await User.create({
@@ -149,42 +134,42 @@ class UserController {
 
     if (user) {
       res.status(201).json({
+        response: "success",
         _id: user._id,
         username: user.username,
       });
     } else {
       log.warn(`Cannot find user with query:  ${req.query}`);
-      res.status(404);
+      res.status(404).json({response: "error", error: "Cannot find user"});
     }
   }
 
   async registerDiscord(req, res) {
-    console.log("POST /registerDiscord");
-
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
+    console.log("POST /users/registerDiscord");
 
     const userExists = await User.findOne({ discordid: req.body.discordid });
 
     if (userExists) {
-      res.status(400);
-      log.warn("Already found a user with the specified username");
+      res.status(400).json({response: "error", error: "User already exists"});
+      return;
     }
 
     const user = await User.create({
       discordid: req.body.discordid,
+      character: req.body.character,
+      difficulty: req.body.difficulty,
+      timezone: req.body.timezone,
+      baselocation: req.body.baselocation,
     });
 
     if (user) {
       res.status(201).json({
+        response: "success",
         _id: user._id,
       });
     } else {
       log.warn(`Cannot create user:  ${req.query}`);
-      res.status(404);
+      res.status(404).json({response: "error", error: "User already exists"});
     }
   }
 
@@ -199,11 +184,6 @@ class UserController {
                 type: 'integer',
                 description: 'User ID.' } 
     */
-    // Validate API-KEY
-    //     if (req.headers["api_key"] !== process.env.API_KEY) {
-    //       res.status(401);//Unauthorised
-    //       return;
-    //     }
     // log.verbose("UPDATE USER");
     // const user = await User.findOne({username},{password});
 
@@ -235,13 +215,7 @@ class UserController {
         #swagger.responses[201] = { description: 'User deleted successfully.' }
         #swagger.produces = ['application/json']
     */
-    //Validate API-KEY
-    if (req.headers["api_key"] !== process.env.API_KEY) {
-      res.status(401);//Unauthorised
-      return;
-    }
-
-    log.verbose("DELETE USER");
+    console.log("GET /users/profile");
     const UserExists = await User.findOne({username:req.body.username});
 
     if (UserExists) {
@@ -257,9 +231,129 @@ class UserController {
         log.warn(error);
       }
     } else {
-      res.status(404);
-      throw new Error("User Not Found");
+      res.status(404).json({response: "error", error: "User not found"});
+      throw new Error("User not Found");
     }
+  }
+
+  /**
+   * Complete user's skill
+   * @param userID
+   * @param skillID
+   */
+  async completeSkill(userID, skillID) {
+    const skill = await Skill.findById(skillID);
+
+    const user = await User.findByIdAndUpdate(userID, {
+      $pull: { inprogress: skillID },
+      $addToSet: { completed: skillID }
+    });
+
+    user.save();
+    return await this.addXP(userID, skill.get("xp"));
+  }
+
+  async updateXPHistory(req, res) {
+    console.log("POST /users/updateXPHistory");
+
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      $addToSet: { xpHistory: req.body.xp }
+    });
+    user.save();
+    res.status(200).json({response: "success", error: ""});
+  }
+
+  // adds  XP to a given user
+  async addXP(id, xp) {
+    const user = await User.findByIdAndUpdate(id, {
+      $inc : {"xp" : xp}
+    });
+    const lastXP = user.get("xp") - xp;
+    return levelDiff(lastXP, user.get("xp"));
+  }
+
+  async updateUser(req, res) {
+    console.log("POST /users/updateUser");
+
+    const user = await User.findByIdAndUpdate(req.body.userid, {"$set":{
+      character: req.body.character,
+      difficulty: req.body.difficulty,
+      timezone: req.body.timezone,
+      baselocation: req.body.baselocation,
+    }});
+    user.save();
+    res.status(200).json({response: "success", error: ""});
+  }
+
+  async updateTimezone(req, res) {
+    console.log("POST /users/updateTimezone");
+
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      timezone: req.body.timezone,
+    });
+    user.save();
+    res.status(200).json({response: "success", error: ""});
+  }
+
+  async updateBaseLocation(req, res) {
+    console.log("POST /users/updateBaseLocation");
+
+    const user = await User.findByIdAndUpdate(req.body.id, {
+      baselocation: req.body.baselocation,
+    });
+    user.save();
+    res.status(200).json({response: "success", error: ""});
+  }
+
+  async getAll(req, res) {
+    console.log("GET /users/getAll");
+
+    const users = await User.find({});
+
+    res.status(200).json({
+      response: "success",
+      users: users,
+    });
+  }
+
+  async getAllInTimezone(req, res) {
+    console.log("GET /users/getAllInTimezone");
+
+    const users = await User.find({
+      timezone: req.headers["offset"],
+    });
+    res.status(200).json({
+      response: "success",
+      users: users,
+    });
+  }
+
+  async getAvailable(req, res) {
+    console.log("GET /users/available");
+
+    const user = await User.findById(req.headers["id"]);
+    const completed = user.get("completed");
+
+    let skills = await Skill.find({
+      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
+      $expr: {$setIsSubset: ["$requires", completed]},
+    });
+    skills = skills.forEach(skill => {
+      skill.type = "Skill";
+    });
+
+    let challenges = await Challenge.find({
+      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
+      $expr: {$setIsSubset: ["$requires", completed]},
+    });
+    challenges = challenges.forEach(skill => {
+      skill.type = "Challenge";
+    });
+
+    res.status(200).json({
+      response: "success",
+      available: [].concat(skills, challenges),
+    });
   }
 }
 

@@ -18,14 +18,14 @@ const itemSchema = new Schema({
     type: String,
     required: true
   },
+  emoji: {
+    type: String,
+    required: true,
+  },
   requires: {
     type: [Schema.Types.ObjectId],
     required: true,
     unique: false
-  },
-  emoji: {
-    type: String,
-    required: true,
   },
 }, { collection: "Items" });
 

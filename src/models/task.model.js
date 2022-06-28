@@ -20,9 +20,15 @@ const taskSchema = new Schema({
     unique: false
   },
   data: {
-    type: [Boolean],
+    type: [
+      {
+        type: Boolean,
+        default: false,
+        required: true,
+      },
+    ],
     required: false,
-    unique: false
+    unique: false,
   },
   startDate: {
     type: Date,
@@ -33,5 +39,6 @@ const taskSchema = new Schema({
     required: true,
   }
 }, { collection: "Tasks" });
+
 
 module.exports = mongoose.model("Task", taskSchema);
