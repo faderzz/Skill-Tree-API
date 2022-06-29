@@ -34,7 +34,7 @@ const skillSchema = new Schema({
   },
   interval: {
     type: String,
-    enum: ["day", "week", "month", "year"],
+    enum: ["day", "week", "month", "year", "N/A"],
     required: true,
   },
   timelimit: {

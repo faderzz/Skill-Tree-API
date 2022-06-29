@@ -14,4 +14,5 @@ router.post("/updateTimezone", auth, UserController.updateTimezone);
 router.post("/updateBaseLocation", auth, UserController.updateBaseLocation);
 router.get("/getAllInTimezone", auth, UserController.getAllInTimezone);
 router.get("/getAll", auth, UserController.getAll);
+router.get("/getAvailable", auth, UserController.getAvailable);
 module.exports = router;

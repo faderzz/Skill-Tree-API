@@ -2,7 +2,7 @@ const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const UserController = require("../../api/controllers/user.controller");
-const {intervalToInt} = require("../../modules/taskHelper");
+const {intervalToInt} = require("../../modules/dateHelper");
 const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
 
 class TaskController {
@@ -89,7 +89,7 @@ class TaskController {
     if (data === undefined) {
       data = [];
     }
-    
+
     const frequency = skill.get("frequency");
     const interval = intervalToInt(skill.get("interval"));
     const timelimit = skill.get("timelimit");
@@ -99,7 +99,12 @@ class TaskController {
     const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
 
     const checked = req.body.checked;
-    const indexOfChange = getDaysBetweenDates(new Date(startDate + offset), userDate);
+    let indexOfChange;
+    if (interval === -1) {
+      indexOfChange = 0;
+    } else {
+      indexOfChange = getDaysBetweenDates(new Date(startDate + offset), userDate);
+    }
     data[indexOfChange] = checked;
 
     await Task.findByIdAndUpdate(req.body.taskid,
@@ -115,8 +120,14 @@ class TaskController {
     let levelUp = false;
     let unlocked = {};
 
-    if ((skill.get("goal").length !== 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval)) ||
-    (data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
+    //Complete the skill if one of three conditions is met
+    //1) If the interval is N/A
+    //2) If there are multiple goals, the number of entries is greater than the timelimit,
+    // and the goal has a 100% success rate
+    //3) There is one goal, the number of entries is more than the timelimit, and there's an 80% success rate
+    if (interval === -1 ||
+        (skill.get("goal").length !== 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval)) ||
+        (skill.get("goal").length === 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
 
       levelUp = await UserController.completeSkill(task.get("userID"), task.get("skillID"));
 
