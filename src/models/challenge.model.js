@@ -3,13 +3,17 @@ const Schema = mongoose.Schema;
 
 /**
  * Challenge Object
- * @param goal - The success condition for the challenge to be complete
+ * @param goals - The success condition(s) for the challenge to be complete
  * @param xp - The amount of XP granted upon completion of the challenge
  * @param category - The branch that this node is part of
  * @param requirements - The skills required to unlock this challenge
  */
 const challengeSchema = new Schema({
-  goal: [{
+  title: {
+    type: String,
+    required: true,
+  },
+  goals: [{
     type: String,
     required: true,
   }],
@@ -24,6 +28,9 @@ const challengeSchema = new Schema({
   requires: {
     type: [Schema.Types.ObjectId],
     required: true,
+  },
+  link: {
+    type: String,
   },
 }, { collection: "Challenges" });
 

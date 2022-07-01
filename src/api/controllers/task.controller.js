@@ -1,9 +1,11 @@
 const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
+const Item = require("../../models/item.model");
 const UserController = require("../../api/controllers/user.controller");
 const {intervalToInt} = require("../../modules/dateHelper");
 const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
+const Challenge = require("../../models/challenge.model");
 
 class TaskController {
 
@@ -12,27 +14,44 @@ class TaskController {
 
     const tasks = await Task.find({
       completed: false,
+      cancelled: false,
       userID: req.headers["userid"],
-    }, {
-
-    }).populate({path: "skillID", model: Skill}).lean();
+    }).populate({path: "skillID", model: Skill})
+      .populate({path: "challengeID", model: Challenge})
+      .lean();
 
     //Show only current goals from goal list
     for (let i = 0; i < tasks.length; i++) {
-      const skill = tasks[i]["skillID"];
+      const skill = tasks[i].skillID;
+      const challenge = tasks[i].challengeID;
+      tasks[i].skillID["goal"] = "test";
 
-      if (skill["goal"].length === 1) {
-        skill["goal"] = skill["goal"][0];
-      } else {
-        //Split goals into equal sections covering the time limit for the given frequency
-        const blockSize = ((skill["frequency"] / intervalToInt(skill["interval"])) * skill["timelimit"]) / skill["goal"].length;
-        //get number of completions within the last block period
-        //hacky fix
+      if (skill) {
+        //Get the goal of the skill
+        if (skill.goals.length === 1) {
+          skill.goal = skill.goals[0];
+        } else {
+          //N/A can only contain one goal
+          if (intervalToInt(skill.interval) === -1) {
+            skill.goal = skill.goals[0];
+          } else {
+            //Split goals into equal sections covering the time limit for the given frequency
+            const blockSize = ((skill.frequency / intervalToInt(skill.interval)) * skill.timelimit) / skill.goals.length;
+            //get number of completions within the last block period
+            //hacky fix
+            const data = tasks[i]["data"].map((x) => x);
+            const numChecked = data.splice(-skill.timelimit).filter((v) => v).length;
+
+            const goalIndex = numChecked / blockSize;
+            skill.goal = skill.goals[goalIndex];
+          }
+        }
+      }
+      if (challenge) {
         const data = tasks[i]["data"].map((x) => x);
-        const numChecked = data.splice(-skill["timelimit"]).filter((v) => v).length;
-        
-        const goalIndex = numChecked / blockSize;
-        skill["goal"] = skill["goal"][goalIndex];
+        const numChecked = data.filter((v) => v).length;
+
+        challenge.goal = challenge.goals[numChecked];
       }
     }
 
@@ -51,15 +70,17 @@ class TaskController {
 
     const tasks = await Task.find({
       userID: req.headers["userid"],
+      cancelled: false,
       //find tasks
       $cond: {
-        if: {$eq: ["$complete", true]},
+        if: {$eq: ["$completed", true]},
         then: {
           $lt: [getDaysBetweenDates(new Date("$endDate" + offset), userDate), req.body.timelimit]
         },
         else: true,
       }
-    }).populate({path: "skillID", model: Skill});
+    }).populate({path: "skillID", model: Skill})
+      .populate({path: "challengeID", model: Challenge});
 
     res.status(200).json({
       response: "success",
@@ -71,10 +92,10 @@ class TaskController {
     console.log("POST /tasks/updateTask");
 
     const task = await Task.findById(req.body.taskid);
-    const skill = await Skill.findById(task.get("skillID"));
+    
+    //Update last tracked
     const user = await User.findById(task.get("userID"));
     const offset = user.get("timezone") * 3600000;
-
     if (user) {
       if (getDaysBetweenDates(user.get("lastTracked").getTime()+offset,
         new Date(new Date().getTime() + offset)) > 0) {
@@ -85,94 +106,88 @@ class TaskController {
       }
     }
 
-    let data = task.get("data"); //array of booleans
+    //Get task data
+    let data = task.get("data");
     if (data === undefined) {
       data = [];
     }
 
-    const frequency = skill.get("frequency");
-    const interval = intervalToInt(skill.get("interval"));
-    const timelimit = skill.get("timelimit");
+    const skill = await Skill.findById(task.get("skillID"));
+    let completed = false;
 
-    const startDate = task.get("startDate");
+    //If not skill, then it's a challenge
+    if (skill) {
+      const frequency = skill.get("frequency");
+      const interval = intervalToInt(skill.get("interval"));
+      const timelimit = skill.get("timelimit");
 
-    const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
+      const startDate = task.get("startDate");
 
-    const checked = req.body.checked;
-    let indexOfChange;
-    if (interval === -1) {
-      indexOfChange = 0;
-    } else {
-      indexOfChange = getDaysBetweenDates(new Date(startDate + offset), userDate);
-    }
-    data[indexOfChange] = checked;
+      const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
 
-    await Task.findByIdAndUpdate(req.body.taskid,
-      {
-        $set : {
-          data: data.map(d => (d === null) ? false : d)
-        }
-      }, {
-        setDefaultsOnInsert: true,
-      });
-
-    const numChecked = data.slice(-timelimit).filter((value) => value).length;
-    let levelUp = false;
-    let unlocked = {};
-
-    //Complete the skill if one of three conditions is met
-    //1) If the interval is N/A
-    //2) If there are multiple goals, the number of entries is greater than the timelimit,
-    // and the goal has a 100% success rate
-    //3) There is one goal, the number of entries is more than the timelimit, and there's an 80% success rate
-    if (interval === -1 ||
-        (skill.get("goal").length !== 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval)) ||
-        (skill.get("goal").length === 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
-
-      levelUp = await UserController.completeSkill(task.get("userID"), task.get("skillID"));
-
-      //TODO: Publish and subscribe levelup instead of returning from specific methods
-      if (levelUp !== 0) {
-        //Get skills/items/challenges which have been unlocked
-        //Weird lookup fuckery - do not touch
-        unlocked = await Skill.aggregate([
-          {"$match": {"_id": {"$eq": task.get("skillID")}}},
-          {$limit: 1},
-          //Find all items
-          { $lookup: {
-            from: "Items", let: {"id": "$children"},
-            pipeline: [
-              {$match: {$expr: {"$in": ["$_id", "$$id"]}}},
-              {$set: {type: "Item"}}
-            ], as: "items"
-          }},
-          //Find all skills
-          { $lookup: {
-            from: "Skills", let: {"id": "$children"},
-            pipeline: [
-              {$match: {$expr: {"$in": ["$_id", "$$id"]}}},
-              {$set: {type: "Skill"}}
-            ], as: "skills"
-          }},
-          //Find all challenges
-          { $lookup: {
-            from: "Challenges",let: {"id": "$children"},
-            pipeline: [
-              {$match: {$expr: {"$in": ["$_id", "$$id"]}}},
-              {$set: {type: "Challenge"}}
-            ], as: "challenges"
-          }
-          },
-        ]);
-        //Concatenate each item
-        unlocked = [].concat(unlocked[0].skills, unlocked[0].challenges, unlocked[0].items);
+      const checked = req.body.checked;
+      let indexOfChange;
+      if (interval === -1) {
+        indexOfChange = 0;
+      } else {
+        indexOfChange = getDaysBetweenDates(new Date(startDate + offset), userDate);
       }
+      data[indexOfChange] = checked;
+
+      await Task.findByIdAndUpdate(req.body.taskid,
+        {
+          $set : {
+            data: data.map(d => (d === null) ? false : d)
+          }
+        }, {
+          setDefaultsOnInsert: true,
+        });
+      const numChecked = data.slice(-timelimit).filter((value) => value).length;
+
+      //Complete the skill if one of three conditions is met
+      //1) If the interval is N/A
+      //2) If there are multiple goals, the number of entries is greater than the timelimit,
+      // and the goal has a 100% success rate
+      //3) There is one goal, the number of entries is more than the timelimit, and there's an 80% success rate
+      if (interval === -1 ||
+        (skill.get("goals").length !== 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval)) ||
+        (skill.get("goals").length === 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
+        completed = true;
+      }
+    } else {
+      const challenge = await Challenge.findById(task.get("challengeID"));
+      await Task.findByIdAndUpdate(req.body.taskid,
+        {
+          $set : {
+            data: data.concat(true),
+          }
+        }, {
+          setDefaultsOnInsert: true,
+        });
+      const numChecked = data.filter((value) => value).length;
+      //Complete challenge if the number of "checked" is equal to the number of goals
+      completed = (numChecked === challenge.get("goals").length);
+    }
+
+    let levelUp = false;
+    let skills = [];
+    let items = [];
+    let challenges = [];
+
+    if (completed) {
+      levelUp = await UserController.complete(task);
+
+      skills = await Skill.find({requires: task.get("skillID")});
+      items = await Item.find({requires: task.get("skillID")});
+      challenges = await Challenge.find({requires: task.get("skillID")});
     }
 
     res.status(200).json({
       response: "success",
       levelUp: levelUp,
-      unlocked: unlocked,
+      skills: skills,
+      items: items,
+      challenges: challenges,
     });
   }
 

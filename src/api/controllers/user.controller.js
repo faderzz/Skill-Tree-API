@@ -1,19 +1,20 @@
 const User = require("../../models/user.model");
 const Skill = require("../../models/skill.model");
-const Item = require("../../models/item.model");
 const Challenge = require("../../models/challenge.model");
 const log = require("npmlog");
 const {levelDiff} = require("../../modules/XPHandler");
-
+const Task = require("../../models/task.model");
 
 class UserController {
   
   async profile(req, res) {
     console.log("GET /users/profile");
+
     const user = await User.findById(req.headers["id"])
-      .populate({path: "completed", model: Skill})
-      .populate({path: "inprogress", model: Skill})
-      .populate({path: "items", model: Item});
+      .populate({path: "skillscompleted", model: Skill})
+      .populate({path: "skillsinprogress", model: Skill})
+      .populate({path: "challengescompleted", model: Challenge})
+      .populate({path: "challengesinprogress", model: Challenge});
     if (user) {
       res.status(200).json({
         response: "success",
@@ -237,20 +238,34 @@ class UserController {
   }
 
   /**
-   * Complete user's skill
-   * @param userID
-   * @param skillID
+   * Complete skill/challenge for this user
+   * @param task
    */
-  async completeSkill(userID, skillID) {
-    const skill = await Skill.findById(skillID);
+  async complete(task) {
 
-    const user = await User.findByIdAndUpdate(userID, {
-      $pull: { inprogress: skillID },
-      $addToSet: { completed: skillID }
+    const updatedTask = await Task.findByIdAndUpdate(task.get("_id"), {
+      completed: true,
+      endDate: new Date()
     });
+    updatedTask.save();
 
-    user.save();
-    return await this.addXP(userID, skill.get("xp"));
+    const skill = task.get("skillID");
+    if (skill) {
+      const user = await User.findByIdAndUpdate(task.get("userID"), {
+        $pull: {skillsinprogress: skill},
+        $addToSet: {skillscompleted: skill}
+      });
+      user.save();
+      return await this.addXP(task.get("userID"), skill.get("xp"));
+    } else {
+      const challenge = task.get("challengeID");
+      const user = await User.findByIdAndUpdate(task.get("userID"), {
+        $pull: {challengesinprogress: challenge},
+        $addToSet: {challengescompleted: challenge}
+      });
+      user.save();
+      return await this.addXP(task.get("userID"), challenge.get("xp"));
+    }
   }
 
   async updateXPHistory(req, res) {
@@ -329,31 +344,148 @@ class UserController {
   }
 
   async getAvailable(req, res) {
-    console.log("GET /users/available");
+    console.log("GET /users/getAvailable");
 
-    const user = await User.findById(req.headers["id"]);
-    const completed = user.get("completed");
+    const user = await User.findById(req.headers["userid"]);
 
-    let skills = await Skill.find({
-      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
-      $expr: {$setIsSubset: ["$requires", completed]},
-    });
-    skills = skills.forEach(skill => {
-      skill.type = "Skill";
+    const completed = user.get("challengescompleted").concat(user.get("skillscompleted"));
+    const userSkills = user.get("skillscompleted").concat(user.get("skillsinprogress"));
+    const userChallenges = user.get("challengescompleted").concat(user.get("challengesinprogress"));
+
+    const skills = await Skill.find({
+      _id: {$nin : userSkills}, //skill not in progress or completed
+      $expr: {$setIsSubset: ["$requires", completed]}, //All requirements met
     });
 
-    let challenges = await Challenge.find({
-      _id: {$nin : user.get("inprogress").concat(completed)}, //skill not in progress
-      $expr: {$setIsSubset: ["$requires", completed]},
-    });
-    challenges = challenges.forEach(skill => {
-      skill.type = "Challenge";
+    const challenges = await Challenge.find({
+      _id: {$nin : userChallenges}, //challenge not in progress or completed
+      $expr: {$setIsSubset: ["$requires", completed]},//All requirements met
     });
 
     res.status(200).json({
       response: "success",
-      available: [].concat(skills, challenges),
+      skills: skills,
+      challenges: challenges,
     });
+  }
+
+  async getInProgress(req, res) {
+    console.log("GET /getInProgress");
+    const user = await User.findById(req.headers["userid"]);
+    const skills = await Skill.find({
+      _id: {$in : user.get("skillsinprogress")},
+    });
+
+    const challenges = await Challenge.find({
+      _id: {$in : user.get("challengesinprogress")},
+    });
+
+    res.status(200).json({
+      response: "success",
+      skills: skills,
+      challenges: challenges,
+    });
+  }
+
+  async start(req, res) {
+    console.log("POST /users/start");
+
+    const user = await User.findById(req.body.userid);
+
+    //Get skill/challenge to start
+    const skill = await Skill.findById(req.body.tostart);
+    const challenge = await Challenge.findById(req.body.tostart);
+    const child = skill ? skill : challenge;
+    if (skill) {
+      //Update the user to start the skill
+      user.get("skillsinprogress").push(child.get("_id"));
+      user.save();
+
+      const task = new Task({
+        userID: user.get("_id"),
+        skillID: skill.get("_id"),
+        startDate: new Date(),
+        data: [],
+        completed: false,
+      });
+      task.save();
+    } else {
+      //Update the user to start the skill
+      user.get("challengesinprogress").push(child.get("_id"));
+      user.save();
+
+      const task = new Task({
+        userID: user.get("_id"),
+        challengeID: challenge.get("_id"),
+        startDate: new Date(),
+        data: [],
+        completed: false,
+      });
+      task.save();
+    }
+
+    res.status(200).json({response: "success"});
+  }
+
+  async skip(req, res) {
+    console.log("POST /users/skip");
+
+    //complete without XP
+    await User.findByIdAndUpdate(req.body.userid, {
+      $addToSet: { completed: req.body.toskip },
+    });
+
+    res.status(200).json({response: "success"});
+  }
+
+  async revert(req, res) {
+    console.log("POST /users/revert");
+
+    //Get skill/challenge to start
+    const skill = await Skill.findById(req.body.torevert);
+    const challenge = await Challenge.findById(req.body.torevert);
+    const child = skill ? skill : challenge;
+    if (skill) {
+      //complete without XP
+      const user = await User.findByIdAndUpdate(req.body.userid, {
+        $pullAll: { skillscompleted: child.get("requires"), skillsinprogress: child.get("requires")},
+      });
+      user.save();
+    } else {
+      //complete without XP
+      const user = await User.findByIdAndUpdate(req.body.userid, {
+        $pullAll: { challengescompleted: child.get("requires"), challengesinprogress: child.get("requires")},
+      });
+      user.save();
+    }
+    res.status(200).json({response: "success"});
+  }
+
+  async cancel(req,res) {
+    console.log("POST /users/cancel");
+
+    const user = await User.findByIdAndUpdate(req.body.userid,{
+      $pull: {
+        skillsinprogress: req.body.tocancel,
+        challengesinprogress: req.body.tocancel
+      },
+    });
+    user.save();
+
+    await Task.findOneAndUpdate({
+      $and: [{userID: req.body.userid},
+        {completed: false},
+        {cancelled: false},
+        {$or : [
+          {skillID: req.body.tocancel},
+          {challengeID: req.body.tocancel}
+        ]}
+      ]
+    },{
+      cancelled: true,
+    });
+
+    res.status(200).json({response: "success"});
   }
 }
 

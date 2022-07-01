@@ -12,7 +12,6 @@ const Schema = mongoose.Schema;
  * @param xp - The amount of XP granted upon completion of the skill
  * @param category - The branch that this node is part of
  * @param requirements - The skills required to unlock this one
- * @param children - The skills connected below this one
  */
 const skillSchema = new Schema({
   title: {
@@ -24,7 +23,7 @@ const skillSchema = new Schema({
     required: true,
     unique: false
   },
-  goal: [{
+  goals: [{
     type: String,
     required: true,
   }],
@@ -56,12 +55,6 @@ const skillSchema = new Schema({
   },
   requires: {
     type: [Schema.Types.ObjectId],
-    required: true,
-  },
-  children: {
-    type: [{
-      type: Schema.Types.ObjectId,
-    }],
     required: true,
   },
 }, { collection: "Skills" });

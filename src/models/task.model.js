@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 /**
  * Task Object
- * @param skillID - The ID of the skill object
+ * @param skillID - The ID of the skill object if it exists
+ * @param challengeID - The ID of the challenge object if it exists
  * @param user - The ID of the user completing this task
  * @param tasks - List of boolean values representing completed/uncompleted skills for each time period from the start date
  * @param startDate - The date that this skill was started
@@ -11,7 +12,12 @@ const Schema = mongoose.Schema;
 const taskSchema = new Schema({
   skillID: {
     type: Schema.Types.ObjectId,
-    required: true,
+    required: false,
+    unique: false
+  },
+  challengeID: {
+    type: Schema.Types.ObjectId,
+    required: false,
     unique: false
   },
   userID: {
@@ -37,6 +43,11 @@ const taskSchema = new Schema({
   completed: {
     type: Boolean,
     required: true,
+  },
+  cancelled: {
+    type: Boolean,
+    required: true,
+    default: false,
   }
 }, { collection: "Tasks" });
 
