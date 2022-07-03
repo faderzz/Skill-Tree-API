@@ -431,9 +431,18 @@ class UserController {
     console.log("POST /users/skip");
 
     //complete without XP
-    await User.findByIdAndUpdate(req.body.userid, {
-      $addToSet: { completed: req.body.toskip },
-    });
+    const skill = await Skill.findById(req.body.toskip);
+    if (skill) {
+      const user = await User.findByIdAndUpdate(req.body.userid, {
+        $addToSet: {skillscompleted: req.body.toskip},
+      });
+      user.save();
+    } else {
+      const user = await User.findByIdAndUpdate(req.body.userid, {
+        $addToSet: {challengescompleted: req.body.toskip},
+      });
+      user.save();
+    }
 
     res.status(200).json({response: "success"});
   }
