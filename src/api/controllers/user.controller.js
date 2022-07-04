@@ -438,7 +438,7 @@ class UserController {
 
     const user = await User.findById(req.body.userid);
     if (user.get("skillsinprogress").length +
-        user.get("challengesinprogress").length > 6) {
+        user.get("challengesinprogress").length > 25) {
       res.status(201).json({response: "error", errmsg: "Max 25 skills in progress"});
       return;
     }
