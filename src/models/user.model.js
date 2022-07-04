@@ -60,10 +60,6 @@ const UserSchema = new Schema({
     type:[Schema.Types.ObjectId],
     required: false,
   },
-  difficulty:{
-    type:String,
-    required:false,
-  },
   character:{
     type:String,
     required:false,

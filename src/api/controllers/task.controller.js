@@ -24,8 +24,6 @@ class TaskController {
     for (let i = 0; i < tasks.length; i++) {
       const skill = tasks[i].skillID;
       const challenge = tasks[i].challengeID;
-      tasks[i].skillID["goal"] = "test";
-
       if (skill) {
         //Get the goal of the skill
         if (skill.goals.length === 1) {
@@ -36,12 +34,18 @@ class TaskController {
             skill.goal = skill.goals[0];
           } else {
             //Split goals into equal sections covering the time limit for the given frequency
-            const blockSize = ((skill.frequency / intervalToInt(skill.interval)) * skill.timelimit) / skill.goals.length;
+            const blockSize = intervalToInt(skill.interval);
             //get number of completions within the last block period
             //hacky fix
             const data = tasks[i]["data"].map((x) => x);
-            const numChecked = data.splice(-skill.timelimit).filter((v) => v).length;
-
+            //Round limit to the nearest block size (so no cutoffs occur)
+            //Basically if you have a skill which is weekly, and you have a 30 day limit
+            //you don't want to start cutting off mondays, tuesday, wednesday etc
+            // as it goes over time. You cut off an entire week so that
+            // everything is aligned by the week. Hope that makes sense
+            const newIndexOfStart = Math.floor((data.length - skill.timelimit) / blockSize) * blockSize;
+            const limitSize = data.length - newIndexOfStart;
+            const numChecked = data.splice(-limitSize).filter((v) => v).length;
             const goalIndex = numChecked / blockSize;
             skill.goal = skill.goals[goalIndex];
           }
@@ -142,7 +146,10 @@ class TaskController {
         }, {
           setDefaultsOnInsert: true,
         });
-      const numChecked = data.slice(-timelimit).filter((value) => value).length;
+      const blockSize = intervalToInt(interval);
+      const newIndexOfStart = Math.floor((data.length - timelimit) / blockSize) * blockSize;
+      const limitSize = data.length - newIndexOfStart;
+      const numChecked = data.splice(-limitSize).filter((v) => v).length;
 
       //Complete the skill if one of three conditions is met
       //1) If the interval is N/A
@@ -169,7 +176,7 @@ class TaskController {
       completed = (numChecked === challenge.get("goals").length);
     }
 
-    let levelUp = false;
+    let levelUp = 0;
     let skills = [];
     let items = [];
     let challenges = [];

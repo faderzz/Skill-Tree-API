@@ -154,16 +154,62 @@ class UserController {
       res.status(400).json({response: "error", error: "User already exists"});
       return;
     }
+    let completed = [];
+    let inprogress = [];
+    if (req.body.difficulty === "medium") {
+      completed = [
+        "62c226cf9efefadfd10e20ad", //med 1
+        "62c226d09efefadfd10e20bd", //fit 1
+        "62c226cf9efefadfd10e20b2", //jour 1
+      ];
+      inprogress = [
+        "62c226d19efefadfd10e20d9", //fit 2
+        "62c226d09efefadfd10e20b6", //med 2
+        "62c226d89efefadfd10e21a0" //jour 2
+      ];
+    }
+    if (req.body.difficulty === "hard") {
+      completed = [
+        "62c226cf9efefadfd10e20ad",//med 1
+        "62c226d09efefadfd10e20bd",//fit 1
+        "62c226cf9efefadfd10e20b2",//jour 1
+        "62c226d09efefadfd10e20b6",//med 2
+        "62c226d89efefadfd10e21a0",//jour 2
+        "62c226d19efefadfd10e20d9",//fit 2
+        "62c226d89efefadfd10e2197", //rel 1
+      ];
+      inprogress = [
+        "62c226d19efefadfd10e20e2",//fit 3
+        "62c226d09efefadfd10e20c0", //med 3
+        "62c226d89efefadfd10e21a3", // read 1
+        "62c226dd9efefadfd10e221d", // jour 3
+        "62c226d89efefadfd10e21a6" // rel 2
+      ];
 
+    }
     const user = await User.create({
       discordid: req.body.discordid,
       character: req.body.character,
-      difficulty: req.body.difficulty,
       timezone: req.body.timezone,
       baselocation: req.body.baselocation,
+      skillscompleted: completed,
+      skillsinprogress: inprogress,
     });
 
     if (user) {
+      //start tasks automatically
+      for (let i = 0; i < inprogress.length; i++) {
+        const skillID = inprogress[i];
+        const task = new Task({
+          userID: user.get("_id"),
+          skillID: skillID,
+          startDate: new Date(),
+          data: [],
+          completed: false,
+        });
+        task.save();
+      }
+
       res.status(201).json({
         response: "success",
         _id: user._id,
@@ -391,6 +437,11 @@ class UserController {
     console.log("POST /users/start");
 
     const user = await User.findById(req.body.userid);
+    if (user.get("skillsinprogress").length +
+        user.get("challengesinprogress").length > 6) {
+      res.status(201).json({response: "error", errmsg: "Max 25 skills in progress"});
+      return;
+    }
 
     //Get skill/challenge to start
     const skill = await Skill.findById(req.body.tostart);
