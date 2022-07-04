@@ -11,7 +11,7 @@ class TaskController {
 
   async currentTasks(req, res) {
     console.log("GET /tasks/currentTasks");
-
+    const user = await User.findById(req.headers["userid"]);
     const tasks = await Task.find({
       completed: false,
       cancelled: false,
@@ -61,7 +61,8 @@ class TaskController {
 
     res.status(200).json({
       response: "success",
-      tasks: tasks
+      tasks: tasks,
+      timezoneoffset: user.get("timezone")
     });
   }
 
@@ -88,7 +89,7 @@ class TaskController {
 
     res.status(200).json({
       response: "success",
-      tasks: tasks
+      tasks: tasks,
     });
   }
 
