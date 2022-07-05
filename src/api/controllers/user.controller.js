@@ -300,7 +300,7 @@ class UserController {
     });
     updatedTask.save();
 
-    const skill = task.get("skillID");
+    const skill = await task.get("skillID");
     if (skill) {
       const user = await User.findByIdAndUpdate(task.get("userID"), {
         $pull: {skillsinprogress: skill},
@@ -309,12 +309,14 @@ class UserController {
       user.save();
       return await this.addXP(task.get("userID"), skill.get("xp"));
     } else {
-      const challenge = task.get("challengeID");
+      console.log(task.get("challengeID"));
+      const challenge = await task.get("challengeID");
       const user = await User.findByIdAndUpdate(task.get("userID"), {
         $pull: {challengesinprogress: challenge},
         $addToSet: {challengescompleted: challenge}
       });
       user.save();
+      console.log(challenge.get("xp"));
       return await this.addXP(task.get("userID"), challenge.get("xp"));
     }
   }
@@ -442,9 +444,18 @@ class UserController {
     console.log("POST /users/start");
 
     const user = await User.findById(req.body.userid);
+
     if (user.get("skillsinprogress").length +
         user.get("challengesinprogress").length > 25) {
       res.status(201).json({response: "error", errmsg: "Max 25 skills in progress"});
+      return;
+    }
+
+    if (user.get("skillsinprogress")
+      .concat(user.get("challengesinprogress"))
+      .map(v => v.toString())
+      .includes(req.body.tostart.toString())) {
+      res.status(202).json({response: "error", errmsg: "Already in progress"});
       return;
     }
 

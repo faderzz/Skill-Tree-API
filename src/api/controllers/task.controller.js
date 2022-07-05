@@ -98,7 +98,9 @@ class TaskController {
   async updateTask(req, res) {
     console.log("POST /tasks/updateTask");
 
-    const task = await Task.findById(req.body.taskid);
+    const task = await Task.findById(req.body.taskid)
+      .populate({path: "skillID", model: Skill})
+      .populate({path: "challengeID", model: Challenge});
     
     //Update last tracked
     const user = await User.findById(task.get("userID"));
@@ -119,7 +121,7 @@ class TaskController {
       data = [];
     }
 
-    const skill = await Skill.findById(task.get("skillID"));
+    const skill = task.get("skillID");
     let completed = false;
 
     //If not skill, then it's a challenge
@@ -165,11 +167,12 @@ class TaskController {
         completed = true;
       }
     } else {
-      const challenge = await Challenge.findById(task.get("challengeID"));
+      const challenge = task.get("challengeID");
+      data = data.concat(true);
       await Task.findByIdAndUpdate(req.body.taskid,
         {
           $set : {
-            data: data.concat(true),
+            data: data,
           }
         }, {
           setDefaultsOnInsert: true,
@@ -187,9 +190,11 @@ class TaskController {
     if (completed) {
       levelUp = await UserController.complete(task);
 
-      skills = await Skill.find({requires: task.get("skillID")});
-      items = await Item.find({requires: task.get("skillID")});
-      challenges = await Challenge.find({requires: task.get("skillID")});
+      if (task.get("skillID")) {
+        skills = await Skill.find({requires: task.get("skillID").get("_id")});
+        items = await Item.find({requires: task.get("skillID").get("_id")});
+        challenges = await Challenge.find({requires: task.get("skillID").get("_id")});
+      }
     }
 
     res.status(200).json({
