@@ -1,5 +1,6 @@
 const User = require("../../models/user.model");
 const Skill = require("../../models/skill.model");
+const Item = require("../../models/item.model");
 const Challenge = require("../../models/challenge.model");
 const log = require("npmlog");
 const {levelDiff} = require("../../modules/XPHandler");
@@ -14,7 +15,8 @@ class UserController {
       .populate({path: "skillscompleted", model: Skill})
       .populate({path: "skillsinprogress", model: Skill})
       .populate({path: "challengescompleted", model: Challenge})
-      .populate({path: "challengesinprogress", model: Challenge});
+      .populate({path: "challengesinprogress", model: Challenge})
+      .populate({path: "items", model: Item});
     if (user) {
       res.status(200).json({
         response: "success",
