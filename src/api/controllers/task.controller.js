@@ -25,8 +25,7 @@ class TaskController {
     for (let i = 0; i < tasks.length; i++) {
       const skill = tasks[i].skillID;
       const challenge = tasks[i].challengeID;
-      tasks[i].startDate = tasks[i].startDate + timezone*3600000;
-
+      tasks[i].startDate = new Date(Date.parse(tasks[i].startDate) + timezone*3600000);
       if (skill) {
         //Get the goal of the skill
         if (skill.goals.length === 1) {
