@@ -185,8 +185,10 @@ class UserController {
         "62c226dd9efefadfd10e221d", // jour 3
         "62c226d89efefadfd10e21a6" // rel 2
       ];
-
     }
+    const items = ["62c382d46cac02c487e243cb",
+      "62c383846cac02c487e243cc"
+    ];
     const user = await User.create({
       discordid: req.body.discordid,
       character: req.body.character,
@@ -194,6 +196,7 @@ class UserController {
       baselocation: req.body.baselocation,
       skillscompleted: completed,
       skillsinprogress: inprogress,
+      items: items,
     });
 
     if (user) {
