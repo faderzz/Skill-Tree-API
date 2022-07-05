@@ -309,14 +309,12 @@ class UserController {
       user.save();
       return await this.addXP(task.get("userID"), skill.get("xp"));
     } else {
-      console.log(task.get("challengeID"));
       const challenge = await task.get("challengeID");
       const user = await User.findByIdAndUpdate(task.get("userID"), {
         $pull: {challengesinprogress: challenge},
         $addToSet: {challengescompleted: challenge}
       });
       user.save();
-      console.log(challenge.get("xp"));
       return await this.addXP(task.get("userID"), challenge.get("xp"));
     }
   }
