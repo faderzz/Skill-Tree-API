@@ -42,11 +42,11 @@ exports.dayToDate = function(day) {
     return new Date();
   } else if (day === "yesterday") {
     const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setUTCDate(yesterday.getUTCDate() - 1);
     return yesterday;
   } else if (day === "tomorrow") {
     const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
     return tomorrow;
   }
   return new Date();

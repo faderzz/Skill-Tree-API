@@ -510,8 +510,14 @@ class UserController {
       });
       user.save();
     }
+    const skills = await Skill.find({requires: skill.get("_id")});
+    const items = await Item.find({requires: skill.get("_id")});
+    const challenges = await Challenge.find({requires: skill.get("_id")});
 
-    res.status(200).json({response: "success"});
+    res.status(200).json({response: "success",
+      skills: skills,
+      items: items,
+      challenges: challenges,});
   }
 
   async revert(req, res) {

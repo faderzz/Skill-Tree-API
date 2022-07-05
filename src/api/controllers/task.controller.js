@@ -139,7 +139,7 @@ class TaskController {
       if (interval === -1) {
         indexOfChange = 0;
       } else {
-        indexOfChange = getDaysBetweenDates(new Date(startDate + offset), userDate);
+        indexOfChange = getDaysBetweenDates(new Date(Date.parse(startDate) + offset), userDate);
       }
       data[indexOfChange] = checked;
 
