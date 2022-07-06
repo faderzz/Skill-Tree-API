@@ -438,6 +438,24 @@ class UserController {
     });
   }
 
+  async getCompleted(req, res) {
+    console.log("GET /getCompleted");
+    const user = await User.findById(req.headers["userid"]);
+    const skills = await Skill.find({
+      _id: {$in : user.get("skillscompleted")},
+    });
+
+    const challenges = await Challenge.find({
+      _id: {$in : user.get("challengescompleted")},
+    });
+
+    res.status(200).json({
+      response: "success",
+      skills: skills,
+      challenges: challenges,
+    });
+  }
+
   async start(req, res) {
     console.log("POST /users/start");
 
@@ -567,6 +585,44 @@ class UserController {
 
     res.status(200).json({response: "success"});
   }
+
+  async eraseCompleted(req, res) {
+    console.log("POST /users/eraseCompleted");
+
+    const task = await Task.find({
+      $and: [{
+        $or: [{
+          skillID: req.body.toerase
+        },{
+          challengeID: req.body.toerase
+        }]
+      },{
+        completed: true
+      }],
+    });
+
+    const skill = await Skill.findById(req.body.toerase);
+    const challenge = await Challenge.findById(req.body.toerase);
+    const child = skill ? skill : challenge;
+
+    let xpChange = 0;
+    //If the user actually finished it and got XP, remove the XP
+    if (task) {
+      xpChange = -child.get("xp");
+    }
+    const user = await User.findByIdAndUpdate(req.body.userid,{
+      $pull: {
+        skillscompleted: req.body.toerase,
+        challengescompleted: req.body.toerase
+      },
+      $inc: { xp: xpChange}
+    });
+    user.save();
+
+    res.status(200).json({response: "success"});
+  }
 }
+
+
 
 module.exports = new UserController();
