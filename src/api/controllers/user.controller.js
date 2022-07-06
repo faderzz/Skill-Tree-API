@@ -7,7 +7,17 @@ const {levelDiff} = require("../../modules/XPHandler");
 const Task = require("../../models/task.model");
 
 class UserController {
-  
+  async deleteUser(req,res) {
+    console.log("POST /users/deleteUser"); 
+    await User.findByIdAndDelete(req.body.userid);
+    // get all tasks related to the user
+    const tasks = await Task.find({userID:req.body.userid});
+
+    tasks.map(async (task) => {
+      Task.findByIdAndDelete(task._id);
+    });
+    res.status(200).json({response: "success"});
+}
   async profile(req, res) {
     console.log("GET /users/profile");
 
