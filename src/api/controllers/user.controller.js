@@ -572,7 +572,7 @@ class UserController {
   async eraseCompleted(req, res) {
     console.log("POST /users/eraseCompleted");
 
-    const task = await Task.find({
+    const tasks = await Task.find({
       $and: [{
         $or: [{
           skillID: req.body.toerase
@@ -590,7 +590,8 @@ class UserController {
 
     let xpChange = 0;
     //If the user actually finished it and got XP, remove the XP
-    if (task) {
+    console.log(tasks);
+    if (tasks && tasks.length !== 0) {
       xpChange = -child.get("xp");
     }
     const user = await User.findByIdAndUpdate(req.body.userid,{
