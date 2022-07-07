@@ -49,7 +49,7 @@ const taskSchema = new Schema({
     required: true,
     default: false,
   }
-}, { collection: "Tasks" });
+}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "TasksDev" : "Tasks"});
 
 
 module.exports = mongoose.model("Task", taskSchema);

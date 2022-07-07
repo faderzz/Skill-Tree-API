@@ -17,7 +17,7 @@ class UserController {
       Task.findByIdAndDelete(task._id);
     });
     res.status(200).json({response: "success"});
-}
+  }
   async profile(req, res) {
     console.log("GET /users/profile");
 
@@ -198,6 +198,7 @@ class UserController {
         "62c226d89efefadfd10e21a6" // rel 2
       ];
     }
+
     const items = ["62c382d46cac02c487e243cb",
       "62c383846cac02c487e243cc"
     ];
@@ -268,34 +269,6 @@ class UserController {
     //   log.warn(`Cannot find user with query:  ${req.query}`);
     //   res.status(404);
     // }
-  }
-
-  async removeUser(req,res) {
-    /* 
-        #swagger.description = 'Endpoint for deleting a User'
-        #swagger.tags = ['User']
-        #swagger.responses[201] = { description: 'User deleted successfully.' }
-        #swagger.produces = ['application/json']
-    */
-    console.log("GET /users/profile");
-    const UserExists = await User.findOne({username:req.body.username});
-
-    if (UserExists) {
-      try {
-        const removedUser = await User.remove({username:req.body.username,password:req.body.password});
-        res.json({
-          _id:removedUser._id,
-          username:removedUser.username,
-          pic: removedUser.pic,
-        });
-        log.verbose("User deleted");
-      } catch (error) {
-        log.warn(error);
-      }
-    } else {
-      res.status(404).json({response: "error", error: "User not found"});
-      throw new Error("User not Found");
-    }
   }
 
   /**

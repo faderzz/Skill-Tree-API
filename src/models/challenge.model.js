@@ -32,6 +32,6 @@ const challengeSchema = new Schema({
   link: {
     type: String,
   },
-}, { collection: "Challenges" });
+}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "ChallengesDev" : "Challenges"});
 
 module.exports = mongoose.model("Challenge", challengeSchema);

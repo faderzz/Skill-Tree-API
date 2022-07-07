@@ -88,7 +88,7 @@ const UserSchema = new Schema({
     required: true,
   },
 },
-{collection:"Users"}
+{collection: process.env.ENVIRONMENT_TYPE === "development" ? "UsersDev" : "Users"}
 );
 UserSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);

@@ -14,13 +14,12 @@ module.exports = asyncHandler((req, res, next) => {
         res.status(401).json({
           response: "error",
           error: "Not Authorized, invalid API Key"});
-        throw new Error("Not authorized, invalid API Key");
+
       }
     } catch (err) {
       res.status(401).json({
         response: "error",
         error: "Not Authorized, no API key"});
-      throw new Error("Not authorized, no API key");
     }
   } else {
     res.status(401).json({
