@@ -168,6 +168,9 @@ class UserController {
     }
     let completed = [];
     let inprogress = [];
+    const items = ["62c382d46cac02c487e243cb",
+      "62c383846cac02c487e243cc"
+    ];
     if (req.body.difficulty === "medium") {
       completed = [
         "62c226cf9efefadfd10e20ad", //med 1
@@ -179,6 +182,9 @@ class UserController {
         "62c226d09efefadfd10e20b6", //med 2
         "62c226d89efefadfd10e21a0" //jour 2
       ];
+      items.push("62c226d09efefadfd10e20c6"); //how to start meditating
+      items.push("62c226d09efefadfd10e20c6"); // strong
+      items.push("62c226e29efefadfd10e2292"); // exercise guide
     }
     if (req.body.difficulty === "hard") {
       completed = [
@@ -197,11 +203,15 @@ class UserController {
         "62c226dd9efefadfd10e221d", // jour 3
         "62c226d89efefadfd10e21a6" // rel 2
       ];
+      items.push("62c226d09efefadfd10e20c6"); //how to start meditating
+      items.push("62c226d09efefadfd10e20c6"); // strong
+      items.push("62c226e29efefadfd10e2292"); // exercise guide
+      items.push("62c226dd9efefadfd10e2220"); //advanced journal
+      items.push("62c226dd9efefadfd10e2222"); // how to show gratitude
+      items.push("");
+      items.push("");
     }
 
-    const items = ["62c382d46cac02c487e243cb",
-      "62c383846cac02c487e243cc"
-    ];
     const user = await User.create({
       discordid: req.body.discordid,
       character: req.body.character,
@@ -590,7 +600,6 @@ class UserController {
 
     let xpChange = 0;
     //If the user actually finished it and got XP, remove the XP
-    console.log(tasks);
     if (tasks && tasks.length !== 0) {
       xpChange = -child.get("xp");
     }
