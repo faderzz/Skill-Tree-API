@@ -45,11 +45,6 @@ const skillSchema = new Schema({
     type: Number,
     required: true,
   },
-  icon: {
-    type: String,
-    required: true,
-    unique: false
-  },
   category: {
     type: String,
     required: true,
