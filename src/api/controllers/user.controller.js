@@ -208,8 +208,6 @@ class UserController {
       items.push("62c226e29efefadfd10e2292"); // exercise guide
       items.push("62c226dd9efefadfd10e2220"); //advanced journal
       items.push("62c226dd9efefadfd10e2222"); // how to show gratitude
-      items.push("");
-      items.push("");
     }
 
     const user = await User.create({
