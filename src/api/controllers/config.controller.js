@@ -21,7 +21,7 @@ class ServerController {
     console.log("GET /getConfig");
 
     // Check if serverId was provided and return error if not
-    if(!req.body.serverId) {
+    if (!req.body.serverId) {
       return res.status(400).json({
         response: "error",
         message: "Missing serverId"
@@ -34,7 +34,7 @@ class ServerController {
     });
 
     // If there is no server config, create one using the default values and return it
-    if(!serverConfig) {
+    if (!serverConfig) {
       const serverConfig = new Server({
         serverId: req.body.serverId
       });
@@ -56,7 +56,7 @@ class ServerController {
   async updateServerConfig(req, res) {
     console.log("PUT /updateConfig");
     // Check if serverId was provided and return error if not
-    if(!req.body.serverId) {
+    if (!req.body.serverId) {
       return res.status(400).json({
         response: "error",
         message: "Missing serverId"
@@ -69,11 +69,11 @@ class ServerController {
     });
 
     // Combine all the new config values into one object
-    let newConfig = Object.assign(oldConfig, req.body);
+    const newConfig = Object.assign(oldConfig, req.body);
     
     // Check for null values and set them to their default values
     Server.schema._requiredpaths.map(value => {
-      if(newConfig[value] === null) {
+      if (newConfig[value] === null) {
         newConfig[value] = Server.schema.paths[value].defaultValue;
       }
     });
@@ -93,7 +93,7 @@ class ServerController {
   async deleteServerConfig(req, res) {
     console.log("DELETE /deleteConfig");
     // Check if serverId was provided and return error if not
-    if(!req.body.serverId) {
+    if (!req.body.serverId) {
       return res.status(400).json({
         response: "error",
         message: "Missing serverId"
