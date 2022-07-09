@@ -18,8 +18,24 @@ const doc = {
       "description": "The endpoints for User information"
     },
     {
-      "name": "Skills",
-      "description": "The endpoints for Skills"
+      "name": "Skill",
+      "description": "The endpoints for Skill information"
+    },
+    {
+      "name": "Item",
+      "description": "The endpoints for Item information"
+    },
+    {
+      "name": "Task",
+      "description": "The endpoints for Task information"
+    },
+    {
+      "name": "Challenge",
+      "description": "The endpoints for Challenge information"
+    },
+    {
+      "name": "Controller",
+      "description": "The endpoints for root controller. [Development only?]"
     }
   ],
   securityDefinitions: {
@@ -32,29 +48,56 @@ const doc = {
   },
   definitions: {
     User: {
+      pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+      level:5,
+      dm_enabled: true,
       username: "John_Doe",
       password: "mias87dh32d7h36gdasdghyh1ds8326ga6w8d",
-      pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-      exp:1500,
-      level:5,
+      discordid: 1234567890,
+      xp:1500,
+      xpHistory: 12345,
       items:[Schema.Types.ObjectId],
-      skillscompleted:[Schema.Types.ObjectId],
-      skillsinprogress:[Schema.Types.ObjectId],
-      difficulty_level:"easy",
-      dm_enabled: true,
-      gender: "male",
+      completed:[Schema.Types.ObjectId],
+      inprogress:[Schema.Types.ObjectId],
+      difficulty:"easy",
+      character: "male",
+      timezone: "GMT+0:00",
+      baseLocation:[Schema.Types.ObjectId],
+      lastTracked: "9999-12-31 11:59:59",
+      numDaysTracked: 999,
     },
     Skill: {
-      iconName: "Icon_A",
       title: "Example_I",
-      level: "",
+      level: 99,
       goal: "",
-      time: "",
-      frequency: ["daily","weekly","monthly", "annually"],
+      frequency: 99,
+      interval: ["day", "week", "month", "year"],
+      timelimit: "",
       xp: 10,
       category: "",
-      requirements: [],
-      children: []
+      requires: [],
+      children: [],
+    },
+    Challenge: {
+      goal: "Example Goal",
+      xp: 1234567890,
+      category: "Example Category",
+      requires: [Schema.Types.ObjectId],
+    },
+    Task:{
+      skillID: Schema.Types.ObjectId,
+      userID: Schema.Types.ObjectId,
+      data: {
+        type: [false, false, false]
+      },
+      startDate: Date.now(),
+      completed: true,
+    },
+    Item:{
+      name: "Item Name",
+      link: "https://www.link_to_item_information.com/",
+      emoji: "Emoji",
+      requires: [Schema.Types.ObjectId],
     },
     AddSkill: {
       iconName: "Icon_A",
@@ -78,13 +121,11 @@ const doc = {
       skillscompleted:[Schema.Types.ObjectId],
       skillsinprogress:[Schema.Types.ObjectId],
     },
-
   },
-
   servers: [
     {
       url: "http://localhost:8080/",
-      description: "Development server",
+      description: "Local Development server",
     }
   ]
 };
