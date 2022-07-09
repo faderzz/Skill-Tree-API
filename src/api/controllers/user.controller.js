@@ -233,10 +233,12 @@ class UserController {
         });
         task.save();
       }
+      const itemObjects = await Item.find({_id: {$in : items}});
 
       res.status(201).json({
         response: "success",
         _id: user._id,
+        items: itemObjects,
       });
     } else {
       log.warn(`Cannot create user:  ${req.query}`);
