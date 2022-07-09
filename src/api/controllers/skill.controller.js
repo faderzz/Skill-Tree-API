@@ -1,108 +1,162 @@
-const skillModel = require('../../models/skill.model');
-var log = require('npmlog')
+const Skill = require("../../models/skill.model");
+const User = require("../../models/user.model");
+const Task = require("../../models/task.model");
+const mongoose = require("mongoose");
+
 class SkillController {
-  async getSkills(req, res) {
-  /*
-    #swagger.description = 'Endpoint for getting a skill'
-    #swagger.tags = ['Skills']
-    #swagger.produces = ['application/json'] 
-    #swagger.responses[200] = {
-      schema: { "$ref": "#/definitions/Skill" },
-      description: "Skill registered successfully." 
-    }
-  */
+  async getSkillsInProgress(req, res) {
+    console.log("GET /skillsInProgress");
 
-    await skillModel.validate(req.query, ['_id'])
-    const skills = await skillModel.findById(req.query,{maxTimeMS:500}).catch((err) => log.warn(err))
-
-    if (skills != null){
-        res.status(200).json(skills)
-    } else {
-        log.warn(`Cannot find user with query: ${req.query}`)
-        res.status(404)
-    }
-
+    const user = await User.findById(req.headers["userid"]);
+    const skills = await Skill.find({
+      _id: {$in : user.get("inprogress")},
+    });
+    res.status(200).json({
+      response: "success",
+      skills: skills});
   }
 
-  async getAllSkills(req, res){
-  /*
-    #swagger.description = 'Endpoint for getting a skill'
-    #swagger.tags = ['Skills']
-    #swagger.produces = ['application/json'] 
-    #swagger.responses[200] = {
-      schema: { "$ref": "#/definitions/Skill" },
-      description: "Skill registered successfully." 
-    }
-  */
-    log.info("GET /skills/all")
-    const skills = await skillModel.find({},{maxTimeMS:500}).catch((err) => log.warn(err))
+  async getSkills(req, res) {
+    console.log("GET /skills");
 
-    if (skills != null){
-        res.status(200).json(skills)
-    } else {
-        log.warn(`Cannot find user with query: ${req.query}`)
-        res.status(404)
-    }
+    const skills = await Skill.find({});
+    const root = await Skill.find({
+      requires: []
+    });
+
+    res.status(200).json({
+      response: "success",
+      skills: skills,
+      root: root
+    });
+  }
+  
+  async getAllInList(req, res) {
+    console.log("GET /skills/getAllInList");
+
+    const skillIDs = req.headers.skills.replace(/\s/g, "").split(",");
+    const skills = await Skill.find({
+      _id : {$in : skillIDs}
+    });
+
+    res.status(200).json({
+      response: "success",
+      skills: skills,
+    });
+  }
+
+  async startSkill(req, res) {
+    console.log("POST /skills/startSkill");
+
+    //Get skill to star
+    const skill = await Skill.findById(req.body.skillid);
+    const user = await User.findById(req.body.userid);
+    
+    const task = new Task({
+      userID: user.get("_id"),
+      skillID: skill.get("_id"),
+      startDate: new Date(),
+      data: [],
+      completed: false,
+    });
+    task.save();
+
+    //Update the user to start the skill
+    user.get("inprogress").push(skill.get("_id"));
+    user.save();
+    res.status(200).json({response: "success"});
+  }
+
+  async skipSkill(req, res) {
+    console.log("POST /skills/skipSkill");
+
+    //complete without XP
+    await User.findByIdAndUpdate(req.body.userid, {
+      $addToSet: { completed: req.body.skillid },
+    });
+
+    res.status(200).json({response: "success"});
+  }
+
+  async revertSkill(req, res) {
+    console.log("POST /skills/revertSkill");
+    //Get skill to revoke
+    const skill = await Skill.findById(req.body.skillID);
+
+    //complete without XP
+    const user = await User.findByIdAndUpdate(req.body.userid, {
+      $pullAll: { inprogress: skill.get("requires")},
+    });
+    user.save();
+    res.status(200).json({response: "success"});
+  }
+
+  async cancelSkill(req,res) {
+    console.log("POST /skills/cancel");
+
+    await User.findByIdAndUpdate(req.body.userid,{
+      $pull: {inprogress: mongoose.Types.ObjectId(req.body.skillid)},
+    });
+
+    await Task.findOneAndUpdate({
+      userID: req.body.userid,
+      skillID: req.body.skillid,
+      completed: false,
+    },{
+      completed: true,
+    });
+
+    res.status(200).json({response: "success"});
   }
 
   async createSkill(req, res) {
-  /*
-    #swagger.description = 'Endpoint for creating a skill'
-    #swagger.tags = ['Skills']
-    #swagger.responses[201] = { description: 'Skill created successfully.' }
-    #swagger.produces = ['application/json']
-    #swagger.requestBody = { 
-            required: true,
-            description: 'User information.',
-            content: {
-                "application/json": {
-                    schema: { $ref: "#/definitions/AddSkill" }
-                }
-            }
-        }
-  */
-    log.info('POST /skills');
+    console.log("POST /skills/create");
 
-    const skill = new skillModel(req.body)
-    await skillModel.create(skill).then(() => {
-      log.info("created skill")
-      res.status(201).json(skill)
-    }).catch((err) => {
-      log.error(err)
-      res.status(404).json(err)
-    }).finally(() => {
-      log.info(`Finished. Skill: ${skill}`)
-    })
+    const skill = new Skill(req.body);
 
+    skill.validate(async err => {
+      if (err) return res.status(400).json({
+        response: "error",
+        error: err });
+
+      if (await Skill.findOne({ title: skill.title, level: skill.level }).exec()) {
+        return res.status(409).json({
+          response: "error",
+          error: "Skill already exists." });
+      }
+
+      skill.save();
+
+      return res.status(201).json({
+        response: "success",
+        skill: skill
+      });
+    });
   }
 
+  async updateSkill(req, res) {
+    console.log("POST /skills/update");
 
-  async editSkill(req, res) {
-  /* 
-    #swagger.description = 'Endpoint for editing a skill'
-    #swagger.tags = ['Skills']
-    #swagger.responses[201] = { description: 'Skill edited successfully.' }
-    #swagger.produces = ['application/json']
-    #swagger.parameters['id'] = {
-            in: 'path',
-            type: 'integer',
-            description: 'Skill ID.' } 
-  */
-    log.verbose("UPDATE /skills")
-    const skill = new Skill(this.getSkills(res.id))
-    res.status(201).json(skill);
+    Skill.findByIdAndUpdate(req.body.id,
+      {$set: req.body},
+      (err, skill) => {
+        if (err) return res.status(400).json({
+          response: "error",
+          error: err });
+
+        return res.status(200).json({
+          response: "success",
+          skill: skill
+        });
+      }
+    );
   }
 
- 
   async deleteSkill(req, res) {
-  /* 
-    #swagger.description = 'Endpoint for deleting a skill'
-    #swagger.tags = ['Skills']
-    #swagger.responses[201] = { description: 'Skill deleted successfully.' }
-    #swagger.produces = ['application/json']
-  */
-    log.verbose("DELETE skill")
-    res.status(201).json(skill);
+    console.log("POST /skills/delete");
+
+    Skill.findByIdAndDelete(req.body.id);
+    res.status(200).json({response: "success"});
   }
 }
 

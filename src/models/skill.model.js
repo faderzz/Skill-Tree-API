@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 /**
@@ -15,11 +15,6 @@ const Schema = mongoose.Schema;
  * @param children - The skills connected below this one
  */
 const skillSchema = new Schema({
-  iconName: {
-    type: String,
-    required: true,
-    unique: false
-  },
   title: {
     type: String,
     required: true
@@ -29,13 +24,17 @@ const skillSchema = new Schema({
     required: true,
     unique: false
   },
-  goal: {
+  goal: [{
     type: String,
     required: true,
-  },
+  }],
   frequency: {
+    type: Number,
+    required: true,
+  },
+  interval: {
     type: String,
-    enum: ["DAILY", "WEEKLY", "2x/WEEK", "MONTHLY"],
+    enum: ["day", "week", "month", "year"],
     required: true,
   },
   timelimit: {
@@ -55,13 +54,15 @@ const skillSchema = new Schema({
     required: true,
   },
   children: {
-    type: [Schema.Types.ObjectId],
+    type: [{
+      type: Schema.Types.ObjectId,
+    }],
     required: true,
-  }
-}, { collection: 'Skills' });
+  },
+}, { collection: "Skills" });
 
 // Makes sure that the iconName and level have to be duplicates in order to throw an error.
 // If the index doesn't behave as expected, I've found that dropping the collection and having mongoose create it automatically fixes it.
-skillSchema.index({ title: "MEDITATION", level: 1}, { unique: true });
+skillSchema.index({ title: 1, level: 1}, { unique: true });
 
-module.exports = mongoose.model('Skill', skillSchema);
+module.exports = mongoose.model("Skill", skillSchema);

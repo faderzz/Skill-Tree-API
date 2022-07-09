@@ -1,13 +1,19 @@
-const express = require('express');
-const skillController = require('../../controllers/skill.controller');
+const express = require("express");
+const auth = require("../../middlewares/auth");
+const SkillController = require("../../controllers/skill.controller");
 
 const router = express.Router();
-const prefix = "/v1/skills"
 
-router.get(prefix + '/', skillController.getSkills);
-router.get(prefix + '/all', skillController.getAllSkills)
-router.post(prefix + '/', skillController.createSkill);
-router.put(prefix + '/:id', skillController.editSkill);
-router.delete(prefix + '/:id', skillController.deleteSkill);
+router.get("/", auth, SkillController.getSkills);
+router.get("/available", auth, SkillController.getAvailableSkills);
+router.post("/createSkill", auth, SkillController.createSkill);
+router.post("/startSkill", auth, SkillController.startSkill);
+router.post("/skipSkill", auth, SkillController.skipSkill);
+router.post("/revertSkill", auth, SkillController.revertSkill);
+router.post("/cancelSkill", auth, SkillController.cancelSkill);
+router.get("/inProgress", auth, SkillController.getSkillsInProgress);
+router.put("/updateSkill", auth, SkillController.updateSkill);
+router.delete("/deleteSkill", auth, SkillController.deleteSkill);
+router.get("/getAllInList", auth, SkillController.getAllInList);
 
 module.exports = router;

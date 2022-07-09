@@ -1,12 +1,17 @@
-const express = require('express');
-const userController = require('../../controllers/user.controller');
-
+const UserController = require("../../controllers/user.controller");
+const auth = require("../../middlewares/auth");
+const express = require("express");
 const router = express.Router();
-const prefix = "/v1/users"
 
-router.get(prefix + '/', userController.getUser);
-router.post(prefix + '/', userController.createUser);
-router.put(prefix + '/{id}', userController.updateUser);     
-router.delete(prefix + '/{id}', userController.deleteUser);  
-
+router.get("/profile", auth, UserController.profile);
+router.post("/register", auth, UserController.register);
+router.post("/registerDiscord", auth, UserController.registerDiscord);
+router.post("/login", auth, UserController.authUser);
+router.get("/loginDiscord", auth, UserController.authUserDiscord);
+router.post("/updateUser", auth, UserController.updateUser);
+router.post("/updateXPHistory", auth, UserController.updateXPHistory);
+router.post("/updateTimezone", auth, UserController.updateTimezone);
+router.post("/updateBaseLocation", auth, UserController.updateBaseLocation);
+router.get("/getAllInTimezone", auth, UserController.getAllInTimezone);
+router.get("/getAll", auth, UserController.getAll);
 module.exports = router;

@@ -1,31 +1,16 @@
-require('dotenv').config();
+require("dotenv").config();
 const mongoose = require('mongoose');
-var log = require('npmlog')
-require('dotenv').config();
-
-
-const MY_USER = process.env.DB_USER;
-const MY_PASSWORD = process.env.DB_PASSWORD;
-const MY_SERVER = process.env.DB_SERVER_URL;
-const MY_PORT = process.env.DB_SERVER_PORT != null ? "" : process.env.DB_SERVER_PORT;
-const DB_NAME = process.env.DB_NAME;
-const CONNECTION_TYPE = process.env.ENVIRONMENT_TYPE == "development" ? "mongodb://" : "mongodb+srv://"
-
-const URL = `${CONNECTION_TYPE}${MY_USER}:${MY_PASSWORD}@${MY_SERVER}:${MY_PORT}`
-log.verbose(URL)
-
-const db = mongoose.connection;
 
 function load() {
-  mongoose.connect(URL, {useNewUrlParser: true, useUnifiedTopology: true});
-  db.useDb(DB_NAME);
-  db.on('connect', () => log.info('MongoDB connected'));
-  db.on('error', (error) => {
-    log.warn('Warning', error);
-    });  
-  db.once("open", function() {
-    log.info("Connected successfully");
-  })
+  mongoose.connection.on("connect", () => console.log("MongoDB connected"));
+
+  mongoose.connect(process.env.DB_KEY, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
+    if (err) {
+      console.log("Error: ",err);
+    } else {
+      console.log("Connected to db successfully");
+    }
+  });
 }
 
 module.exports = load;
