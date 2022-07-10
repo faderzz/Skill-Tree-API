@@ -50,6 +50,9 @@ class TaskController {
             const numChecked = data.splice(-limitSize).filter((v) => v).length;
             const goalIndex = numChecked / blockSize;
             skill.goal = skill.goals[goalIndex];
+            if (!skill.goal) {
+              skill.goal = skill.goals.join(", ");
+            }
           }
         }
       }
