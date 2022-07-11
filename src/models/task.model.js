@@ -48,6 +48,16 @@ const taskSchema = new Schema({
     type: Boolean,
     required: true,
     default: false,
+  },
+  lastChanged: {
+    type: Date,
+    required: false,
+    default: new Date(),
+  },
+  lastGoalIndex: {
+    type: Number,
+    required: false,
+    default: 0,
   }
 }, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "TasksDev" : "Tasks"});
 

@@ -46,7 +46,6 @@ class TaskController {
             if (goalIndex > skill.goals.length) {
               skill.goal = skill.goals.join(", ");
             }
-            console.log(goalIndex);
           }
         }
       }
@@ -121,6 +120,8 @@ class TaskController {
     const skill = task.get("skillID");
     let completed = false;
 
+    const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
+
     //If not skill, then it's a challenge
     if (skill) {
       const frequency = skill.get("frequency");
@@ -128,8 +129,6 @@ class TaskController {
       const timelimit = skill.get("timelimit");
 
       const startDate = task.get("startDate");
-
-      const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
 
       const checked = req.body.checked;
       let indexOfChange;
@@ -162,17 +161,29 @@ class TaskController {
       // and the goal has a 100% success rate
       //3) There is one goal, the number of entries is more than the timelimit, and there's an 80% success rate
       if (interval === -1 ||
-        (skill.get("goals").length !== 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval)) ||
+        (skill.get("goals").length !== 1 && numChecked > timelimit * (frequency / interval)) ||
         (skill.get("goals").length === 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
         completed = true;
       }
     } else {
       const challenge = task.get("challengeID");
-      data = data.concat(true);
+      let lastChanged = task.get("lastChanged");
+      let lastGoalIndex = task.get("lastGoalIndex");
+      if (!(lastChanged) ||
+          getDaysBetweenDates(
+            new Date(Date.parse(lastChanged) + offset),
+            userDate, user.get("timezone")) > 0) {
+        lastChanged = new Date();
+        if (!lastGoalIndex) { lastGoalIndex = 0;}
+        else {lastGoalIndex += 1;}
+      }
+      data[lastGoalIndex] = req.body.checked;
       await Task.findByIdAndUpdate(req.body.taskid,
         {
           $set : {
             data: data,
+            lastChanged: lastChanged,
+            lastGoalIndex: lastGoalIndex,
           }
         }, {
           setDefaultsOnInsert: true,
