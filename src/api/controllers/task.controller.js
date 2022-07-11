@@ -154,7 +154,6 @@ class TaskController {
       if (skill.get("goals").length !== 1) {
         numChecked = data.filter(v => v).length;
       }
-
       //Complete the skill if one of three conditions is met
       //1) If the interval is N/A
       //2) If there are multiple goals, the number of entries is greater than the timelimit,
