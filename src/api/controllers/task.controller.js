@@ -45,14 +45,9 @@ class TaskController {
             //you don't want to start cutting off mondays, tuesday, wednesday etc
             // as it goes over time. You cut off an entire week so that
             // everything is aligned by the week. Hope that makes sense
-            const newIndexOfStart = Math.floor((data.length - skill.timelimit) / blockSize) * blockSize;
-            const limitSize = data.length - newIndexOfStart;
-            const numChecked = data.splice(-limitSize).filter((v) => v).length;
+            const numChecked = data.filter((v) => v).length;
             const goalIndex = numChecked / blockSize;
             skill.goal = skill.goals[goalIndex];
-            if (!skill.goal) {
-              skill.goal = skill.goals.join(", ");
-            }
           }
         }
       }
@@ -85,7 +80,7 @@ class TaskController {
       $cond: {
         if: {$eq: ["$completed", true]},
         then: {
-          $lt: [getDaysBetweenDates(new Date("$endDate" + offset), userDate), req.body.timelimit]
+          $lt: [getDaysBetweenDates(new Date("$endDate" + offset), userDate, user.get("timezone")), req.body.timelimit]
         },
         else: true,
       }
@@ -110,7 +105,7 @@ class TaskController {
     const offset = user.get("timezone") * 3600000;
     if (user) {
       if (getDaysBetweenDates(user.get("lastTracked").getTime()+offset,
-        new Date(new Date().getTime() + offset)) > 0) {
+        new Date(new Date().getTime() + offset), user.get("timezone")) > 0) {
 
         user.lastTracked = new Date().getTime() + offset;
         user.numDaysTracked += 1;
@@ -142,7 +137,7 @@ class TaskController {
       if (interval === -1) {
         indexOfChange = 0;
       } else {
-        indexOfChange = getDaysBetweenDates(new Date(Date.parse(startDate) + offset), userDate);
+        indexOfChange = getDaysBetweenDates(new Date(Date.parse(startDate) + offset), userDate, user.get("timezone"));
       }
       data[indexOfChange] = checked;
 
@@ -157,7 +152,7 @@ class TaskController {
       const blockSize = intervalToInt(interval);
       const newIndexOfStart = Math.floor((data.length - timelimit) / blockSize) * blockSize;
       const limitSize = data.length - newIndexOfStart;
-      const numChecked = data.splice(-limitSize).filter((v) => v).length;
+      const numChecked = data.slice(-limitSize).filter((v) => v).length;
 
       //Complete the skill if one of three conditions is met
       //1) If the interval is N/A

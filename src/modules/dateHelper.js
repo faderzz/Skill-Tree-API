@@ -14,7 +14,7 @@
 
  Assumes d0 <= d1
  */
-exports.getDaysBetweenDates = function(d0, d1) {
+exports.getDaysBetweenDates = function(d0, d1, tz) {
 
   const msPerDay = 8.64e7;
 
@@ -23,8 +23,8 @@ exports.getDaysBetweenDates = function(d0, d1) {
   const x1 = new Date(d1);
 
   // Set to noon - avoid DST errors
-  x0.setHours(12,0,0);
-  x1.setHours(12,0,0);
+  x0.setUTCHours(12+tz,0,0);
+  x1.setUTCHours(12+tz,0,0);
 
   // Round to remove daylight saving errors
   return Math.round( (x1 - x0) / msPerDay );
@@ -38,18 +38,17 @@ exports.getDaysBetweenDates = function(d0, d1) {
  * @return {Date} - date object
  */
 exports.dayToDate = function(day) {
+  const date = new Date();
   if (day === "today") {
-    return new Date();
+    return date;
   } else if (day === "yesterday") {
-    const yesterday = new Date();
-    yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-    return yesterday;
+    date.setUTCDate(date.getUTCDate() - 1);
+    return date;
   } else if (day === "tomorrow") {
-    const tomorrow = new Date();
-    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-    return tomorrow;
+    date.setUTCDate(date.getUTCDate() + 1);
+    return date;
   }
-  return new Date();
+  return date;
 };
 
 exports.intervalToInt = function(interval) {
