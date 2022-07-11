@@ -160,8 +160,8 @@ class TaskController {
       // and the goal has a 100% success rate
       //3) There is one goal, the number of entries is more than the timelimit, and there's an 80% success rate
       if (interval === -1 ||
-        (skill.get("goals").length !== 1 && numChecked > timelimit * (frequency / interval)) ||
-        (skill.get("goals").length === 1 && data.length > timelimit && numChecked > timelimit * (frequency / interval) * 0.8)) {
+        (skill.get("goals").length !== 1 && numChecked >= timelimit * (frequency / interval)) ||
+        (skill.get("goals").length === 1 && data.length >= timelimit && numChecked >= timelimit * (frequency / interval) * 0.8)) {
         completed = true;
       }
     } else {
