@@ -40,14 +40,13 @@ class TaskController {
             //get number of completions within the last block period
             //hacky fix
             const data = tasks[i]["data"].map((x) => x);
-            //Round limit to the nearest block size (so no cutoffs occur)
-            //Basically if you have a skill which is weekly, and you have a 30 day limit
-            //you don't want to start cutting off mondays, tuesday, wednesday etc
-            // as it goes over time. You cut off an entire week so that
-            // everything is aligned by the week. Hope that makes sense
             const numChecked = data.filter((v) => v).length;
             const goalIndex = numChecked / blockSize;
             skill.goal = skill.goals[goalIndex];
+            if (goalIndex > skill.goals.length) {
+              skill.goal = skill.goals.join(", ");
+            }
+            console.log(goalIndex);
           }
         }
       }
@@ -152,7 +151,10 @@ class TaskController {
       const blockSize = intervalToInt(interval);
       const newIndexOfStart = Math.floor((data.length - timelimit) / blockSize) * blockSize;
       const limitSize = data.length - newIndexOfStart;
-      const numChecked = data.slice(-limitSize).filter((v) => v).length;
+      let numChecked = data.slice(-limitSize).filter((v) => v).length;
+      if (skill.get("goals").length !== 1) {
+        numChecked = data.filter(v => v).length;
+      }
 
       //Complete the skill if one of three conditions is met
       //1) If the interval is N/A
