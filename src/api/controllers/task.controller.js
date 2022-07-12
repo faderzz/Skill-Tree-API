@@ -11,6 +11,7 @@ class TaskController {
 
   async currentTasks(req, res) {
     console.log("GET /tasks/currentTasks");
+
     const user = await User.findById(req.headers["userid"]);
     const timezone = user.get("timezone");
     const tasks = await Task.find({
