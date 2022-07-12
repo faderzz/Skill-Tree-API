@@ -97,7 +97,10 @@ class TaskController {
     const task = await Task.findById(req.body.taskid)
       .populate({path: "skillID", model: Skill})
       .populate({path: "challengeID", model: Challenge});
-    
+
+    if (task.get("completed")) {
+      return;
+    }
     //Update last tracked
     const user = await User.findById(task.get("userID"));
     const offset = user.get("timezone") * 3600000;
@@ -160,7 +163,7 @@ class TaskController {
       // and the goal has a 100% success rate
       //3) There is one goal, the number of entries is more than the timelimit, and there's an 80% success rate
       if (interval === -1 ||
-        (skill.get("goals").length !== 1 && numChecked >= timelimit * (frequency / interval)) ||
+        (skill.get("goals").length !== 1 && data.length >= timelimit && numChecked >= timelimit * (frequency / interval)) ||
         (skill.get("goals").length === 1 && data.length >= timelimit && numChecked >= timelimit * (frequency / interval) * 0.8)) {
         completed = true;
       }
