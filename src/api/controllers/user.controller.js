@@ -297,7 +297,9 @@ class UserController {
     if (skill) {
       const completed = await User.findById(task.get("userID"));
       let items = await Item.find({requires: task.get("skillID").get("_id")});
-      items = items.concat(await Item.find({$setIsSubset: ["requires", completed.get("skillscompleted")]}));
+      const completedItems = await Item.find({$expr: {$setIsSubset: ["$requires", completed.get("skillscompleted")]}});
+
+      items = items.concat(completedItems);
 
       const user = await User.findByIdAndUpdate(task.get("userID"), {
         $pull: {skillsinprogress: skill},
