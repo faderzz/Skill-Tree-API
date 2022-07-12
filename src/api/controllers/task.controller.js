@@ -152,19 +152,23 @@ class TaskController {
         }, {
           setDefaultsOnInsert: true,
         });
-      const blockSize = intervalToInt(interval);
-      const newIndexOfStart = Math.floor((data.length - timelimit) / blockSize) * blockSize;
+      let numChecked;
+      const newIndexOfStart = Math.floor((data.length - timelimit) / interval) * interval;
       const limitSize = data.length - newIndexOfStart;
-      let numChecked = data.slice(-limitSize).filter((v) => v).length;
+      numChecked = data.slice(-limitSize).filter((v) => v).length;
+
+      if (interval === -1) {
+        numChecked = data.filter(Boolean).length;
+      }
       if (skill.get("goals").length !== 1) {
-        numChecked = data.filter(v => v).length;
+        numChecked = data.filter(Boolean).length;
       }
       //Complete the skill if one of three conditions is met
       //1) If the interval is N/A
       //2) If there are multiple goals, the number of entries is greater than the timelimit,
       // and the goal has a 100% success rate
       //3) There is one goal, the number of entries is more than the timelimit, and there's an 80% success rate
-      if (interval === -1 ||
+      if (interval === -1 && numChecked >= 1 ||
         (skill.get("goals").length !== 1 && data.length >= timelimit && numChecked >= timelimit * (frequency / interval)) ||
         (skill.get("goals").length === 1 && data.length >= timelimit && numChecked >= timelimit * (frequency / interval) * 0.8)) {
         completed = true;
