@@ -98,9 +98,11 @@ class TaskController {
       .populate({path: "skillID", model: Skill})
       .populate({path: "challengeID", model: Challenge});
 
-    if (task.get("completed")) {
+    if (task.get("completed") === true) {
+      console.log("completed");
       return;
     }
+
     //Update last tracked
     const user = await User.findById(task.get("userID"));
     const offset = user.get("timezone") * 3600000;
