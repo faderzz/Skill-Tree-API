@@ -26,5 +26,8 @@
     "start": "node src/index.js",
     "lint": "eslint src",
     "swagger-docs": "node swagger.js"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
   }
 }
