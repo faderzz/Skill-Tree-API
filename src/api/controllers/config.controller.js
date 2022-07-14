@@ -69,19 +69,20 @@ class ServerController {
     });
 
     // Combine all the new config values into one object
-    const newConfig = Object.assign(oldConfig, req.body);
+    const newConfig = Object.assign(oldConfig || {}, req.body);
+    
     
     // Check for null values and set them to their default values
-    Server.schema._requiredpaths.map(value => {
-      if (newConfig[value] === null) {
-        newConfig[value] = Server.schema.paths[value].defaultValue;
+    for (const key in Server.schema.obj) {
+      if (newConfig[key] === undefined && Server.schema.obj[key].default) {
+        newConfig[key] = Server.schema.obj[key].default;
       }
-    });
-
+    }
+    
     // Update the config
     const updatedConfig = await Server.findOneAndUpdate({
-      serverId: req.body.serverId
-    }, newConfig, { new: true });
+      serverId: newConfig.serverId
+    }, newConfig, { new:true });
 
     // Return the updated config
     return res.status(200).json({

@@ -64,9 +64,4 @@ const serverSchema = new Schema({
   }
 }, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "ServerConfigsDev" : "ServerConfigs" });
 
-serverSchema.pre("updateOne", function(next) {
-  console.log(this.getUpdate());
-  next();
-});
-
 module.exports = mongoose.model("Server", serverSchema);
