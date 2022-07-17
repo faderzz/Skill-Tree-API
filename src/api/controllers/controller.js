@@ -22,6 +22,11 @@ class Controller {
     });
   }
 
+  async getStatus(_req, res) {
+    console.log("GET /status");
+    res.status(200).json({response: "success"});
+  }
+
   async inList(req, res) {
     console.log("GET /inList");
 
