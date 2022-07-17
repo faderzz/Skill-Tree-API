@@ -1,21 +1,6 @@
 const Skill = require("../../models/skill.model");
-const User = require("../../models/user.model");
-const Task = require("../../models/task.model");
-const mongoose = require("mongoose");
 
 class SkillController {
-  async getSkillsInProgress(req, res) {
-    console.log("GET /skillsInProgress");
-
-    const user = await User.findById(req.headers["userid"]);
-    const skills = await Skill.find({
-      _id: {$in : user.get("inprogress")},
-    });
-    res.status(200).json({
-      response: "success",
-      skills: skills});
-  }
-
   async getSkills(req, res) {
     console.log("GET /skills");
 
@@ -29,84 +14,6 @@ class SkillController {
       skills: skills,
       root: root
     });
-  }
-  
-  async getAllInList(req, res) {
-    console.log("GET /skills/getAllInList");
-
-    const skillIDs = req.headers.skills.replace(/\s/g, "").split(",");
-    const skills = await Skill.find({
-      _id : {$in : skillIDs}
-    });
-
-    res.status(200).json({
-      response: "success",
-      skills: skills,
-    });
-  }
-
-  async startSkill(req, res) {
-    console.log("POST /skills/startSkill");
-
-    //Get skill to star
-    const skill = await Skill.findById(req.body.skillid);
-    const user = await User.findById(req.body.userid);
-    
-    const task = new Task({
-      userID: user.get("_id"),
-      skillID: skill.get("_id"),
-      startDate: new Date(),
-      data: [],
-      completed: false,
-    });
-    task.save();
-
-    //Update the user to start the skill
-    user.get("inprogress").push(skill.get("_id"));
-    user.save();
-    res.status(200).json({response: "success"});
-  }
-
-  async skipSkill(req, res) {
-    console.log("POST /skills/skipSkill");
-
-    //complete without XP
-    await User.findByIdAndUpdate(req.body.userid, {
-      $addToSet: { completed: req.body.skillid },
-    });
-
-    res.status(200).json({response: "success"});
-  }
-
-  async revertSkill(req, res) {
-    console.log("POST /skills/revertSkill");
-    //Get skill to revoke
-    const skill = await Skill.findById(req.body.skillID);
-
-    //complete without XP
-    const user = await User.findByIdAndUpdate(req.body.userid, {
-      $pullAll: { inprogress: skill.get("requires")},
-    });
-    user.save();
-    res.status(200).json({response: "success"});
-  }
-
-  async cancelSkill(req,res) {
-    console.log("POST /skills/cancel");
-
-    await User.findByIdAndUpdate(req.body.userid,{
-      $pull: {inprogress: mongoose.Types.ObjectId(req.body.skillid)},
-    });
-
-    await Task.findOneAndUpdate({
-      userID: req.body.userid,
-      skillID: req.body.skillid,
-      completed: false,
-    },{
-      completed: true,
-    });
-
-    res.status(200).json({response: "success"});
   }
 
   async createSkill(req, res) {

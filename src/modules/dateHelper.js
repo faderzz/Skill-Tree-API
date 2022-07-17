@@ -14,17 +14,17 @@
 
  Assumes d0 <= d1
  */
-exports.getDaysBetweenDates = function(d0, d1) {
+exports.getDaysBetweenDates = function(d0, d1, tz) {
 
-  var msPerDay = 8.64e7;
+  const msPerDay = 8.64e7;
 
   // Copy dates so don't mess them up
-  var x0 = new Date(d0);
-  var x1 = new Date(d1);
+  const x0 = new Date(d0);
+  const x1 = new Date(d1);
 
   // Set to noon - avoid DST errors
-  x0.setHours(12,0,0);
-  x1.setHours(12,0,0);
+  x0.setUTCHours(12+tz,0,0);
+  x1.setUTCHours(12+tz,0,0);
 
   // Round to remove daylight saving errors
   return Math.round( (x1 - x0) / msPerDay );
@@ -38,16 +38,30 @@ exports.getDaysBetweenDates = function(d0, d1) {
  * @return {Date} - date object
  */
 exports.dayToDate = function(day) {
+  const date = new Date();
   if (day === "today") {
-    return new Date();
+    return date;
   } else if (day === "yesterday") {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    return yesterday;
+    date.setUTCDate(date.getUTCDate() - 1);
+    return date;
   } else if (day === "tomorrow") {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow;
+    date.setUTCDate(date.getUTCDate() + 1);
+    return date;
   }
-  return new Date();
+  return date;
+};
+
+exports.intervalToInt = function(interval) {
+  switch (interval) {
+    case "day":
+      return 1;
+    case "week":
+      return 7;
+    case "month":
+      return 30;
+    case "year":
+      return 365;
+    case "N/A":
+      return -1;
+  }
 };

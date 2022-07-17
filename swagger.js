@@ -54,7 +54,6 @@ const doc = {
       xp: 10,
       category: "",
       requirements: [],
-      children: []
     },
     AddSkill: {
       iconName: "Icon_A",
@@ -66,7 +65,6 @@ const doc = {
       xp: 10,
       category: "",
       requirements: [],
-      children: []
     },
     AddUser: {
       username: "John_Doe",

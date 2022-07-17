@@ -27,6 +27,6 @@ const itemSchema = new Schema({
     required: true,
     unique: false
   },
-}, { collection: "Items" });
+}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "ItemsDev" : "Items"});
 
 module.exports = mongoose.model("Item", itemSchema);

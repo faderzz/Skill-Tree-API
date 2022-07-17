@@ -22,9 +22,21 @@ class Controller {
     });
   }
 
-  async getStatus(req, res) {
-    console.log("GET /status");
-    res.status(200).json({response: "success"});
+  async inList(req, res) {
+    console.log("GET /inList");
+
+    const IDs = req.headers.list.replace(/\s/g, "").split(",");
+    const skills = await Skill.find({
+      _id : {$in : IDs}
+    });
+    const challenges = await Challenge.find({
+      _id : {$in : IDs}
+    });
+
+    res.status(200).json({
+      response: "success",
+      list: skills.concat(challenges),
+    });
   }
 }
 

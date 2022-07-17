@@ -26,6 +26,9 @@ if (process.env.ENVIRONMENT_TYPE === "development") {
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile, {explorer:true}));
   log.info(`API documentation: http://localhost:${swagger_port}/api-docs`);
   app.listen(swagger_port, () => log.info(`Swagger: Listening on port ${swagger_port}`));
+  log.warn("API in DEVELOPMENT mode");
+} else {
+  log.warn("API in DEPLOYMENT mode");
 }
 
 
