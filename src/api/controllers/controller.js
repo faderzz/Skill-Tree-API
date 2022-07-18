@@ -38,6 +38,13 @@ class Controller {
       list: skills.concat(challenges),
     });
   }
+
+  async getStatus(req, res) {
+    console.log("GET /status");
+    res.status(200).json({
+      response: "success",
+    });
+  }
 }
 
 module.exports = new Controller();
