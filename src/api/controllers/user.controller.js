@@ -588,12 +588,16 @@ class UserController {
     const tasks = await Task.find({
       $and: [{
         $or: [{
-          skillID: req.body.toerase
+          skillID: req.body.toerase,
+          challengeID: { $exists:false }
         },{
-          challengeID: req.body.toerase
+          challengeID: req.body.toerase,
+          skillID: { $exists: false },
         }]
       },{
         completed: true
+      },{
+        userID: req.body.userid,
       }],
     });
 
@@ -603,7 +607,7 @@ class UserController {
 
     let xpChange = 0;
     //If the user actually finished it and got XP, remove the XP
-    if (tasks && tasks.length !== 0) {
+    if (tasks.length !== 0) {
       xpChange = -child.get("xp");
     }
     const user = await User.findByIdAndUpdate(req.body.userid,{
