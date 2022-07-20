@@ -22,9 +22,11 @@ class Controller {
     });
   }
 
-  async getStatus(_req, res) {
+  async getStatus(req, res) {
     console.log("GET /status");
-    res.status(200).json({response: "success"});
+    res.status(200).json({
+      response: "success",
+    });
   }
 
   async inList(req, res) {

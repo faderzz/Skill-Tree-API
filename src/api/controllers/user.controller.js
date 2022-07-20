@@ -8,7 +8,7 @@ const Task = require("../../models/task.model");
 
 class UserController {
   async deleteUser(req,res) {
-    console.log("POST /users/deleteUser"); 
+    console.log("POST /users/deleteUser");
     await User.findByIdAndDelete(req.body.userid);
     // get all tasks related to the user
     const tasks = await Task.find({userID:req.body.userid});
@@ -169,8 +169,7 @@ class UserController {
     let completed = [];
     let inprogress = [];
     const items = ["62c382d46cac02c487e243cb",
-      "62c383846cac02c487e243cc"
-    ];
+      "62c383846cac02c487e243cc"];
     if (req.body.difficulty === "medium") {
       completed = [
         "62c226cf9efefadfd10e20ad", //med 1
@@ -588,12 +587,16 @@ class UserController {
     const tasks = await Task.find({
       $and: [{
         $or: [{
-          skillID: req.body.toerase
+          skillID: req.body.toerase,
+          challengeID: { $exists:false }
         },{
-          challengeID: req.body.toerase
+          challengeID: req.body.toerase,
+          skillID: { $exists: false },
         }]
       },{
         completed: true
+      },{
+        userID: req.body.userid,
       }],
     });
 
@@ -603,7 +606,7 @@ class UserController {
 
     let xpChange = 0;
     //If the user actually finished it and got XP, remove the XP
-    if (tasks && tasks.length !== 0) {
+    if (tasks.length !== 0) {
       xpChange = -child.get("xp");
     }
     const user = await User.findByIdAndUpdate(req.body.userid,{
