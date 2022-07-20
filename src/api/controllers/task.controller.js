@@ -145,7 +145,6 @@ class TaskController {
       }
       data[indexOfChange] = checked;
 
-      console.log(data);
       await Task.findByIdAndUpdate(req.body.taskid,
         {
           $set : {
