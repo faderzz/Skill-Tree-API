@@ -169,8 +169,7 @@ class UserController {
     let completed = [];
     let inprogress = [];
     const items = ["62c382d46cac02c487e243cb",
-      "62c383846cac02c487e243cc"
-    ];
+      "62c383846cac02c487e243cc"];
     if (req.body.difficulty === "medium") {
       completed = [
         "62c226cf9efefadfd10e20ad", //med 1
