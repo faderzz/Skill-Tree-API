@@ -148,7 +148,7 @@ class TaskController {
       await Task.findByIdAndUpdate(req.body.taskid,
         {
           $set : {
-            data: data.map(d => (d === null) ? false : d)
+            data: data.map(d => d ?? false)
           }
         }, {
           setDefaultsOnInsert: true,
@@ -190,7 +190,7 @@ class TaskController {
       await Task.findByIdAndUpdate(req.body.taskid,
         {
           $set : {
-            data: data,
+            data: data.map(d => d ?? false),
             lastChanged: lastChanged,
             lastGoalIndex: lastGoalIndex,
           }
