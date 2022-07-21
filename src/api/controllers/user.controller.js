@@ -6,6 +6,8 @@ const log = require("npmlog");
 const {levelDiff} = require("../../modules/XPHandler");
 const Task = require("../../models/task.model");
 
+const difficultyConfig = require("../../config/difficulty.config");
+
 class UserController {
   async deleteUser(req,res) {
     console.log("POST /users/deleteUser"); 
@@ -166,49 +168,18 @@ class UserController {
       res.status(400).json({response: "error", error: "User already exists"});
       return;
     }
-    let completed = [];
-    let inprogress = [];
-    const items = ["62c382d46cac02c487e243cb",
-      "62c383846cac02c487e243cc"
-    ];
-    if (req.body.difficulty === "medium") {
-      completed = [
-        "62c226cf9efefadfd10e20ad", //med 1
-        "62c226d09efefadfd10e20bd", //fit 1
-        "62c226cf9efefadfd10e20b2", //jour 1
-      ];
-      inprogress = [
-        "62c226d19efefadfd10e20d9", //fit 2
-        "62c226d09efefadfd10e20b6", //med 2
-        "62c226d89efefadfd10e21a0" //jour 2
-      ];
-      items.push("62c226d09efefadfd10e20c6"); //how to start meditating
-      items.push("62c226d09efefadfd10e20c6"); // strong
-      items.push("62c226e29efefadfd10e2292"); // exercise guide
+
+    const difficulty = await difficultyConfig;
+
+    // Extract the data from the chosen difficulty
+    if (!await difficulty[req.body.difficulty.toLowerCase()]) {
+      console.log(`Invalid difficulty ${req.body.difficulty}`)
+      res.status(400).json({response: "error", error: `Invalid difficulty ${req.body.difficulty}`});
+      return;
     }
-    if (req.body.difficulty === "hard") {
-      completed = [
-        "62c226cf9efefadfd10e20ad",//med 1
-        "62c226d09efefadfd10e20bd",//fit 1
-        "62c226cf9efefadfd10e20b2",//jour 1
-        "62c226d09efefadfd10e20b6",//med 2
-        "62c226d89efefadfd10e21a0",//jour 2
-        "62c226d19efefadfd10e20d9",//fit 2
-        "62c226d89efefadfd10e2197", //rel 1
-      ];
-      inprogress = [
-        "62c226d19efefadfd10e20e2",//fit 3
-        "62c226d09efefadfd10e20c0", //med 3
-        "62c226d89efefadfd10e21a3", // read 1
-        "62c226dd9efefadfd10e221d", // jour 3
-        "62c226d89efefadfd10e21a6" // rel 2
-      ];
-      items.push("62c226d09efefadfd10e20c6"); //how to start meditating
-      items.push("62c226d09efefadfd10e20c6"); // strong
-      items.push("62c226e29efefadfd10e2292"); // exercise guide
-      items.push("62c226dd9efefadfd10e2220"); //advanced journal
-      items.push("62c226dd9efefadfd10e2222"); // how to show gratitude
-    }
+    const completed = await difficulty[req.body.difficulty.toLowerCase()].completed || [];
+    const inprogress = await difficulty[req.body.difficulty.toLowerCase()].inprogress || [];
+    const items = await difficulty[req.body.difficulty.toLowerCase()].items || [];
 
     const user = await User.create({
       discordid: req.body.discordid,
