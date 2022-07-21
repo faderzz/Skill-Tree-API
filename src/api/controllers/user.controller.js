@@ -173,7 +173,7 @@ class UserController {
 
     // Extract the data from the chosen difficulty
     if (!await difficulty[req.body.difficulty.toLowerCase()]) {
-      console.log(`Invalid difficulty ${req.body.difficulty}`)
+      console.log(`Invalid difficulty ${req.body.difficulty}`);
       res.status(400).json({response: "error", error: `Invalid difficulty ${req.body.difficulty}`});
       return;
     }
@@ -260,7 +260,7 @@ class UserController {
 
     const updatedTask = await Task.findByIdAndUpdate(task.get("_id"), {
       completed: true,
-      endDate: new Date()
+      $set: {endDate: new Date()}
     });
     updatedTask.save();
 

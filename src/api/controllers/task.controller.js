@@ -100,7 +100,6 @@ class TaskController {
       .populate({path: "challengeID", model: Challenge});
 
     if (task.get("completed") === true) {
-      console.log("completed");
       return;
     }
 
