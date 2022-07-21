@@ -22,13 +22,6 @@ class Controller {
     });
   }
 
-  async getStatus(req, res) {
-    console.log("GET /status");
-    res.status(200).json({
-      response: "success",
-    });
-  }
-
   async inList(req, res) {
     console.log("GET /inList");
 
@@ -43,6 +36,13 @@ class Controller {
     res.status(200).json({
       response: "success",
       list: skills.concat(challenges),
+    });
+  }
+
+  async getStatus(req, res) {
+    console.log("GET /status");
+    res.status(200).json({
+      response: "success",
     });
   }
 }
