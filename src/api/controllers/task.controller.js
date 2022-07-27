@@ -99,6 +99,7 @@ class TaskController {
       .populate({path: "skillID", model: Skill})
       .populate({path: "challengeID", model: Challenge});
 
+
     if (task.get("completed") === true) {
       return;
     }

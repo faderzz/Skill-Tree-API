@@ -353,7 +353,7 @@ class UserController {
     console.log("GET /users/getAllInTimezone");
 
     const users = await User.find({
-      timezone: req.headers["offset"],
+      timezone: req.headers["timezone"],
     });
     res.status(200).json({
       response: "success",
