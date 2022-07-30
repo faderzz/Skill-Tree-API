@@ -96,28 +96,6 @@ class ServerController {
       serverConfig: updatedConfig
     });
   }
-
-  async deleteServerConfig(req, res) {
-    console.log("DELETE /deleteConfig");
-    // Check if serverId was provided and return error if not
-    if (!req.body.serverId) {
-      return res.status(400).json({
-        response: "error",
-        message: "Missing serverId"
-      });
-    }
-
-    // Delete the config
-    const deletedConfig = await Server.findOneAndDelete({
-      serverId: req.body.serverId
-    });
-
-    // Return the deleted config
-    return res.status(200).json({
-      response: "success",
-      serverConfig: deletedConfig
-    });
-  }
 }
 
 module.exports = new ServerController();
