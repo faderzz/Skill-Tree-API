@@ -482,19 +482,23 @@ class UserController {
 
     //complete without XP
     const skill = await Skill.findById(req.body.toskip);
+    const items = await Item.find({requires : req.body.toskip});
     if (skill) {
       const user = await User.findByIdAndUpdate(req.body.userid, {
-        $addToSet: {skillscompleted: req.body.toskip},
+        $addToSet: {
+          skillscompleted: req.body.toskip,
+          items: items},
       });
       user.save();
     } else {
       const user = await User.findByIdAndUpdate(req.body.userid, {
-        $addToSet: {challengescompleted: req.body.toskip},
+        $addToSet: {
+          challengescompleted: req.body.toskip,
+          items: items},
       });
       user.save();
     }
     const skills = await Skill.find({requires: skill.get("_id")});
-    const items = await Item.find({requires: skill.get("_id")});
     const challenges = await Challenge.find({requires: skill.get("_id")});
 
     res.status(200).json({response: "success",

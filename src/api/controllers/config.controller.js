@@ -3,7 +3,7 @@ const Server = require("../../models/config.model");
 class ServerController {
   async getAllServerConfigs(req, res) {
     try {
-      const serverConfigs = await Server.find();
+      const serverConfigs = await Server.find({},{__v: 0, _id: 0});
       res.status(200).json({
         success: true,
         data: serverConfigs
