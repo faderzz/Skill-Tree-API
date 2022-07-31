@@ -596,6 +596,15 @@ class UserController {
 
     res.status(200).json({response: "success"});
   }
+
+  async saveWeekly(req, res) {
+    console.log("POST /users/saveWeekly");
+
+    const user = await User.findById(req.body.userid);
+    user["xpHistory"].push(user["xp"]);
+    user.save();
+    res.status(200).json({response: "success"});
+  }
 }
 
 
