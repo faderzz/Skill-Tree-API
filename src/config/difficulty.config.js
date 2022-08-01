@@ -63,6 +63,12 @@ async function createConfig() {
   if (config.inherit) {
     let lastDifficulty = config.default;
     for (const difficulty in config.difficulties) {
+      // Move all "inprogress" skills to "completed" on the previous difficulty.
+      // To avoid having situations where "Fitness 2" and "Fitness 3" are both in progress.
+      if (lastDifficulty.inprogress) {
+        lastDifficulty.completed = lastDifficulty.completed.concat(lastDifficulty.inprogress);
+        lastDifficulty.inprogress = [];
+      }
       const keys = new Set(Object.keys(config.difficulties[difficulty]).concat(Object.keys(lastDifficulty)));
       newConfig[difficulty] = {};
       for (const key of keys) {
@@ -79,7 +85,7 @@ async function createConfig() {
       }
     }
   }
-
+  
   return newConfig;
 }
 
