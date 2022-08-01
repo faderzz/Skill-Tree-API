@@ -66,13 +66,13 @@ async function createConfig() {
       const keys = new Set(Object.keys(config.difficulties[difficulty]).concat(Object.keys(lastDifficulty)));
       newConfig[difficulty] = {};
       for (const key of keys) {
-        if(key == "inprogress") {
+        if (key == "inprogress") {
           newConfig[difficulty][key] = config.difficulties[difficulty][key];
           continue;
         }
         newConfig[difficulty][key] = (config.difficulties[difficulty][key] || []).concat(lastDifficulty[key] || []);
       }
-      
+
       lastDifficulty = structuredClone(newConfig[difficulty]);
     }
   }
@@ -84,7 +84,7 @@ async function createConfig() {
       }
     }
   }
-  
+
   console.log(newConfig);
 
   return newConfig;
