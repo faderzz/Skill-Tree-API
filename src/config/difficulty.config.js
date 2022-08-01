@@ -61,20 +61,19 @@ async function createConfig() {
   const newConfig = {};
   // Convert the config to a constant JSON that can be used in the code.
   if (config.inherit) {
-    let lastDifficulty = config.default;
+    let lastDifficulty = structuredClone(config.default);
     for (const difficulty in config.difficulties) {
-      // Move all "inprogress" skills to "completed" on the previous difficulty.
-      // To avoid having situations where "Fitness 2" and "Fitness 3" are both in progress.
-      if (lastDifficulty.inprogress) {
-        lastDifficulty.completed = lastDifficulty.completed.concat(lastDifficulty.inprogress);
-        lastDifficulty.inprogress = [];
-      }
       const keys = new Set(Object.keys(config.difficulties[difficulty]).concat(Object.keys(lastDifficulty)));
       newConfig[difficulty] = {};
       for (const key of keys) {
+        if(key == "inprogress") {
+          newConfig[difficulty][key] = config.difficulties[difficulty][key];
+          continue;
+        }
         newConfig[difficulty][key] = (config.difficulties[difficulty][key] || []).concat(lastDifficulty[key] || []);
       }
-      lastDifficulty = newConfig[difficulty];
+      
+      lastDifficulty = structuredClone(newConfig[difficulty]);
     }
   }
   else {
@@ -86,6 +85,8 @@ async function createConfig() {
     }
   }
   
+  console.log(newConfig);
+
   return newConfig;
 }
 
