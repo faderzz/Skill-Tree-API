@@ -10,7 +10,7 @@ const difficultyConfig = require("../../config/difficulty.config");
 
 class UserController {
   async deleteUser(req,res) {
-    console.log("POST /users/deleteUser"); 
+    console.log("POST /users/deleteUser");
     await User.findByIdAndDelete(req.body.userid);
     // get all tasks related to the user
     const tasks = await Task.find({userID:req.body.userid});
@@ -173,7 +173,7 @@ class UserController {
 
     // Extract the data from the chosen difficulty
     if (!await difficulty[req.body.difficulty.toLowerCase()]) {
-      console.log(`Invalid difficulty ${req.body.difficulty}`)
+      console.log(`Invalid difficulty ${req.body.difficulty}`);
       res.status(400).json({response: "error", error: `Invalid difficulty ${req.body.difficulty}`});
       return;
     }
@@ -260,7 +260,7 @@ class UserController {
 
     const updatedTask = await Task.findByIdAndUpdate(task.get("_id"), {
       completed: true,
-      endDate: new Date()
+      $set: {endDate: new Date()}
     });
     updatedTask.save();
 
@@ -353,7 +353,7 @@ class UserController {
     console.log("GET /users/getAllInTimezone");
 
     const users = await User.find({
-      timezone: req.headers["offset"],
+      timezone: req.headers["timezone"],
     });
     res.status(200).json({
       response: "success",
@@ -482,19 +482,23 @@ class UserController {
 
     //complete without XP
     const skill = await Skill.findById(req.body.toskip);
+    const items = await Item.find({requires : req.body.toskip});
     if (skill) {
       const user = await User.findByIdAndUpdate(req.body.userid, {
-        $addToSet: {skillscompleted: req.body.toskip},
+        $addToSet: {
+          skillscompleted: req.body.toskip,
+          items: items},
       });
       user.save();
     } else {
       const user = await User.findByIdAndUpdate(req.body.userid, {
-        $addToSet: {challengescompleted: req.body.toskip},
+        $addToSet: {
+          challengescompleted: req.body.toskip,
+          items: items},
       });
       user.save();
     }
     const skills = await Skill.find({requires: skill.get("_id")});
-    const items = await Item.find({requires: skill.get("_id")});
     const challenges = await Challenge.find({requires: skill.get("_id")});
 
     res.status(200).json({response: "success",
@@ -559,12 +563,16 @@ class UserController {
     const tasks = await Task.find({
       $and: [{
         $or: [{
-          skillID: req.body.toerase
+          skillID: req.body.toerase,
+          challengeID: { $exists:false }
         },{
-          challengeID: req.body.toerase
+          challengeID: req.body.toerase,
+          skillID: { $exists: false },
         }]
       },{
         completed: true
+      },{
+        userID: req.body.userid,
       }],
     });
 
@@ -574,7 +582,7 @@ class UserController {
 
     let xpChange = 0;
     //If the user actually finished it and got XP, remove the XP
-    if (tasks && tasks.length !== 0) {
+    if (tasks.length !== 0) {
       xpChange = -child.get("xp");
     }
     const user = await User.findByIdAndUpdate(req.body.userid,{
@@ -586,6 +594,15 @@ class UserController {
     });
     user.save();
 
+    res.status(200).json({response: "success"});
+  }
+
+  async saveWeekly(req, res) {
+    console.log("POST /users/saveWeekly");
+
+    const user = await User.findById(req.body.userid);
+    user["xpHistory"].push(user["xp"]);
+    user.save();
     res.status(200).json({response: "success"});
   }
 }

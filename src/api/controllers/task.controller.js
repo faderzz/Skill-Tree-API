@@ -99,8 +99,8 @@ class TaskController {
       .populate({path: "skillID", model: Skill})
       .populate({path: "challengeID", model: Challenge});
 
+
     if (task.get("completed") === true) {
-      console.log("completed");
       return;
     }
 
@@ -145,10 +145,15 @@ class TaskController {
       }
       data[indexOfChange] = checked;
 
+      for (let i = 0; i < data.length; i++) {
+        if (data[i] === undefined || data[i] === null) {
+          data[i] = false;
+        }
+      }
       await Task.findByIdAndUpdate(req.body.taskid,
         {
           $set : {
-            data: data.map(d => (d === null) ? false : d)
+            data: data
           }
         }, {
           setDefaultsOnInsert: true,
@@ -187,6 +192,11 @@ class TaskController {
         else {lastGoalIndex += 1;}
       }
       data[lastGoalIndex] = req.body.checked;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i] === undefined || data[i] === null) {
+          data[i] = false;
+        }
+      }
       await Task.findByIdAndUpdate(req.body.taskid,
         {
           $set : {

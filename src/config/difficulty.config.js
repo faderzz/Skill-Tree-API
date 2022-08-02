@@ -85,8 +85,6 @@ async function createConfig() {
     }
   }
 
-  console.log(newConfig);
-
   return newConfig;
 }
 

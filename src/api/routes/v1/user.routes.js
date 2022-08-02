@@ -22,4 +22,5 @@ router.post("/skip", auth, UserController.skip);
 router.post("/revert", auth, UserController.revert);
 router.post("/cancel", auth, UserController.cancel);
 router.post("/eraseCompleted", auth, UserController.eraseCompleted);
+router.post("/saveWeekly", auth, UserController.saveWeekly);
 module.exports = router;
