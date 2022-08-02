@@ -2,42 +2,66 @@ const Challenge = require("../../models/challenge.model");
 
 class ChallengeController {
   async getChallenges(req, res) {
-    console.log("GET /challenges");
+    try {
+      console.log("GET /challenges");
 
-    const challenges = await Challenge.find({});
-    
-    res.status(200).json({
-      response: "success",
-      challenges: challenges});
+      const challenges = await Challenge.find({});
+      
+      res.status(200).json({
+        response: "success",
+        challenges: challenges
+      });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to get challenges" });
+    }
   }
 
   async createChallenge(req, res) {
-    console.log("POST /challenges/create");
+    try {
+      console.log("POST /challenges/create");
 
-    const challenge = new Challenge(req.body);
+      const challenge = new Challenge(req.body);
+      challenge.save();
 
-    challenge.save();
-    return res.status(201).json({
-      response: "success",
-      challenge: challenge});
+      return res.status(201).json({
+        response: "success",
+        challenge: challenge
+      });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to create challenge" });
+    }
   }
 
   async updateChallenge(req, res) {
-    console.log("POST /challenges/update");
+    try {
+      console.log("POST /challenges/update");
 
-    const challenge = Challenge.findByIdAndUpdate(req.body.id,
-      {$set: req.body},
-    );
+      const challenge = Challenge.findByIdAndUpdate(req.body.id, { $set: req.body });
+      challenge.save();
 
-    challenge.save();
-    res.status(200).json({response: "success"});
+      res.status(200).json({ response: "success" });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to update challenge" });
+    }
   }
 
   async deleteChallenge(req, res) {
-    console.log("POST /challenges/delete");
+    try {
+      console.log("POST /challenges/delete");
 
-    Challenge.findByIdAndDelete(req.body.id);
-    res.status(200).json({response: "success"});
+      Challenge.findByIdAndDelete(req.body.id);
+      res.status(200).json({ response: "success" });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to delete challenge" });
+    }
   }
 }
 
