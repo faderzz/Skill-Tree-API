@@ -61,14 +61,19 @@ async function createConfig() {
   const newConfig = {};
   // Convert the config to a constant JSON that can be used in the code.
   if (config.inherit) {
-    let lastDifficulty = config.default;
+    let lastDifficulty = structuredClone(config.default);
     for (const difficulty in config.difficulties) {
       const keys = new Set(Object.keys(config.difficulties[difficulty]).concat(Object.keys(lastDifficulty)));
       newConfig[difficulty] = {};
       for (const key of keys) {
+        if (key == "inprogress") {
+          newConfig[difficulty][key] = config.difficulties[difficulty][key];
+          continue;
+        }
         newConfig[difficulty][key] = (config.difficulties[difficulty][key] || []).concat(lastDifficulty[key] || []);
       }
-      lastDifficulty = newConfig[difficulty];
+
+      lastDifficulty = structuredClone(newConfig[difficulty]);
     }
   }
   else {
