@@ -14,7 +14,7 @@ const config = {
     key: getOsEnv("DB_KEY")
   },
   swagger: {
-    port: normalizePort(getOsEnvOptional("SWAGGER_PORT") || "443")
+    port: normalizePort(getOsEnvOptional("SWAGGER_PORT") || "4000")
   },
   apiKey: getOsEnv("API_KEY"),
 };
