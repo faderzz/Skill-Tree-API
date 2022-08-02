@@ -73,7 +73,7 @@ async function createConfig() {
         newConfig[difficulty][key] = (config.difficulties[difficulty][key] || []).concat(lastDifficulty[key] || []);
       }
 
-      lastDifficulty = structuredClone(newConfig[difficulty]);
+      lastDifficulty = JSON.parse(JSON.stringify(newConfig[difficulty]));
     }
   }
   else {
