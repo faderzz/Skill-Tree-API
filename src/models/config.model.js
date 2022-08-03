@@ -32,6 +32,12 @@ const serverSchema = new Schema({
     unique: false,
     default: null
   },
+  hidden: {
+    type: String,
+    required: false,
+    unique: false,
+    default: true
+  },
 }, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "ServerConfigsDev" : "ServerConfigs" });
 
 module.exports = mongoose.model("Server", serverSchema);
