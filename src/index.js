@@ -1,6 +1,7 @@
-require("dotenv").config();
 const log = require("npmlog");
 const express = require("express");
+const config = require("./config");
+const cors = require("cors");
 
 const expressLoader = require("./loaders/expressLoader");
 const mongooseLoader = require("./loaders/mongooseLoader");
@@ -8,29 +9,26 @@ const mongooseLoader = require("./loaders/mongooseLoader");
 const swaggerUI = require("swagger-ui-express");
 const swaggerFile = require("../swagger-output.json");
 
-const PORT = process.env.PORT || 8080;
-
 const app = express();
 
 mongooseLoader();
 expressLoader(app);
-const cors = require("cors");
 
+log.info(`Environment-type: ${process.env.NODE_ENV}`);
 
-app.disable("x-powered-by");
-log.info(`Environment-type:${process.env.ENVIRONMENT_TYPE}`);
+// TODO: Move this to a loader file
+if (config.isDevelopment) {
+  log.info(`API documentation: http://localhost:${config.swagger.port}/api-docs`);
 
-if (process.env.ENVIRONMENT_TYPE === "development") {
-  const swagger_port = parseInt(PORT)+1;
   app.use(cors());
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile, {explorer:true}));
-  log.info(`API documentation: http://localhost:${swagger_port}/api-docs`);
-  app.listen(swagger_port, () => log.info(`Swagger: Listening on port ${swagger_port}`));
+
+  app.listen(config.swagger.port, () => log.info(`Swagger: Listening on port ${config.swagger.port}`));
+
   log.warn("API in DEVELOPMENT mode");
 } else {
   log.warn("API in DEPLOYMENT mode");
 }
-
 
 process.on("SIGTERM", () =>{
   log.info("SIGTERM signal received: closing HTTP server");
@@ -42,7 +40,7 @@ process.on("SIGINT", function() {
   process.exit(0);
 });
 
-app.listen(PORT, () => console.log("Listening on port " + process.env.PORT))
+app.listen(config.app.port, () => console.log(`API listening on port ${config.app.port}`))
   .on("error", function() {
     process.once("SIGUSR2", function() {
       process.kill(process.pid, "SIGUSR2");
