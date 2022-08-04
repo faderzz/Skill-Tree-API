@@ -792,6 +792,27 @@ class UserController {
       res.status(400).json({ response: "Failed to save weekly skills" });
     }
   }
+
+  async setReminded(req, res) {
+    console.log("POST /users/setReminded");
+
+    try {
+      const user = await User.findById(req.body.userid);
+
+      if (!user) {
+        return res.status(404).json({ response: "User not found" });
+      }
+
+      user.reminderSent = req.body.value;
+
+      user.save();
+
+      res.status(200).json({response: "success"});
+    } catch(err) {
+      console.log(err);
+      res.status(400).json({ response: "Failed toggling reminderSent" });
+    }
+  }
 }
 
 module.exports = new UserController();
