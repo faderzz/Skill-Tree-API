@@ -808,7 +808,7 @@ class UserController {
       user.save();
 
       res.status(200).json({response: "success"});
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       res.status(400).json({ response: "Failed toggling reminderSent" });
     }
