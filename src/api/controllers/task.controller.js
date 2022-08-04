@@ -125,6 +125,7 @@ class TaskController {
 
           user.lastTracked = new Date().getTime() + offset;
           user.numDaysTracked += 1;
+          user.reminderSent = false;
           user.save();
         }
       }

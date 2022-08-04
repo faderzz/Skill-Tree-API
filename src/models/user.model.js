@@ -83,6 +83,14 @@ const UserSchema = new Schema({
     default: new Date(),
     required: true,
   },
+
+  reminderSent: {
+    type: Boolean,
+    required: true,
+    unique: false,
+    default: false,
+  },
+
   numDaysTracked:{
     type: Number,
     default: 0,
