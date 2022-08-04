@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const config = require("../config");
 const Schema = mongoose.Schema;
 
 /**
@@ -52,7 +53,7 @@ const skillSchema = new Schema({
     type: [Schema.Types.ObjectId],
     required: true,
   },
-}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "SkillsDev" : "Skills" });
+}, { collection: config.isDevelopment ? "SkillsDev" : "Skills" });
 
 // Makes sure that the iconName and level have to be duplicates in order to throw an error.
 // If the index doesn't behave as expected, I've found that dropping the collection and having mongoose create it automatically fixes it.
