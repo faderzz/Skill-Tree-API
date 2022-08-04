@@ -33,6 +33,12 @@ const serverSchema = new Schema({
     unique: false,
     default: null
   },
+  hidden: {
+    type: String,
+    required: false,
+    unique: false,
+    default: true
+  },
 }, { collection: config.isDevelopment ? "ServerConfigsDev" : "ServerConfigs" });
 
 module.exports = mongoose.model("Server", serverSchema);

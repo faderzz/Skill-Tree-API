@@ -9,8 +9,7 @@ const Schema = mongoose.Schema;
  * @param username - the name of the user.
  * @param password - the password of the user.
  * @param discordid - discordID of the user
- * @param pic - the avatar of the user .
- * @param exp - Total experience earned by the user.
+ * @param xp - Total experience earned by the user.
  * @param level - The currrent level of the user.
  * @param items - The list of items owned by the user.
  * @param completed - The list of skills completed by the user.
