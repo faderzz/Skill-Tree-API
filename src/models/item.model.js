@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const config = require("../config");
 const Schema = mongoose.Schema;
 
 /**
@@ -27,6 +28,6 @@ const itemSchema = new Schema({
     required: true,
     unique: false
   },
-}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "ItemsDev" : "Items"});
+}, { collection: config.isDevelopment === "development" ? "ItemsDev" : "Items"});
 
 module.exports = mongoose.model("Item", itemSchema);

@@ -2,6 +2,7 @@ const UserController = require("../../controllers/user.controller");
 const auth = require("../../middlewares/auth");
 const express = require("express");
 const router = express.Router();
+
 router.post("/deleteUser",auth, UserController.deleteUser);
 router.get("/profile", auth, UserController.profile);
 router.post("/register", auth, UserController.register);
@@ -23,4 +24,6 @@ router.post("/revert", auth, UserController.revert);
 router.post("/cancel", auth, UserController.cancel);
 router.post("/eraseCompleted", auth, UserController.eraseCompleted);
 router.post("/saveWeekly", auth, UserController.saveWeekly);
+router.post("/setReminded", auth, UserController.setReminded);
+
 module.exports = router;

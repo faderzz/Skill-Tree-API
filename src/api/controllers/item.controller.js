@@ -2,43 +2,68 @@ const Item = require("../../models/item.model");
 
 class ItemController {
   async getItems(req, res) {
-    console.log("GET /items");
+    try {
+      console.log("GET /items");
 
-    const items = await Item.find({});
+      const items = await Item.find({});
 
-    res.status(200).json({
-      response: "success",
-      items: items});
+      res.status(200).json({
+        response: "success",
+        items: items
+      });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to get items" });
+    }
   }
 
   async createItem(req, res) {
-    console.log("POST /items/create");
+    try {
+      console.log("POST /items/create");
 
-    const item = new Item(req.body);
+      const item = new Item(req.body);
+      item.save();
 
-    item.save();
-    return res.status(201).json({
-      response: "success",
-      item: item
-    });
+      return res.status(201).json({
+        response: "success",
+        item: item
+      });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to create item" });
+    }
   }
 
   async updateItem(req, res) {
-    console.log("POST /items/update");
+    try {
+      console.log("POST /items/update");
 
-    const item = Item.findByIdAndUpdate(req.body.id,
-      {$set: req.body},
-    );
+      const item = Item.findByIdAndUpdate(req.body.id,
+        {$set: req.body},
+      );
 
-    item.save();
-    res.status(200).json({response: "success"});
+      item.save();
+      res.status(200).json({response: "success"});
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to update item" });
+    }
   }
 
   async deleteItem(req, res) {
-    console.log("POST /items/delete");
+    try {
+      console.log("POST /items/delete");
 
-    Item.findByIdAndDelete(req.body.id);
-    res.status(200).json({response: "success"});
+      Item.findByIdAndDelete(req.body.id);
+      res.status(200).json({response: "success"});
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to delete item" });
+    }
   }
 }
 

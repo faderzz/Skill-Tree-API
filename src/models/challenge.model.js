@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const config = require("../config");
 const Schema = mongoose.Schema;
 
 /**
@@ -32,6 +33,6 @@ const challengeSchema = new Schema({
   link: {
     type: String,
   },
-}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "ChallengesDev" : "Challenges"});
+}, { collection: config.isDevelopment ? "ChallengesDev" : "Challenges"});
 
 module.exports = mongoose.model("Challenge", challengeSchema);

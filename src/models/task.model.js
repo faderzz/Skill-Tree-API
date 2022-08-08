@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const config = require("../config");
 const Schema = mongoose.Schema;
 
 /**
@@ -59,7 +60,6 @@ const taskSchema = new Schema({
     required: false,
     default: 0,
   }
-}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "TasksDev" : "Tasks"});
-
+}, { collection: config.isDevelopment ? "TasksDev" : "Tasks"});
 
 module.exports = mongoose.model("Task", taskSchema);

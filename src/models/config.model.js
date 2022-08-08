@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const config = require("../config");
 const Schema = mongoose.Schema;
 
 /**
@@ -38,6 +39,6 @@ const serverSchema = new Schema({
     unique: false,
     default: true
   },
-}, { collection: process.env.ENVIRONMENT_TYPE === "development" ? "ServerConfigsDev" : "ServerConfigs" });
+}, { collection: config.isDevelopment ? "ServerConfigsDev" : "ServerConfigs" });
 
 module.exports = mongoose.model("Server", serverSchema);
