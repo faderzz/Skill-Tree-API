@@ -3,8 +3,6 @@ const Challenge = require("../../models/challenge.model");
 class ChallengeController {
   async getChallenges(req, res) {
     try {
-      console.log("GET /challenges");
-
       const challenges = await Challenge.find({});
       
       res.status(200).json({
@@ -20,8 +18,6 @@ class ChallengeController {
 
   async createChallenge(req, res) {
     try {
-      console.log("POST /challenges/create");
-
       const challenge = new Challenge(req.body);
       challenge.save();
 
@@ -38,8 +34,6 @@ class ChallengeController {
 
   async updateChallenge(req, res) {
     try {
-      console.log("POST /challenges/update");
-
       const challenge = Challenge.findByIdAndUpdate(req.body.id, { $set: req.body });
       challenge.save();
 
@@ -53,8 +47,6 @@ class ChallengeController {
 
   async deleteChallenge(req, res) {
     try {
-      console.log("POST /challenges/delete");
-
       Challenge.findByIdAndDelete(req.body.id);
       res.status(200).json({ response: "success" });
     }

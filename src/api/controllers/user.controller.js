@@ -10,8 +10,6 @@ const difficultyConfig = require("../../config/difficulty.config");
 class UserController {
   async deleteUser(req,res) {
     try {
-      console.log("POST /users/deleteUser");
-
       await User.findByIdAndDelete(req.body.userid);
 
       // get all tasks related to the user
@@ -31,8 +29,6 @@ class UserController {
 
   async profile(req, res) {
     try {
-      console.log("GET /users/profile");
-
       // TODO: verify if the header is present
       const user = await User.findById(req.headers["id"])
         .populate({path: "skillscompleted", model: Skill})
@@ -58,8 +54,6 @@ class UserController {
 
   async authUserDiscord(req, res) {
     try {
-      console.log("GET /users/loginDiscord");
-
       // TODO: verify if the header is present
       const user = await User.findOne({ discordid: req.headers["discordid"] });
 
@@ -108,8 +102,6 @@ class UserController {
     */
 
     try {
-      console.log("GET /users/loginUser");
-
       const username = req.body.username;
       const password = req.body.password;
 
@@ -166,8 +158,6 @@ class UserController {
         }]
     */
     try {
-      console.log("POST /users/register");
-
       const username = req.body.username;
       const password = req.body.password;
 
@@ -201,8 +191,6 @@ class UserController {
 
   async registerDiscord(req, res) {
     try {
-      console.log("POST /users/registerDiscord");
-
       const userExists = await User.findOne({ discordid: req.body.discordid });
 
       if (userExists) {
@@ -300,8 +288,6 @@ class UserController {
 
   async updateXPHistory(req, res) {
     try {
-      console.log("POST /users/updateXPHistory");
-
       const user = await User.findByIdAndUpdate(req.body.id, {
         $addToSet: { xpHistory: req.body.xp }
       });
@@ -318,8 +304,6 @@ class UserController {
 
   async updateUser(req, res) {
     try {
-      console.log("POST /users/updateUser");
-
       const user = await User.findByIdAndUpdate(req.body.userid, {"$set":{
         character: req.body.character,
         difficulty: req.body.difficulty,
@@ -339,8 +323,6 @@ class UserController {
 
   async updateTimezone(req, res) {
     try {
-      console.log("POST /users/updateTimezone");
-
       const user = await User.findByIdAndUpdate(req.body.id, {
         timezone: req.body.timezone,
       });
@@ -357,8 +339,6 @@ class UserController {
 
   async updateBaseLocation(req, res) {
     try {
-      console.log("POST /users/updateBaseLocation");
-
       const user = await User.findByIdAndUpdate(req.body.id, {
         baselocation: req.body.baselocation,
       });
@@ -376,8 +356,6 @@ class UserController {
   // TODO: Add pagination
   async getAll(req, res) {
     try {
-      console.log("GET /users/getAll");
-
       const users = await User.find({});
 
       res.status(200).json({
@@ -394,8 +372,6 @@ class UserController {
   // TODO: Add pagination
   async getAllInTimezone(req, res) {
     try {
-      console.log("GET /users/getAllInTimezone");
-
       const users = await User.find({
         timezone: req.headers["timezone"],
       });
@@ -413,8 +389,6 @@ class UserController {
 
   async getAvailableTasks(req, res) {
     try {
-      console.log("GET /users/getAvailable");
-
       // TODO: verify if header is present
       const user = await User.findById(req.headers["userid"]);
 
@@ -446,8 +420,6 @@ class UserController {
 
   async getInProgress(req, res) {
     try {
-      console.log("GET /getInProgress");
-
       // TODO: verify if header is present
       const user = await User.findById(req.headers["userid"]);
 
@@ -473,8 +445,6 @@ class UserController {
 
   async getCompleted(req, res) {
     try {
-      console.log("GET /getCompleted");
-
       // TODO: verify if header is present
       const user = await User.findById(req.headers["userid"]);
 
@@ -500,8 +470,6 @@ class UserController {
 
   async startSkill(req, res) {
     try {
-      console.log("POST /users/start");
-
       const user = await User.findById(req.body.userid);
 
       if (user.get("skillsinprogress").length +
@@ -563,8 +531,6 @@ class UserController {
 
   async skip(req, res) {
     try {
-      console.log("POST /users/skip");
-
       //complete without XP
       const skill = await Skill.findById(req.body.toskip);
       const items = await Item.find({requires : req.body.toskip});
@@ -605,8 +571,6 @@ class UserController {
 
   async revert(req, res) {
     try {
-      console.log("POST /users/revert");
-
       //Get skill/challenge to start
       const skill = await Skill.findById(req.body.torevert);
       const challenge = await Challenge.findById(req.body.torevert);
@@ -638,8 +602,6 @@ class UserController {
 
   async cancel(req,res) {
     try {
-      console.log("POST /users/cancel");
-
       const user = await User.findByIdAndUpdate(req.body.userid,{
         $pull: {
           skillsinprogress: req.body.tocancel,
@@ -670,8 +632,6 @@ class UserController {
 
   async eraseCompleted(req, res) {
     try {
-      console.log("POST /users/eraseCompleted");
-
       const tasks = await Task.find({
         $and: [{
           $or: [{
@@ -719,8 +679,6 @@ class UserController {
 
   async saveWeekly(req, res) {
     try {
-      console.log("POST /users/saveWeekly");
-
       const user = await User.findById(req.body.userid);
 
       if (!user) {
@@ -739,8 +697,6 @@ class UserController {
   }
 
   async setReminded(req, res) {
-    console.log("POST /users/setReminded");
-
     try {
       const user = await User.findById(req.body.userid);
 

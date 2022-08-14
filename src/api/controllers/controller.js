@@ -5,8 +5,6 @@ const Challenge = require("../../models/challenge.model");
 class Controller {
   async getNodes(req, res) {
     try {
-      console.log("GET /getNodes");
-
       const skills = await Skill.find({});
       const items = await Item.find({});
       const challenges = await Challenge.find({});
@@ -30,8 +28,6 @@ class Controller {
 
   async inList(req, res) {
     try {
-      console.log("GET /inList");
-
       const IDs = req.headers.list.replace(/\s/g, "").split(",");
       const skills = await Skill.find({
         _id : {$in : IDs}
@@ -52,7 +48,6 @@ class Controller {
   }
 
   async getStatus(req, res) {
-    console.log("GET /status");
     res.status(200).json({
       response: "success",
     });

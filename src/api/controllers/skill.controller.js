@@ -3,8 +3,6 @@ const Skill = require("../../models/skill.model");
 class SkillController {
   async getSkills(req, res) {
     try {
-      console.log("GET /skills");
-
       const skills = await Skill.find({});
       const root = await Skill.find({
         requires: []
@@ -24,8 +22,6 @@ class SkillController {
 
   async createSkill(req, res) {
     try {
-      console.log("POST /skills/create");
-
       const skill = new Skill(req.body);
 
       skill.validate(async err => {
@@ -55,8 +51,6 @@ class SkillController {
 
   async updateSkill(req, res) {
     try {
-      console.log("POST /skills/update");
-
       Skill.findByIdAndUpdate(req.body.id,
         {$set: req.body},
         (err, skill) => {
@@ -79,8 +73,6 @@ class SkillController {
 
   async deleteSkill(req, res) {
     try {
-      console.log("POST /skills/delete");
-
       Skill.findByIdAndDelete(req.body.id);
       res.status(200).json({response: "success"});
     }
