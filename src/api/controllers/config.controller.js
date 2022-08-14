@@ -104,6 +104,21 @@ class ServerController {
       return res.status(400).json({ response: "Failed to update server config" });
     }
   }
+
+  async deleteServerConfig(req, res) {
+    try {
+      await Server.findByIdAndDelete(req.body.serverId);
+      res.status(200).json({
+        success: true,
+      });
+    }
+    catch (err) {
+      res.status(400).json({
+        success: false,
+        error: err
+      });
+    }
+  }
 }
 
 module.exports = new ServerController();

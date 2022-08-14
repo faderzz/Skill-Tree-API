@@ -25,5 +25,6 @@ router.post("/cancel", auth, UserController.cancel);
 router.post("/eraseCompleted", auth, UserController.eraseCompleted);
 router.post("/saveWeekly", auth, UserController.saveWeekly);
 router.post("/setReminded", auth, UserController.setReminded);
+router.get("/getActiveUsers", auth, UserController.getActiveUsers);
 
 module.exports = router;
