@@ -8,10 +8,9 @@ const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
 const Challenge = require("../../models/challenge.model");
 
 class TaskController {
+  // TODO: refactor this
   async currentTasks(req, res) {
     try {
-      console.log("GET /tasks/currentTasks");
-
       const user = await User.findById(req.headers["userid"]);
       const timezone = user.get("timezone");
       const tasks = await Task.find({
@@ -72,8 +71,6 @@ class TaskController {
 
   async recentTasks(req, res) {
     try {
-      console.log("GET /tasks/recentTasks");
-
       const user = await User.findById(req.headers["userid"]);
       const offset = user.get("timezone") * 3600000;
       const userDate = new Date(new Date().getTime() + offset);
@@ -105,8 +102,6 @@ class TaskController {
 
   async updateTask(req, res) {
     try {
-      console.log("POST /tasks/updateTask");
-
       const task = await Task.findById(req.body.taskid)
         .populate({path: "skillID", model: Skill})
         .populate({path: "challengeID", model: Challenge});
@@ -256,7 +251,6 @@ class TaskController {
 
   async deleteTask(req,res) {
     try {
-      console.log("POST /tasks/deleteTask");
       await Task.findByIdAndDelete(req.body.taskid);
       res.status(200).json({ response: "success" });
     }

@@ -16,4 +16,5 @@ router.use("/v1/users", userRouter);
 router.use("/v1/tasks", taskRouter);
 router.use("/v1/config", configRouter);
 router.use("/v1", routes);
+
 module.exports = router;
