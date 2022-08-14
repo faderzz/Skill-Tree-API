@@ -1,7 +1,8 @@
 const Task = require("../models/task.model");
 const User = require("../models/user.model");
 const Item = require("../models/item.model");
-const {levelDiff} = require("../modules/XPHandler");
+
+const { levelDiff } = require("../lib/XPHandler");
 
 class SkillService {
   /**
