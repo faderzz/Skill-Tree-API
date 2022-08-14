@@ -107,8 +107,7 @@ class ServerController {
 
   async deleteServerConfig(req, res) {
     try {
-      const serverConfigs = await Server.findByIdAndDelete(req.body.serverId);
-      serverConfigs.save();
+      await Server.findByIdAndDelete(req.body.serverId);
       res.status(200).json({
         success: true,
       });
