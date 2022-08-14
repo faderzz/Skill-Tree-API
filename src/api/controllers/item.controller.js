@@ -3,8 +3,6 @@ const Item = require("../../models/item.model");
 class ItemController {
   async getItems(req, res) {
     try {
-      console.log("GET /items");
-
       const items = await Item.find({});
 
       res.status(200).json({
@@ -20,8 +18,6 @@ class ItemController {
 
   async createItem(req, res) {
     try {
-      console.log("POST /items/create");
-
       const item = new Item(req.body);
       item.save();
 
@@ -38,8 +34,6 @@ class ItemController {
 
   async updateItem(req, res) {
     try {
-      console.log("POST /items/update");
-
       const item = Item.findByIdAndUpdate(req.body.id,
         {$set: req.body},
       );
@@ -55,8 +49,6 @@ class ItemController {
 
   async deleteItem(req, res) {
     try {
-      console.log("POST /items/delete");
-
       Item.findByIdAndDelete(req.body.id);
       res.status(200).json({response: "success"});
     }

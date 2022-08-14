@@ -19,8 +19,6 @@ class ServerController {
 
   async getServerConfig(req, res) {
     try {
-      console.log("GET /getConfig");
-
       // Check if serverId was provided and return error if not
       if (!req.body.serverId) {
         return res.status(400).json({
@@ -61,8 +59,6 @@ class ServerController {
 
   async updateServerConfig(req, res) {
     try {
-      console.log("PUT /updateConfig");
-
       // Check if serverId was provided and return error if not
       if (!req.body.serverId) {
         return res.status(400).json({
