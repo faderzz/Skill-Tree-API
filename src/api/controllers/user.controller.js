@@ -411,8 +411,7 @@ class UserController {
     }
   }
 
-  // TODO: Rename to 'getAvailableTasks' for clarity
-  async getAvailable(req, res) {
+  async getAvailableTasks(req, res) {
     try {
       console.log("GET /users/getAvailable");
 
@@ -499,8 +498,7 @@ class UserController {
     }
   }
 
-  // TODO: Rename to 'startSkill' for clarity
-  async start(req, res) {
+  async startSkill(req, res) {
     try {
       console.log("POST /users/start");
 
