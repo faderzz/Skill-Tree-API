@@ -1,11 +1,13 @@
+const Challenge = require("../../models/challenge.model");
 const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Item = require("../../models/item.model");
-const UserController = require("../../api/controllers/user.controller");
-const {intervalToInt} = require("../../modules/dateHelper");
-const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
-const Challenge = require("../../models/challenge.model");
+
+const skillService = require("../../services/skill.service");
+
+const { getDaysBetweenDates, dayToDate } = require("../../modules/dateHelper");
+const { intervalToInt } = require("../../modules/dateHelper");
 
 class TaskController {
   async currentTasks(req, res) {
@@ -231,12 +233,12 @@ class TaskController {
       let challenges = [];
 
       if (completed) {
-        levelUp = await UserController.complete(task);
+        levelUp = await skillService.complete(task);
 
         if (task.get("skillID")) {
-          skills = await Skill.find({requires: task.get("skillID").get("_id")});
-          items = await Item.find({requires: task.get("skillID").get("_id")});
-          challenges = await Challenge.find({requires: task.get("skillID").get("_id")});
+          skills = await Skill.find({ requires: task.get("skillID").get("_id") });
+          items = await Item.find({ requires: task.get("skillID").get("_id") });
+          challenges = await Challenge.find({ requires: task.get("skillID").get("_id") });
         }
       }
 

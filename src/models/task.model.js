@@ -4,11 +4,12 @@ const Schema = mongoose.Schema;
 
 /**
  * Task Object
- * @param skillID - The ID of the skill object if it exists
- * @param challengeID - The ID of the challenge object if it exists
- * @param user - The ID of the user completing this task
- * @param tasks - List of boolean values representing completed/uncompleted skills for each time period from the start date
- * @param startDate - The date that this skill was started
+ * @typedef {Object} Task
+ * @property skillID - The ID of the skill object if it exists
+ * @property challengeID - The ID of the challenge object if it exists
+ * @property user - The ID of the user completing this task
+ * @property tasks - List of boolean values representing completed/uncompleted skills for each time period from the start date
+ * @property startDate - The date that this skill was started
  */
 const taskSchema = new Schema({
   skillID: {
@@ -62,4 +63,5 @@ const taskSchema = new Schema({
   }
 }, { collection: config.isDevelopment ? "TasksDev" : "Tasks"});
 
+/** @type {Task} */
 module.exports = mongoose.model("Task", taskSchema);
