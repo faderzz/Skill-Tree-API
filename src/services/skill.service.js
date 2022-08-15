@@ -9,7 +9,7 @@ class SkillService {
    * Complete a skill/challenge for this user
    * @param {Task} task The task to complete
    */
-  async markComplete(task) {
+  async complete(task) {
     try {
       const updatedTask = await Task.findByIdAndUpdate(task.get("_id"), {
         completed: true,
