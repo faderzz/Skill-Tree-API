@@ -720,7 +720,7 @@ class UserController {
     daysAgo.setUTCDate(daysAgo.getUTCDate() - 7);
     const users = await User.find({
       $lastTracked: {
-        $gt: daysAgo.toISOString()
+        $gt: daysAgo
       }
     });
     const numUsers = users.length;
