@@ -6,7 +6,6 @@ const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
 const Challenge = require("../../models/challenge.model");
 const difficultyConfig = require("../../config/difficulty.config");
-const {getDaysBetweenDates} = require("../../modules/dateHelper");
 
 class UserController {
   async deleteUser(req,res) {
@@ -717,14 +716,14 @@ class UserController {
   }
 
   async getActiveUsers(req, res) {
-    console.log("TEST");
+    const daysAgo = new Date();
+    daysAgo.setUTCDate(daysAgo.getUTCDate() - 7);
     const users = await User.find({
-      $expr: {
-        $lt: [getDaysBetweenDates(new Date("$lastTracked"), new Date(), 0), 7]
+      $lastTracked: {
+        $gt: daysAgo.toISOString()
       }
     });
     const numUsers = users.length;
-    console.log(numUsers);
     res.status(201).json({response: "success", users: numUsers});
   }
 }
