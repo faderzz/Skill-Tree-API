@@ -1,11 +1,10 @@
+const log = require("npmlog");
+
+const Task = require("../../models/task.model");
 const User = require("../../models/user.model");
 const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
 const Challenge = require("../../models/challenge.model");
-const log = require("npmlog");
-const {levelDiff} = require("../../modules/XPHandler");
-const Task = require("../../models/task.model");
-
 const difficultyConfig = require("../../config/difficulty.config");
 const {getDaysBetweenDates} = require("../../modules/dateHelper");
 
@@ -288,48 +287,6 @@ class UserController {
     // }
   }
 
-  /**
-   * Complete skill/challenge for this user
-   * TODO: Move this to a Skill service
-   * @param task
-   */
-  async complete(task) {
-    const updatedTask = await Task.findByIdAndUpdate(task.get("_id"), {
-      completed: true,
-      $set: {endDate: new Date()}
-    });
-
-    updatedTask.save();
-
-    const skill = await task.get("skillID");
-
-    if (skill) {
-      const items = await Item.find({requires: task.get("skillID").get("_id")});
-
-      const user = await User.findByIdAndUpdate(task.get("userID"), {
-        $pull: {skillsinprogress: skill},
-        $addToSet: {
-          skillscompleted: skill,
-          items: items.map(item => item.get("_id"))},
-      });
-
-      user.save();
-
-      return await this.addXP(task.get("userID"), skill.get("xp"));
-    } else {
-      const challenge = await task.get("challengeID");
-
-      const user = await User.findByIdAndUpdate(task.get("userID"), {
-        $pull: {challengesinprogress: challenge},
-        $addToSet: {challengescompleted: challenge}
-      });
-
-      user.save();
-
-      return await this.addXP(task.get("userID"), challenge.get("xp"));
-    }
-  }
-
   async updateXPHistory(req, res) {
     try {
       const user = await User.findByIdAndUpdate(req.body.id, {
@@ -344,16 +301,6 @@ class UserController {
       console.log(err);
       res.status(400).json({ response: "Failed to update XP history" });
     }
-  }
-
-  // adds  XP to a given user
-  // TODO: Move this to Skill service
-  async addXP(id, xp) {
-    const user = await User.findByIdAndUpdate(id, {
-      $inc : {"xp" : xp}
-    });
-    const lastXP = user.get("xp") - xp;
-    return levelDiff(lastXP, user.get("xp"));
   }
 
   async updateUser(req, res) {
@@ -441,8 +388,7 @@ class UserController {
     }
   }
 
-  // TODO: Rename to 'getAvailableTasks' for clarity
-  async getAvailable(req, res) {
+  async getAvailableTasks(req, res) {
     try {
       // TODO: verify if header is present
       const user = await User.findById(req.headers["userid"]);
@@ -523,8 +469,7 @@ class UserController {
     }
   }
 
-  // TODO: Rename to 'startSkill' for clarity
-  async start(req, res) {
+  async startSkill(req, res) {
     try {
       const user = await User.findById(req.body.userid);
 

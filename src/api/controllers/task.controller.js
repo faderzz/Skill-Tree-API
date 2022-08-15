@@ -1,56 +1,59 @@
+const Challenge = require("../../models/challenge.model");
 const Task = require("../../models/task.model");
 const Skill = require("../../models/skill.model");
 const User = require("../../models/user.model");
 const Item = require("../../models/item.model");
-const UserController = require("../../api/controllers/user.controller");
-const {intervalToInt} = require("../../modules/dateHelper");
-const {getDaysBetweenDates, dayToDate} = require("../../modules/dateHelper");
-const Challenge = require("../../models/challenge.model");
+
+const skillService = require("../../services/skill.service");
+const { getDaysBetweenDates, dayToDate, intervalToInt } = require("../../lib/dateHelper");
 
 class TaskController {
-  // TODO: refactor this
   async currentTasks(req, res) {
     try {
+      // TODO: verify if header is present
       const user = await User.findById(req.headers["userid"]);
       const timezone = user.get("timezone");
-      const tasks = await Task.find({
-        completed: false,
-        cancelled: false,
-        userID: req.headers["userid"],
-      }).populate({path: "skillID", model: Skill})
-        .populate({path: "challengeID", model: Challenge})
+
+      const query = { completed: false, cancelled: false, userID: req.headers["userid"] };
+      const tasks = await Task.find(query)
+        .populate({ path: "skillID", model: Skill })
+        .populate({ path: "challengeID", model: Challenge })
         .lean();
 
-      //Show only current goals from goal list
-      for (let i = 0; i < tasks.length; i++) {
-        const skill = tasks[i].skillID;
-        const challenge = tasks[i].challengeID;
-        tasks[i].startDate = new Date(Date.parse(tasks[i].startDate) + timezone*3600000);
+      // Show only current goals from goal list
+      for (const task of tasks) {
+        const skill = task.skillID;
+        const challenge = task.challengeID;
+
+        task.startDate = new Date(Date.parse(task.startDate) + timezone * 3600000);
+
         if (skill) {
-          //Get the goal of the skill
           if (skill.goals.length === 1) {
             skill.goal = skill.goals[0];
           } else {
-            //N/A can only contain one goal
+            // N/A can only contain one goal
             if (intervalToInt(skill.interval) === -1) {
               skill.goal = skill.goals[0];
             } else {
-              //Split goals into equal sections covering the time limit for the given frequency
+              // Split goals into equal sections covering the time limit for the given frequency
               const blockSize = intervalToInt(skill.interval);
-              //get number of completions within the last block period
-              //hacky fix
-              const data = tasks[i]["data"].map((x) => x);
+
+              // get number of completions within the last block period
+              const data = task["data"].map((x) => x);
               const numChecked = data.filter((v) => v).length;
               const goalIndex = numChecked / blockSize;
+
               skill.goal = skill.goals[goalIndex];
+
               if (goalIndex > skill.goals.length) {
                 skill.goal = skill.goals.join(", ");
               }
             }
           }
         }
+
         if (challenge) {
-          const data = tasks[i]["data"].map((x) => x);
+          const data = task["data"].map((x) => x);
           const numChecked = data.filter((v) => v).length;
 
           challenge.goal = challenge.goals[numChecked];
@@ -226,12 +229,12 @@ class TaskController {
       let challenges = [];
 
       if (completed) {
-        levelUp = await UserController.complete(task);
+        levelUp = await skillService.complete(task);
 
         if (task.get("skillID")) {
-          skills = await Skill.find({requires: task.get("skillID").get("_id")});
-          items = await Item.find({requires: task.get("skillID").get("_id")});
-          challenges = await Challenge.find({requires: task.get("skillID").get("_id")});
+          skills = await Skill.find({ requires: task.get("skillID").get("_id") });
+          items = await Item.find({ requires: task.get("skillID").get("_id") });
+          challenges = await Challenge.find({ requires: task.get("skillID").get("_id") });
         }
       }
 
