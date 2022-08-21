@@ -83,14 +83,15 @@ class TaskController {
         cancelled: false,
       }).populate({path: "skillID", model: Skill})
         .populate({path: "challengeID", model: Challenge});
-      
+
       tasks = tasks.filter(task => {
         if (!task.completed) return true;
         if (getDaysBetweenDates(new Date(new Date(task.startDate).getTime() + offset*3600000 + (task.data.length-1)*86400000),
-          userDate, user.get("timezone")) < req.headers.timelimit) {
+          userDate, user.get("timezone")) <= req.headers.timelimit) {
           return true;
         }
       });
+      console.log(tasks);
       res.status(200).json({
         response: "success",
         tasks: tasks,
@@ -117,8 +118,8 @@ class TaskController {
       const user = await User.findById(task.get("userID"));
       const offset = user.get("timezone") * 3600000;
       if (user) {
-        if (getDaysBetweenDates(user.get("lastTracked").getTime(),
-          new Date(new Date().getTime()), user.get("timezone")) > 0) {
+        if (getDaysBetweenDates(user.get("lastTracked").getTime()+offset,
+          new Date(new Date().getTime() + offset), user.get("timezone")) > 0) {
 
           user.lastTracked = new Date().getTime() + offset;
           user.numDaysTracked += 1;
@@ -136,7 +137,7 @@ class TaskController {
       const skill = task.get("skillID");
       let completed = false;
 
-      //const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
+      const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
 
       //If not skill, then it's a challenge
       if (skill) {
@@ -151,7 +152,7 @@ class TaskController {
         if (interval === -1) {
           indexOfChange = 0;
         } else {
-          indexOfChange = getDaysBetweenDates(new Date(Date.parse(startDate)), new Date(), user.get("timezone"));
+          indexOfChange = getDaysBetweenDates(new Date(Date.parse(startDate) + offset), userDate, user.get("timezone"));
         }
         data[indexOfChange] = checked;
 
@@ -195,8 +196,8 @@ class TaskController {
         let lastGoalIndex = task.get("lastGoalIndex");
         if (!(lastChanged) ||
             getDaysBetweenDates(
-              new Date(Date.parse(lastChanged)),
-              new Date(), user.get("timezone")) > 0) {
+              new Date(Date.parse(lastChanged) + offset),
+              userDate, user.get("timezone")) > 0) {
           lastChanged = new Date();
           if (!lastGoalIndex) { lastGoalIndex = 0;}
           else {lastGoalIndex += 1;}
