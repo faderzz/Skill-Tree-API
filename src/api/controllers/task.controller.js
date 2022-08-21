@@ -78,20 +78,19 @@ class TaskController {
       const offset = user.get("timezone") * 3600000;
       const userDate = new Date(new Date().getTime() + offset);
 
-      const tasks = await Task.find({
+      let tasks = await Task.find({
         userID: req.headers["userid"],
         cancelled: false,
-        //find tasks
-        $cond: {
-          if: {$eq: ["$completed", true]},
-          then: {
-            $lt: [getDaysBetweenDates(new Date("$endDate" + offset), userDate, user.get("timezone")), req.body.timelimit]
-          },
-          else: true,
-        }
       }).populate({path: "skillID", model: Skill})
         .populate({path: "challengeID", model: Challenge});
 
+      tasks = tasks.filter(task => {
+        if (!task.completed) return true;
+        if (getDaysBetweenDates(new Date(new Date(task.startDate).getTime() + offset*3600000 + (task.data.length-1)*86400000),
+          userDate, user.get("timezone")) <= req.headers.timelimit) {
+          return true;
+        }
+      });
       res.status(200).json({
         response: "success",
         tasks: tasks,
