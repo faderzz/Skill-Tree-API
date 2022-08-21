@@ -91,7 +91,6 @@ class TaskController {
           return true;
         }
       });
-      console.log(tasks);
       res.status(200).json({
         response: "success",
         tasks: tasks,
