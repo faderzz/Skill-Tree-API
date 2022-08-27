@@ -28,6 +28,6 @@ const itemSchema = new Schema({
     required: true,
     unique: false
   },
-}, { collection: config.isDevelopment === "development" ? "ItemsDev" : "Items"});
+}, { collection: config.isDevelopment ? "ItemsDev" : "Items"});
 
 module.exports = mongoose.model("Item", itemSchema);
