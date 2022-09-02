@@ -87,7 +87,7 @@ class TaskController {
       tasks = tasks.filter(task => {
         if (!task.completed) return true;
         if (getDaysBetweenDates(new Date(new Date(task.startDate).getTime() + offset*3600000 + (task.data.length-1)*86400000),
-          userDate, user.get("timezone")) <= req.headers.timelimit) {
+          userDate, user.get("timezone")) < req.headers.timelimit) {
           return true;
         }
       });
@@ -123,6 +123,7 @@ class TaskController {
           user.lastTracked = new Date().getTime() + offset;
           user.numDaysTracked += 1;
           user.reminderSent = false;
+          user.xp += 10;
           user.save();
         }
       }

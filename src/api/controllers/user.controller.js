@@ -6,6 +6,7 @@ const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
 const Challenge = require("../../models/challenge.model");
 const difficultyConfig = require("../../config/difficulty.config");
+const bcrypt = require("bcrypt");
 
 class UserController {
   async deleteUser(req,res) {
@@ -105,7 +106,7 @@ class UserController {
       const username = req.body.username;
       const password = req.body.password;
 
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ username: username });
 
       if (user && (await user.matchPassword(password))) {
         res.json({
