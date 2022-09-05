@@ -39,6 +39,18 @@ const serverSchema = new Schema({
     unique: false,
     default: true
   },
+  promotionRole: {
+    type: String,
+    required: false,
+    unique: false,
+    default: ""
+  },
+  promotionThreshold: {
+    type: Number,
+    required: false,
+    unique: false,
+    default: -1,
+  }
 }, { collection: config.isDevelopment ? "ServerConfigsDev" : "ServerConfigs" });
 
 module.exports = mongoose.model("Server", serverSchema);

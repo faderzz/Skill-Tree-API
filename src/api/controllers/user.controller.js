@@ -6,7 +6,6 @@ const Skill = require("../../models/skill.model");
 const Item = require("../../models/item.model");
 const Challenge = require("../../models/challenge.model");
 const difficultyConfig = require("../../config/difficulty.config");
-const bcrypt = require("bcrypt");
 
 class UserController {
   async deleteUser(req,res) {

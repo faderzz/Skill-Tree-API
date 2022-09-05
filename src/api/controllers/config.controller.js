@@ -119,6 +119,105 @@ class ServerController {
       });
     }
   }
+
+  async setAutoPromotion(req, res) {
+    try {
+      // Check if serverId was provided and return error if not
+      if (!req.body.serverId) {
+        return res.status(400).json({
+          response: "error",
+          message: "Missing serverId"
+        });
+      }
+
+      // Get old config
+      const oldConfig = await Server.findOne({
+        serverId: req.body.serverId
+      });
+
+      // Combine all the new config values into one object
+      const newConfig = Object.assign(oldConfig || {}, req.body);
+
+      for (const key in Server.schema.obj) {
+        if (newConfig[key] === undefined && Server.schema.obj[key].default) {
+          newConfig[key] = Server.schema.obj[key].default;
+        }
+      }
+
+      newConfig["role"] = req.body.role;
+      newConfig["threshold"] = req.body.threshold;
+
+      let updatedConfig;
+      if (!oldConfig) {
+        updatedConfig = await Server.create(newConfig);
+      } else {
+        updatedConfig = await Server.findOneAndUpdate({
+          serverId: newConfig.serverId
+        }, newConfig);
+      }
+      updatedConfig.save();
+
+      // Return the updated config
+      return res.status(200).json({
+        response: "success",
+        serverConfig: updatedConfig
+      });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to update server config" });
+    }
+  }
+
+  async cancelAutoPromotion(req, res) {
+    try {
+      // Check if serverId was provided and return error if not
+      if (!req.body.serverId) {
+        return res.status(400).json({
+          response: "error",
+          message: "Missing serverId"
+        });
+      }
+
+      // Get old config
+      const oldConfig = await Server.findOne({
+        serverId: req.body.serverId
+      });
+
+      // Combine all the new config values into one object
+      const newConfig = Object.assign(oldConfig || {}, req.body);
+
+      // Check for null values and set them to their default values
+      for (const key in Server.schema.obj) {
+        if (newConfig[key] === undefined && Server.schema.obj[key].default) {
+          newConfig[key] = Server.schema.obj[key].default;
+        }
+      }
+      newConfig["role"] = Server.schema.obj["role"].default;
+      newConfig["threshold"] = Server.schema.obj["threshold"].default;
+      
+      let updatedConfig;
+      if (!oldConfig) {
+        updatedConfig = await Server.create(newConfig);
+      } else {
+        // Update the config
+        updatedConfig = await Server.findOneAndUpdate({
+          serverId: newConfig.serverId
+        }, newConfig);
+      }
+      updatedConfig.save();
+
+      // Return the updated config
+      return res.status(200).json({
+        response: "success",
+        serverConfig: updatedConfig
+      });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({ response: "Failed to update server config" });
+    }
+  }
 }
 
 module.exports = new ServerController();
