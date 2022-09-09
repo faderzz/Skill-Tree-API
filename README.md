@@ -3,7 +3,7 @@ API Platform for the Skill Tree project, allowing different services to interact
 
 [Tech-Stack](https://www.technologystacker.com/#/stack/sharelink/AdonisAPI-ts506)
 
-## Installation
+## Installation 
 - Rename `.env.example` to `.env`
 - Set up a [MongoDB Atlas instance](https://www.mongodb.com/docs/atlas/getting-started/)
 - Set the environment variables
