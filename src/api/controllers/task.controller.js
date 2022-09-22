@@ -136,7 +136,7 @@ class TaskController {
       const skill = task.get("skillID");
       let completed = false;
 
-      const userDate = new Date(dayToDate(req.body.day).getTime() + offset);
+      const userDate = new Date(req.body.date + offset);
 
       //If not skill, then it's a challenge
       if (skill) {
