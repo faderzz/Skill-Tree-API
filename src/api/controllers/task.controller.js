@@ -5,7 +5,7 @@ const User = require("../../models/user.model");
 const Item = require("../../models/item.model");
 
 const skillService = require("../../services/skill.service");
-const { getDaysBetweenDates, dayToDate, intervalToInt } = require("../../lib/dateHelper");
+const { getDaysBetweenDates, intervalToInt } = require("../../lib/dateHelper");
 
 class TaskController {
   async currentTasks(req, res) {
