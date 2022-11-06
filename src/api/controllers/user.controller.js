@@ -215,6 +215,7 @@ class UserController {
         character: req.body.character,
         timezone: req.body.timezone,
         baselocation: req.body.baselocation,
+        lastTracked: new Date(),
         skillscompleted: completed,
         skillsinprogress: inprogress,
         items: items,
