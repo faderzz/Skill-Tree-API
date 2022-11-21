@@ -86,8 +86,10 @@ class TaskController {
 
       tasks = tasks.filter(task => {
         if (!task.completed) return true;
-        if (getDaysBetweenDates(new Date(new Date(task.startDate).getTime() + offset*3600000 + (task.data.length-1)*86400000),
-          userDate, user.get("timezone")) <= req.headers.timelimit) {
+        console.log(task.data);
+        console.log(new Date(new Date(task.startDate).getTime() + offset*3600000 + Math.max(task.data.length-1, 0)*86400000), userDate, req.headers.timelimit);
+        if (getDaysBetweenDates(new Date(new Date(task.startDate).getTime() + offset*3600000 +
+          Math.max(task.data.length-1, 0)*86400000), userDate, user.get("timezone")) <= req.headers.timelimit) {
           return true;
         }
       });
