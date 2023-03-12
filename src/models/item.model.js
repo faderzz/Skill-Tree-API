@@ -17,7 +17,7 @@ const itemSchema = new Schema({
   },
   link: {
     type: String,
-    required: true
+    required: false
   },
   emoji: {
     type: String,
