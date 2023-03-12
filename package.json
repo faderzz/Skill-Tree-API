@@ -25,6 +25,7 @@
   "scripts": {
     "start": "node src/index.js",
     "lint": "eslint src",
-    "swagger-docs": "node swagger.js"
+    "swagger-docs": "node swagger.js",
+    "import": "node src/import/import.js" 
   }
 }
