@@ -1,0 +1,436 @@
+[{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20b9"
+  },
+  "name": "HOW TO START MEDITATING",
+  "link": "https://youtu.be/nDFE1GAovMw",
+  "emoji": "📘",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20ad"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20c6"
+  },
+  "name": "STRONG APP",
+  "link": "https://www.strong.app/",
+  "emoji": "📱",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20bd"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20cb"
+  },
+  "name": "MYFITNESSPAL",
+  "link": "https://www.myfitnesspal.com/",
+  "emoji": "📱",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2110"
+  },
+  "name": "SLEEP CYCLE APP",
+  "link": "https://www.youtube.com/watch?v=PYaixyrzDOk",
+  "emoji": "item",
+  "requires": [
+    {
+      "$oid": "62c226d29efefadfd10e20fe"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e211b"
+  },
+  "name": "MEWING GUIDE",
+  "link": "https://www.youtube.com/watch?v=zbzT00Cyq-g",
+  "emoji": "📔",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e2112"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2120"
+  },
+  "name": "POTION OF ATTRACTION",
+  "link": "https://www.youtube.com/watch?v=mqphY24Tnp0",
+  "emoji": "🧪",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e211d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2128"
+  },
+  "name": "ADVANCED HAIR CARE TUTORIAL",
+  "link": "https://brickellmensproducts.com/blogs/grooming-manual/63511875-mens-hair-care-manual",
+  "emoji": "📔",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e2118"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e2130"
+  },
+  "name": "ENHANCED GLOVE",
+  "link": "https://www.youtube.com/watch?v=D8DouKeOkfI&feature=youtu.be",
+  "emoji": "🥊",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e214c"
+  },
+  "name": "CHROMATIC LOGGER",
+  "link": "https://www.rescuetime.com/",
+  "emoji": "⏱",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2149"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2162"
+  },
+  "name": "NOFAP GUIDE",
+  "link": "https://www.youtube.com/watch?v=nxFDFvU7PbU",
+  "emoji": "📘",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2146"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e216c"
+  },
+  "name": "ANTI-FAP POTION",
+  "link": "https://easypeasymethod.org/",
+  "emoji": "🧪",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e2164"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21af"
+  },
+  "name": "FAMILY GUIDE",
+  "link": "https://www.youtube.com/watch?v=HFF6uLKT3a4",
+  "emoji": "item",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21ac"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21b4"
+  },
+  "name": "CONFIDENCE BOOSTER",
+  "link": "https://www.youtube.com/watch?v=2nIsZYPO7Us",
+  "emoji": "📣",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a6"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21b6"
+  },
+  "name": "RELATIONSHIP TOOLBOX",
+  "link": "https://drive.google.com/file/d/1VYC1qwsQ0FJh1lsXXsTQerVq-QptESZm/view",
+  "emoji": "🧰",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a6"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21c7"
+  },
+  "name": "HTWFAIP",
+  "link": "https://drive.google.com/file/d/1XEonU2uWopJVfPIv0YyPuBq79jR-KOlP/view",
+  "emoji": "📕",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21b8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21c9"
+  },
+  "name": "BODY LANGUAGE GUIDE",
+  "link": "https://www.youtube.com/watch?v=RgkghUvC6PA",
+  "emoji": "📋",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21b8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21d9"
+  },
+  "name": "HOW TO COMMAND RESPECT",
+  "link": "https://www.youtube.com/watch?v=PYaixyrzDOk",
+  "emoji": "📋",
+  "requires": [
+    {
+      "$oid": "62c226da9efefadfd10e21c4"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e21fd"
+  },
+  "name": "TESTOSTERONE SERUM",
+  "link": "https://www.youtube.com/watch?v=iH_6Omu9N5k&ab_channel=Hamza",
+  "emoji": "💉",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e219d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e220a"
+  },
+  "name": "ENCHIRIDION",
+  "link": "http://classics.mit.edu/Epictetus/epicench.html",
+  "emoji": "📜",
+  "requires": [
+    {
+      "$oid": "62c226dc9efefadfd10e21ff"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e2218"
+  },
+  "name": "MEDITATIONS",
+  "link": "http://classics.mit.edu/Antoninus/meditations.html",
+  "emoji": "📜",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e2212"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e2220"
+  },
+  "name": "ADVANCED JOURNAL",
+  "link": "https://www.youtube.com/watch?v=90MCjY62qx0",
+  "emoji": "📒",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e2222"
+  },
+  "name": "HOW TO SHOW GRATITUDE",
+  "link": "https://www.youtube.com/watch?v=1owp6JQxB0E",
+  "emoji": "📜",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226de9efefadfd10e2233"
+  },
+  "name": "ELITE VISUALIZATION CAP",
+  "link": "https://www.youtube.com/watch?v=vd-nlPlKbiI",
+  "emoji": "🪖",
+  "requires": [
+    {
+      "$oid": "62c226de9efefadfd10e222a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226de9efefadfd10e2238"
+  },
+  "name": "THE WALL",
+  "link": "https://www.youtube.com/watch?v=sBl-l4De7pA",
+  "emoji": "item",
+  "requires": [
+    {
+      "$oid": "62c226de9efefadfd10e2230"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e224a"
+  },
+  "name": "MIND DUMP GUIDE",
+  "link": "https://www.youtube.com/watch?v=H4VWDJUDHX0",
+  "emoji": "item",
+  "requires": [
+    {
+      "$oid": "62c226df9efefadfd10e223f"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e224c"
+  },
+  "name": "ANCIENT LIBRARY",
+  "link": "https://drive.google.com/drive/folders/1HGG7si_q8bfmT4eHEH0vcytn9TegRtPy",
+  "emoji": "item",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e226f"
+  },
+  "name": "NEURO-ENHANCEMENT PILL",
+  "link": "https://www.youtube.com/watch?v=3znAl0QH1eE",
+  "emoji": "💊",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e225d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e2271"
+  },
+  "name": "FLASHCARDS",
+  "link": "https://apps.ankiweb.net/",
+  "emoji": "🗃",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e225d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e227f"
+  },
+  "name": "ELITE STUDY GUIDE",
+  "link": "https://www.youtube.com/watch?v=nqYmmZKY4sA",
+  "emoji": "📙",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e2269"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e2290"
+  },
+  "name": "WARDROBE ENHANCER",
+  "link": "https://theessentialman.com/mens-style-beginners/",
+  "emoji": "🛒",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e5"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e2292"
+  },
+  "name": "EXERCISE GUIDE",
+  "link": "https://m.youtube.com/watch?v=4oKtIdfohC4&feature=youtu.be",
+  "emoji": "📦",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20bd"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e2294"
+  },
+  "name": "MORNING ROUTINE",
+  "link": "https://www.youtube.com/watch?v=R9M8vnIYSEg",
+  "emoji": "📒",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e2296"
+  },
+  "name": "ULTIMATE SLEEP GUIDE",
+  "link": "https://www.youtube.com/watch?v=-GycLiOqMjc",
+  "emoji": "📔",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e2298"
+  },
+  "name": "DIETERS UTENSILS",
+  "link": "https://m.youtube.com/watch?v=7_AoUF4zfV4",
+  "emoji": "🍴",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e229a"
+  },
+  "name": "NEGATIVE VISUALISATION GUIDE",
+  "link": "https://www.youtube.com/watch?v=SScd40GNusQ",
+  "emoji": "📕",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e2224"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c382d46cac02c487e243cb"
+  },
+  "name": "SELF IMPROVEMENT GUIDE BOOK",
+  "link": "https://www.youtube.com/watch?v=PYaixyrzDOk",
+  "emoji": "📙",
+  "requires": []
+},{
+  "_id": {
+    "$oid": "62c383846cac02c487e243cc"
+  },
+  "name": "RUSTY DAGGER",
+  "emoji": "🗡",
+  "requires": []
+}]

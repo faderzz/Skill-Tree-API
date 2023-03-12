@@ -1,0 +1,353 @@
+[{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20bb"
+  },
+  "title": "NOVICE MONK",
+  "goals": [
+    "Meditate for 30 days total"
+  ],
+  "xp": 420,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20ad"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e20f7"
+  },
+  "title": "ENDURER",
+  "goals": [
+    "Run a 5K"
+  ],
+  "xp": 500,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20eb"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e20f9"
+  },
+  "title": "ELITE ENDURER",
+  "goals": [
+    "Run a 12K"
+  ],
+  "xp": 1500,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20ee"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e213e"
+  },
+  "title": "LEGIONNAIRE",
+  "goals": [
+    "Win a martial arts competition"
+  ],
+  "xp": 6000,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d49efefadfd10e213b"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e214e"
+  },
+  "title": "SELF-STARTER",
+  "goals": [
+    "Meditate without an app for 15 minutes"
+  ],
+  "xp": 500,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c0"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2159"
+  },
+  "title": "GLACIAL",
+  "goals": [
+    "20 minute ice bath"
+  ],
+  "xp": 2500,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2153"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e215e"
+  },
+  "title": "BUDDHIST FOCUS",
+  "goals": [
+    "Meditate for 1 hour straight"
+  ],
+  "xp": 1000,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e215b"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2160"
+  },
+  "title": "PATH TO ENLIGHTENMENT",
+  "goals": [
+    "Complete 31 days of mindfulness"
+  ],
+  "xp": 500,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d49efefadfd10e2143"
+    }
+  ],
+  "link": "https://cdn.discordapp.com/attachments/939508059758288939/1062451573105627298/31_days_of_mindfulness.pdf"
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e216a"
+  },
+  "title": "ACCEPTANCE",
+  "goals": [
+    "2 weeks without fapping"
+  ],
+  "xp": 420,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e2164"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e2186"
+  },
+  "title": "MODERN CAVEMAN",
+  "goals": [
+    "Avoid all screens for 3 days"
+  ],
+  "xp": 2500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d79efefadfd10e2183"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21d1"
+  },
+  "title": "EXTROVERT",
+  "goals": [
+    "Cold approach 5 people you find attractive in public"
+  ],
+  "xp": 3000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226da9efefadfd10e21cb"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21de"
+  },
+  "title": "ORATOR",
+  "goals": [
+    "Speak publically in front of >20 people"
+  ],
+  "xp": 1500,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226da9efefadfd10e21db"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21e0"
+  },
+  "title": "SOCIALITE",
+  "goals": [
+    "Write a list of 30 social interaction challenges for 30 days and complete it"
+  ],
+  "xp": 2000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21b8"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21e5"
+  },
+  "title": "BROTHERHOOD",
+  "goals": [
+    "Plan a social event based on a self-improvement activity"
+  ],
+  "xp": 1000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226db9efefadfd10e21e2"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e21f6"
+  },
+  "title": "INDUSTRIOUS",
+  "goals": [
+    "3 hour deep work session"
+  ],
+  "xp": 1000,
+  "category": "discipline",
+  "requires": [
+    {
+      "$oid": "62c226db9efefadfd10e21f0"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e21fb"
+  },
+  "title": "ACCELERATED GROWTH",
+  "goals": [
+    "Complete 5 more skills from the skill tree"
+  ],
+  "xp": 1000,
+  "category": "discipline",
+  "requires": [
+    {
+      "$oid": "62c226dc9efefadfd10e21f8"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e2202"
+  },
+  "title": "ICE RAIN",
+  "goals": [
+    "Stay on the coldest setting for 10 minutes straight"
+  ],
+  "xp": 1500,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2150"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e223d"
+  },
+  "title": "ELITE INTROSPECTOR",
+  "goals": [
+    "Deep journal for an hour"
+  ],
+  "xp": 2500,
+  "category": "skills",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e2227"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e2242"
+  },
+  "title": "INTROSPECTOR",
+  "goals": [
+    "Journal about a quote/book you've recently read. What does this mean to me? How/when can I use it in my life? What would my future self think about this?"
+  ],
+  "xp": 500,
+  "category": "skills",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e221d"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e2260"
+  },
+  "title": "DEVOURER OF KNOWLEDGE",
+  "goals": [
+    "Read everything in the ancient library"
+  ],
+  "xp": 15000,
+  "category": "learning",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e2257"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e2262"
+  },
+  "title": "BOOKWORM",
+  "goals": [
+    "Read 10 books in total"
+  ],
+  "xp": 2500,
+  "category": "reading",
+  "requires": [
+    {
+      "$oid": "62c226df9efefadfd10e2251"
+    }
+  ],
+  "link": null
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e2267"
+  },
+  "title": "MR. WORLDWIDE",
+  "goals": [
+    "Participate in a cultural event"
+  ],
+  "xp": 2000,
+  "category": "culture",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e2264"
+    }
+  ],
+  "link": null
+}]

@@ -1,0 +1,2562 @@
+[{
+  "_id": {
+    "$oid": "62c226cf9efefadfd10e20ad"
+  },
+  "title": "MEDITATION",
+  "level": 1,
+  "goals": [
+    "Meditate for 2 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 80,
+  "category": "MENTAL HEALTH",
+  "requires": []
+},{
+  "_id": {
+    "$oid": "62c226cf9efefadfd10e20b2"
+  },
+  "title": "JOURNALING",
+  "level": 1,
+  "goals": [
+    "PROMPT: Why do I want to improve myself?",
+    "PROMPT: What makes me happy?",
+    "PROMPT: Who am I? How would I describe myself? ",
+    "PROMPT: What do I need to change in my life?",
+    "PROMPT: Where do I want to be in 5 Years?"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 60,
+  "category": "SKILLS",
+  "requires": []
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20b6"
+  },
+  "title": "MEDITATION",
+  "level": 2,
+  "goals": [
+    "Meditate for 5 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 100,
+  "category": "MENTAL HEALTH",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20ad"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20bd"
+  },
+  "title": "FITNESS",
+  "level": 1,
+  "goals": [
+    "Perform some type of strength training exercise"
+  ],
+  "frequency": 3,
+  "interval": "week",
+  "timelimit": "14",
+  "xp": 150,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20ad"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20c0"
+  },
+  "title": "MEDITATION",
+  "level": 3,
+  "goals": [
+    "Meditate for 10 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 170,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20b6"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20c3"
+  },
+  "title": "SLEEP",
+  "level": 1,
+  "goals": [
+    "Set a consistent bedtime and wake time"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 200,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20b6"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20c8"
+  },
+  "title": "NUTRITION",
+  "level": 1,
+  "goals": [
+    "DON'T eat any Fast Food"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 50,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20bd"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d09efefadfd10e20cd"
+  },
+  "title": "NUTRITION",
+  "level": 2,
+  "goals": [
+    "Roughly track the calories of most major meals"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 600,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20d0"
+  },
+  "title": "ROUTINES",
+  "level": 1,
+  "goals": [
+    "Create and stick to a 30 minute morning routine"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 450,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20d3"
+  },
+  "title": "NUTRITION",
+  "level": 3,
+  "goals": [
+    "Structure your diet to hit your macronutrient goals"
+  ],
+  "frequency": 1,
+  "interval": "week",
+  "timelimit": "90",
+  "xp": 2000,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20cd"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20d6"
+  },
+  "title": "NUTRITION",
+  "level": 4,
+  "goals": [
+    "Plan and hit your daily calories for a successful BULK/CUT"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "180",
+  "xp": 8000,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20d3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20d9"
+  },
+  "title": "FITNESS",
+  "level": 2,
+  "goals": [
+    "Exercise >30 min(s)"
+  ],
+  "frequency": 4,
+  "interval": "week",
+  "timelimit": "30",
+  "xp": 750,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20bd"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20dc"
+  },
+  "title": "WATER",
+  "level": 1,
+  "goals": [
+    "No alcohol / soft-drinks / energy drinks"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 400,
+  "category": "hydration",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20d9"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20df"
+  },
+  "title": "CARDIO",
+  "level": 1,
+  "goals": [
+    "Run or swim or cycle for 20 minutes"
+  ],
+  "frequency": 2,
+  "interval": "week",
+  "timelimit": "30",
+  "xp": 500,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20d9"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20e2"
+  },
+  "title": "FITNESS",
+  "level": 3,
+  "goals": [
+    "Create a workout routine and track your workouts with strong"
+  ],
+  "frequency": 5,
+  "interval": "week",
+  "timelimit": "60",
+  "xp": 3000,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20d9"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20e5"
+  },
+  "title": "ATTRACTION",
+  "level": 1,
+  "goals": [
+    "Wash your face with soap twice a day"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 100,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20d9"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20e8"
+  },
+  "title": "WATER",
+  "level": 2,
+  "goals": [
+    "Drink a glass of water each morning"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 600,
+  "category": "hydration",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20dc"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20eb"
+  },
+  "title": "CARDIO",
+  "level": 2,
+  "goals": [
+    "Run or swim or cycle for 40 minutes"
+  ],
+  "frequency": 3,
+  "interval": "week",
+  "timelimit": "30",
+  "xp": 750,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20df"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d19efefadfd10e20ee"
+  },
+  "title": "CARDIO",
+  "level": 3,
+  "goals": [
+    "Run or swim or cycle for 1 hour"
+  ],
+  "frequency": 4,
+  "interval": "week",
+  "timelimit": "30",
+  "xp": 1000,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20eb"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e20f1"
+  },
+  "title": "CARDIO",
+  "level": 4,
+  "goals": [
+    "Participate in a swimming/cycling/running competition"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 2000,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20ee"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e20f4"
+  },
+  "title": "CARDIO",
+  "level": 5,
+  "goals": [
+    "Place first in a running/cycling/swimming competition"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 3000,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d29efefadfd10e20f1"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e20fb"
+  },
+  "title": "SLEEP",
+  "level": 2,
+  "goals": [
+    "Stay in bed and attempt to sleep for 8 hours a night"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 500,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e20fe"
+  },
+  "title": "ROUTINES",
+  "level": 2,
+  "goals": [
+    "Create and stick to a 1 hour evening routine (without screens)"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 2000,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20d0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e2101"
+  },
+  "title": "ROUTINES",
+  "level": 3,
+  "goals": [
+    "Write a daily plan each morning with tasks you will complete"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 3000,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d29efefadfd10e20fe"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e2104"
+  },
+  "title": "SLEEP",
+  "level": 3,
+  "goals": [
+    "Wake up at 7AM"
+  ],
+  "frequency": 1,
+  "interval": "week",
+  "timelimit": "12",
+  "xp": 2000,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d29efefadfd10e20fb"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e2107"
+  },
+  "title": "SLEEP",
+  "level": 4,
+  "goals": [
+    "Wake up at 5AM"
+  ],
+  "frequency": 1,
+  "interval": "week",
+  "timelimit": "12",
+  "xp": 5000,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d29efefadfd10e2104"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e210a"
+  },
+  "title": "ROUTINES",
+  "level": 4,
+  "goals": [
+    "Create an ideal daily plan in 15 minute increments and stick to it"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "60",
+  "xp": 6000,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d29efefadfd10e2101"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d29efefadfd10e210d"
+  },
+  "title": "ROUTINES",
+  "level": 5,
+  "goals": [
+    "Perform a weekly review to assess your progress and alter your daily plan"
+  ],
+  "frequency": 1,
+  "interval": "week",
+  "timelimit": "60",
+  "xp": 8000,
+  "category": "routines",
+  "requires": [
+    {
+      "$oid": "62c226d29efefadfd10e210a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2112"
+  },
+  "title": "ATTRACTION",
+  "level": 2,
+  "goals": [
+    "Apply moisturiser and sunscreen daily"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 300,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e5"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2115"
+  },
+  "title": "FASHION",
+  "level": 1,
+  "goals": [
+    "Spend 2 hours researching fashion styles that you're interested in"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 250,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e5"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2118"
+  },
+  "title": "HAIR CARE",
+  "level": 1,
+  "goals": [
+    "Spend 2 hours researching hair care and styles"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 500,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e5"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e211d"
+  },
+  "title": "ATTRACTION",
+  "level": 3,
+  "goals": [
+    "Mew for at least 5 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 600,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e2112"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2122"
+  },
+  "title": "ATTRACTION",
+  "level": 4,
+  "goals": [
+    "Perform facial exercise"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 2000,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e211d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e2125"
+  },
+  "title": "FASHION",
+  "level": 2,
+  "goals": [
+    "Plan and buy a weeks worth of outfits"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 1150,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e2115"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e212a"
+  },
+  "title": "HAIR CARE",
+  "level": 2,
+  "goals": [
+    "Get a haircut based off of your research"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 1000,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e2118"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d39efefadfd10e212d"
+  },
+  "title": "HAIR CARE",
+  "level": 3,
+  "goals": [
+    "Purchase and use haircare products daily"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 2000,
+  "category": "attraction",
+  "requires": [
+    {
+      "$oid": "62c226d39efefadfd10e212a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e2132"
+  },
+  "title": "SELF-DEFENCE",
+  "level": 1,
+  "goals": [
+    "Start training a martial art (MMA/Boxing/etc)"
+  ],
+  "frequency": 3,
+  "interval": "week",
+  "timelimit": "14",
+  "xp": 200,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e2135"
+  },
+  "title": "FITNESS",
+  "level": 4,
+  "goals": [
+    "Hit PRs in EVERY exercise in your routine"
+  ],
+  "frequency": 5,
+  "interval": "week",
+  "timelimit": "120",
+  "xp": 10000,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e2138"
+  },
+  "title": "SELF-DEFENCE",
+  "level": 2,
+  "goals": [
+    "Win 5 training fights with your martial art"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 600,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d49efefadfd10e2132"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e213b"
+  },
+  "title": "SELF-DEFENCE",
+  "level": 3,
+  "goals": [
+    "Win 30 training fights with your martial art"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 3200,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d49efefadfd10e2138"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e2140"
+  },
+  "title": "COLD SHOWERS",
+  "level": 1,
+  "goals": [
+    "Cold shower 30s (Every other day)"
+  ],
+  "frequency": 4,
+  "interval": "week",
+  "timelimit": "14",
+  "xp": 300,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d49efefadfd10e2143"
+  },
+  "title": "MEDITATION",
+  "level": 4,
+  "goals": [
+    "Meditate for 15 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 800,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2146"
+  },
+  "title": "NOFAP",
+  "level": 1,
+  "goals": [
+    "Track your fapping addiction"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 300,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2149"
+  },
+  "title": "SCREENTIME",
+  "level": 1,
+  "goals": [
+    "Track your screentime daily"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 200,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2150"
+  },
+  "title": "COLD SHOWERS",
+  "level": 2,
+  "goals": [
+    "Cold shower 1m"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 600,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d49efefadfd10e2140"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2153"
+  },
+  "title": "COLD SHOWERS",
+  "level": 3,
+  "goals": [
+    "Cold shower 5m"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 800,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2150"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e2156"
+  },
+  "title": "COLD SHOWERS",
+  "level": 4,
+  "goals": [
+    "Only cold shower"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 2500,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2153"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d59efefadfd10e215b"
+  },
+  "title": "MEDITATION",
+  "level": 5,
+  "goals": [
+    "Meditate for 20 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 3500,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d49efefadfd10e2143"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e2164"
+  },
+  "title": "NOFAP",
+  "level": 2,
+  "goals": [
+    "Reduce your fapping by 25% each month"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "90",
+  "xp": 4000,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2146"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e2167"
+  },
+  "title": "NOFAP",
+  "level": 3,
+  "goals": [
+    "Don't fap at all"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "90",
+  "xp": 8000,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e2164"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e216e"
+  },
+  "title": "SCREENTIME",
+  "level": 2,
+  "goals": [
+    "Reduce your screentime below 5 hours a day"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "21",
+  "xp": 500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2149"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e2171"
+  },
+  "title": "VIDEO GAMES",
+  "level": 1,
+  "goals": [
+    "Maximum of 2 hours of video games a day"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 1000,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2149"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e2174"
+  },
+  "title": "SOCIAL MEDIA",
+  "level": 1,
+  "goals": [
+    "Social media used less than 2 hours daily"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e2149"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e2177"
+  },
+  "title": "SCREENTIME",
+  "level": 3,
+  "goals": [
+    "Reduce your screentime below 3 hours a day"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 1000,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e216e"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d69efefadfd10e217a"
+  },
+  "title": "VIDEO GAMES",
+  "level": 2,
+  "goals": [
+    "Reduce video game time to 6 hours a week"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 2500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e2171"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e217d"
+  },
+  "title": "SOCIAL MEDIA",
+  "level": 2,
+  "goals": [
+    "Block one social media platform you use regularly"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 750,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e2174"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e2180"
+  },
+  "title": "SCREENTIME",
+  "level": 4,
+  "goals": [
+    "Reduce your screentime below 2 hours a day"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "60",
+  "xp": 2000,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e2177"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e2183"
+  },
+  "title": "SCREENTIME",
+  "level": 5,
+  "goals": [
+    "Delete any blockers or extensions to limit your screentime, and reduce screentime to less than 2 hours a day"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "90",
+  "xp": 4500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d79efefadfd10e2180"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e2188"
+  },
+  "title": "VIDEO GAMES",
+  "level": 3,
+  "goals": [
+    "Only play games with friends, maximum of 2 hours a week"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "60",
+  "xp": 3000,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d69efefadfd10e217a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e218b"
+  },
+  "title": "VIDEO GAMES",
+  "level": 4,
+  "goals": [
+    "No video games"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "60",
+  "xp": 4500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d79efefadfd10e2188"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e218e"
+  },
+  "title": "SOCIAL MEDIA",
+  "level": 3,
+  "goals": [
+    "Limit social media to a maximum of 1 hour daily"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 1500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d79efefadfd10e217d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d79efefadfd10e2191"
+  },
+  "title": "SOCIAL MEDIA",
+  "level": 4,
+  "goals": [
+    "Delete all blockers and extensions, limit yourself to 2 hours of social media a day"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 2000,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d79efefadfd10e218e"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e2194"
+  },
+  "title": "SOCIAL MEDIA",
+  "level": 5,
+  "goals": [
+    "No recreational social media use"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "60",
+  "xp": 3500,
+  "category": "screentime",
+  "requires": [
+    {
+      "$oid": "62c226d79efefadfd10e2191"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e2197"
+  },
+  "title": "RELATIONSHIPS",
+  "level": 1,
+  "goals": [
+    "Hold eye contact and smile to a stranger"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 100,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20b2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e219a"
+  },
+  "title": "DISCIPLINE",
+  "level": 1,
+  "goals": [
+    "Make your bed"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 100,
+  "category": "discipline",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20b2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e219d"
+  },
+  "title": "CLASSICAL MASCULINITY",
+  "level": 1,
+  "goals": [
+    "Visualise acting as your ideal masculine self for 5 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 300,
+  "category": "masculinity",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20b2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e21a0"
+  },
+  "title": "JOURNALING",
+  "level": 2,
+  "goals": [
+    "PROMPT: Who do I want to become?",
+    "PROMPT: What is my biggest weakness?",
+    "PROMPT: What has impacted me most in life?",
+    "PROMPT: What am I most grateful for? why?",
+    "PROMPT: Who do I want to surround myself with?"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 300,
+  "category": "skills",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20b2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e21a3"
+  },
+  "title": "READING",
+  "level": 1,
+  "goals": [
+    "Read for 10 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "15",
+  "xp": 200,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226cf9efefadfd10e20b2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e21a6"
+  },
+  "title": "RELATIONSHIPS",
+  "level": 2,
+  "goals": [
+    "Start a friendly conversation with a stranger"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 200,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e2197"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d89efefadfd10e21a9"
+  },
+  "title": "FAMILY",
+  "level": 1,
+  "goals": [
+    "Hug a loved one"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 100,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e2197"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21ac"
+  },
+  "title": "FAMILY",
+  "level": 2,
+  "goals": [
+    "Cook dinner for your family"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 400,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a9"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21b1"
+  },
+  "title": "FAMILY",
+  "level": 3,
+  "goals": [
+    "Spend >20m of quality time with family members"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 500,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21ac"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21b8"
+  },
+  "title": "COMMUNICATION",
+  "level": 1,
+  "goals": [
+    "Speak slowly and with intention, don't allow yourself to be interrupted"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 300,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a6"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21bb"
+  },
+  "title": "RELATIONSHIPS",
+  "level": 3,
+  "goals": [
+    "Start a friendly conversation with a stranger"
+  ],
+  "frequency": 3,
+  "interval": "week",
+  "timelimit": "14",
+  "xp": 1000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a6"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21be"
+  },
+  "title": "CONFIDENCE",
+  "level": 1,
+  "goals": [
+    "Research confidence for an hour"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 300,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21b8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226d99efefadfd10e21c1"
+  },
+  "title": "BODY LANGUAGE",
+  "level": 1,
+  "goals": [
+    "Practice your body language in the mirror for 10 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 200,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21b8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21c4"
+  },
+  "title": "COMMUNICATION",
+  "level": 2,
+  "goals": [
+    "Follow the HTWFAIP principles religiously"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 1000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21b8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21cb"
+  },
+  "title": "CONFIDENCE",
+  "level": 2,
+  "goals": [
+    "Find an activity you lack confidence in and attempt it"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 1000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21be"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21ce"
+  },
+  "title": "CONFIDENCE",
+  "level": 3,
+  "goals": [
+    "Approach someone you find attractive and start a conversation"
+  ],
+  "frequency": 1,
+  "interval": "week",
+  "timelimit": "30",
+  "xp": 2000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226da9efefadfd10e21cb"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21d3"
+  },
+  "title": "BODY LANGUAGE",
+  "level": 2,
+  "goals": [
+    "Be mindful of your posture at least once daily"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 500,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21c1"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21d6"
+  },
+  "title": "BODY LANGUAGE",
+  "level": 3,
+  "goals": [
+    "Be mindful of your posture and take up more space than you normally would in daily interactions"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 1500,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226da9efefadfd10e21d3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226da9efefadfd10e21db"
+  },
+  "title": "COMMUNICATION",
+  "level": 3,
+  "goals": [
+    "1) Physically take up more space 2) Initiate platonic touching 3) Don't allow yourself to be cut off 4) Compliment those you dislike 5) share your shortcomings playfully"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 2500,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226da9efefadfd10e21c4"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21e2"
+  },
+  "title": "RELATIONSHIPS",
+  "level": 4,
+  "goals": [
+    "Plan two social events with friends"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 2000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21bb"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21e7"
+  },
+  "title": "FAMILY",
+  "level": 4,
+  "goals": [
+    "Plan an activity for your family"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 800,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226d99efefadfd10e21b1"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21ea"
+  },
+  "title": "FAMILY",
+  "level": 5,
+  "goals": [
+    "Plan a family activity outdoors"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 1000,
+  "category": "relationships",
+  "requires": [
+    {
+      "$oid": "62c226db9efefadfd10e21e7"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21ed"
+  },
+  "title": "DISCIPLINE",
+  "level": 2,
+  "goals": [
+    "Have a 30 minute work session"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 300,
+  "category": "discipline",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e219a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21f0"
+  },
+  "title": "DISCIPLINE",
+  "level": 3,
+  "goals": [
+    "Explode out of bed first thing in the morning with a number of pushups you can comfortably complete"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 750,
+  "category": "discipline",
+  "requires": [
+    {
+      "$oid": "62c226db9efefadfd10e21ed"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226db9efefadfd10e21f3"
+  },
+  "title": "DISCIPLINE",
+  "level": 4,
+  "goals": [
+    "Write a list of 7 habits holding you back in life that you can abstain from",
+    "Abstain from habit 1",
+    "Abstain from habit 2",
+    "Abstain from habit 3",
+    "Abstain from habit 4",
+    "Abstain from habit 5",
+    "Abstain from habit 6",
+    "Abstain from habit 7"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 1000,
+  "category": "discipline",
+  "requires": [
+    {
+      "$oid": "62c226db9efefadfd10e21f0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e21f8"
+  },
+  "title": "DISCIPLINE",
+  "level": 5,
+  "goals": [
+    "Place a desireable item/addiction where it is accessible and resist it"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 2000,
+  "category": "discipline",
+  "requires": [
+    {
+      "$oid": "62c226db9efefadfd10e21f3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e21ff"
+  },
+  "title": "CLASSICAL MASCULINITY",
+  "level": 2,
+  "goals": [
+    "Take responsibility for 100% of the things in your life"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 300,
+  "category": "masculinity",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e219d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e2204"
+  },
+  "title": "WATER",
+  "level": 3,
+  "goals": [
+    "Drink 2 litres of water"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 1000,
+  "category": "hydration",
+  "requires": [
+    {
+      "$oid": "62c226d19efefadfd10e20e8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e2207"
+  },
+  "title": "FITNESS",
+  "level": 5,
+  "goals": [
+    "Train twice a day for >1.5h total"
+  ],
+  "frequency": 6,
+  "interval": "week",
+  "timelimit": "60",
+  "xp": 20000,
+  "category": "fitness",
+  "requires": [
+    {
+      "$oid": "62c226d49efefadfd10e2135"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dc9efefadfd10e220c"
+  },
+  "title": "CLASSICAL MASCULINITY",
+  "level": 3,
+  "goals": [
+    "Read the rational male"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 600,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226dc9efefadfd10e21ff"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e220f"
+  },
+  "title": "CLASSICAL MASCULINITY",
+  "level": 4,
+  "goals": [
+    "Cultivate directionality. Lean into your directionality in life. Go after what you want. Set goals, honour them, and let nothing stand in the way"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "60",
+  "xp": 2000,
+  "category": "masculinity",
+  "requires": [
+    {
+      "$oid": "62c226dc9efefadfd10e220c"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e2212"
+  },
+  "title": "STOICISM",
+  "level": 1,
+  "goals": [
+    "Spend 2 hours researching stoicism"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": "0",
+  "xp": 500,
+  "category": "masculinity",
+  "requires": [
+    {
+      "$oid": "62c226dc9efefadfd10e21ff"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e2215"
+  },
+  "title": "STOICISM",
+  "level": 2,
+  "goals": [
+    "Read \"meditations\" by marcus aurelius"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 200,
+  "category": "masculinity",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e2212"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e221a"
+  },
+  "title": "STOICISM",
+  "level": 3,
+  "goals": [
+    "Plan 5 habits to be more stoic and practice them"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 1000,
+  "category": "masculinity",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e2215"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e221d"
+  },
+  "title": "JOURNALING",
+  "level": 3,
+  "goals": [
+    "PROMPT: In what way have my actions affected my life?",
+    "PROMPT: What behaviours do I do unconsciously? Why?",
+    "PROMPT: How are my behaviours affecting my daily life?",
+    "PROMPT: How do I stop my negative behaviours?",
+    "PROMPT: What are the worst things I'm doing? What are the most useful things I could start doing?"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e2224"
+  },
+  "title": "GRATITUDE",
+  "level": 1,
+  "goals": [
+    "Write 5 things you're grateful for"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 100,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226dd9efefadfd10e2227"
+  },
+  "title": "JOURNALING",
+  "level": 4,
+  "goals": [
+    "PROMPT: What types of problems do I enjoy solving?",
+    "PROMPT: What questions do I need to ask myself right now? Answer them",
+    "PROMPT: What would I do with unlimited time/energy/money?",
+    "PROMPT: What excites me?",
+    "PROMPT: What is my purpose?"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 1000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e221d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226de9efefadfd10e222a"
+  },
+  "title": "GRATITUDE",
+  "level": 2,
+  "goals": [
+    "Practice negative visualisation for 5 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226dd9efefadfd10e2224"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226de9efefadfd10e222d"
+  },
+  "title": "GRATITUDE",
+  "level": 3,
+  "goals": [
+    "Gratitude journal about BAD things in your life or childhood trauma"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 2000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226de9efefadfd10e222a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226de9efefadfd10e2230"
+  },
+  "title": "VISUALISATION",
+  "level": 1,
+  "goals": [
+    "Visualise yourself succeding for 10 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226de9efefadfd10e222a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226de9efefadfd10e2235"
+  },
+  "title": "VISUALISATION",
+  "level": 2,
+  "goals": [
+    "Create the wall"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 750,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226de9efefadfd10e2230"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226de9efefadfd10e223a"
+  },
+  "title": "VISUALISATION",
+  "level": 3,
+  "goals": [
+    "Mentally visualise and design a relaxing location in detail. Then visualise it daily for 5 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 1000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226de9efefadfd10e2235"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e223f"
+  },
+  "title": "MIND DUMP",
+  "level": 1,
+  "goals": [
+    "Go stare at your wall and THINK for 10 mins, Reflect upon yourself, deeply"
+  ],
+  "frequency": 4,
+  "interval": "week",
+  "timelimit": "14",
+  "xp": 300,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a0"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e2244"
+  },
+  "title": "MIND DUMP",
+  "level": 2,
+  "goals": [
+    "Go stare at your wall and THINK for 15 mins, Reflect upon yourself, deeply"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 800,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226df9efefadfd10e223f"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e2247"
+  },
+  "title": "MIND DUMP",
+  "level": 3,
+  "goals": [
+    "Go stare at your wall. THINK and WRITE DOWN your thoughts for 15 mins"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 1500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226df9efefadfd10e2244"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e224e"
+  },
+  "title": "READING",
+  "level": 2,
+  "goals": [
+    "Read for 15 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 600,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226df9efefadfd10e2251"
+  },
+  "title": "READING",
+  "level": 3,
+  "goals": [
+    "Read for 20 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 1500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226df9efefadfd10e224e"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e2254"
+  },
+  "title": "READING",
+  "level": 4,
+  "goals": [
+    "Read 1 book every 2 weeks"
+  ],
+  "frequency": 2,
+  "interval": "month",
+  "timelimit": "60",
+  "xp": 3000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226df9efefadfd10e2251"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e2257"
+  },
+  "title": "READING",
+  "level": 5,
+  "goals": [
+    "Read two books from each discipline: PRODUCTIVITY, HABITS, RELATIONSHIPS, ENTREPRENEURSHIP, HAPPINESS"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "120",
+  "xp": 7500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e2254"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e225a"
+  },
+  "title": "CULTURE",
+  "level": 1,
+  "goals": [
+    "Practice a form of art (music, drawing, etc)"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e225d"
+  },
+  "title": "STUDYING",
+  "level": 1,
+  "goals": [
+    "15 minutes of deep work"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 250,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226d89efefadfd10e21a3"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e2264"
+  },
+  "title": "CULTURE",
+  "level": 2,
+  "goals": [
+    "Experience a cultural event/place with friends or family"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 1000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e225a"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e2269"
+  },
+  "title": "STUDYING",
+  "level": 2,
+  "goals": [
+    "30 minutes of deep work"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e225d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e09efefadfd10e226c"
+  },
+  "title": "RECALL",
+  "level": 1,
+  "goals": [
+    "Create and study with flashcards"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 100,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e225d"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e2273"
+  },
+  "title": "STUDYING",
+  "level": 3,
+  "goals": [
+    "1 hour of deep work"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 1000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e2269"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e2276"
+  },
+  "title": "RECALL",
+  "level": 2,
+  "goals": [
+    "Review your notes for 30 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 100,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e09efefadfd10e226c"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e2279"
+  },
+  "title": "STUDYING",
+  "level": 4,
+  "goals": [
+    "2 hours of deep work"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 3000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e19efefadfd10e2273"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e227c"
+  },
+  "title": "RECALL",
+  "level": 3,
+  "goals": [
+    "Review your studying"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "5",
+  "xp": 100,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e19efefadfd10e2276"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e2281"
+  },
+  "title": "COOKING",
+  "level": 1,
+  "goals": [
+    "Cook a meal at home"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "7",
+  "xp": 500,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226d09efefadfd10e20c8"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e19efefadfd10e2284"
+  },
+  "title": "COOKING",
+  "level": 2,
+  "goals": [
+    "Create a weekly meal plan and stick to it"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 1000,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226e19efefadfd10e2281"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e2287"
+  },
+  "title": "COOKING",
+  "level": 3,
+  "goals": [
+    "Research 3 healthy meals and cook them throughout the week"
+  ],
+  "frequency": 3,
+  "interval": "week",
+  "timelimit": 7,
+  "xp": 1500,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226e19efefadfd10e2284"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e228a"
+  },
+  "title": "COOKING",
+  "level": 4,
+  "goals": [
+    "Research 10 healthy meals and cook them throughout the month"
+  ],
+  "frequency": 10,
+  "interval": "month",
+  "timelimit": "30",
+  "xp": 2500,
+  "category": "Diet",
+  "requires": [
+    {
+      "$oid": "62c226e29efefadfd10e2287"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e228d"
+  },
+  "title": "MEDITATION",
+  "level": 6,
+  "goals": [
+    "Meditate for 20 minutes"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "120",
+  "xp": 10000,
+  "category": "mindfulness",
+  "requires": [
+    {
+      "$oid": "62c226d59efefadfd10e215b"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e229c"
+  },
+  "title": "BUSINESS",
+  "level": 1,
+  "goals": [
+    "Set aside time to come up with 5 creative solutions/businesses/ideas"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "14",
+  "xp": 500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226df9efefadfd10e224e"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e29efefadfd10e229f"
+  },
+  "title": "BUSINESS",
+  "level": 2,
+  "goals": [
+    "Develop a realistic business plan with a concrete start date and a plan of operation"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 1000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e29efefadfd10e229c"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e39efefadfd10e22a2"
+  },
+  "title": "FINANCE",
+  "level": 1,
+  "goals": [
+    "Track your expenses for a month"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 500,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e29efefadfd10e229c"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e39efefadfd10e22a5"
+  },
+  "title": "BUSINESS",
+  "level": 3,
+  "goals": [
+    "Start your business and make $100 from it"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 2000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e29efefadfd10e229f"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e39efefadfd10e22a8"
+  },
+  "title": "BUSINESS",
+  "level": 4,
+  "goals": [
+    "Attain your first 100 customers"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 4000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e39efefadfd10e22a5"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e39efefadfd10e22ab"
+  },
+  "title": "FINANCE",
+  "level": 2,
+  "goals": [
+    "Make a budget and stick to it. Practice minimalism"
+  ],
+  "frequency": 1,
+  "interval": "day",
+  "timelimit": "30",
+  "xp": 800,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e39efefadfd10e22a2"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e39efefadfd10e22ae"
+  },
+  "title": "FINANCE",
+  "level": 3,
+  "goals": [
+    "Research finance for 10 hours (e.g. Stocks/Tax/Jobs/Business fundamentals)"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 2000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e39efefadfd10e22ab"
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "62c226e39efefadfd10e22b1"
+  },
+  "title": "FINANCE",
+  "level": 4,
+  "goals": [
+    "Start investing and make $500"
+  ],
+  "frequency": 1,
+  "interval": "N/A",
+  "timelimit": 0,
+  "xp": 5000,
+  "category": "SKILLS",
+  "requires": [
+    {
+      "$oid": "62c226e39efefadfd10e22ae"
+    }
+  ]
+}]
