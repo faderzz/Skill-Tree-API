@@ -114,7 +114,7 @@ class UserController {
         });
       } else {
         res.status(401).json({ response: "error", error: "cannot find user" });
-        log.warn(`Cannot find user with query:  ${req.query}`);
+        log.warn(`Cannot find user with query:  ${req.body}`);
       }
     }
     catch (err) {
