@@ -8,7 +8,7 @@ const Challenge = require("../../models/challenge.model");
 const difficultyConfig = require("../../config/difficulty.config");
 
 class UserController {
-  async deleteUser(req,res) {
+  async deleteUser(req, res) {
     try {
       await User.findByIdAndDelete(req.body.userid);
 
@@ -31,11 +31,11 @@ class UserController {
     try {
       // TODO: verify if the header is present
       const user = await User.findById(req.headers["id"])
-        .populate({path: "skillscompleted", model: Skill})
-        .populate({path: "skillsinprogress", model: Skill})
-        .populate({path: "challengescompleted", model: Challenge})
-        .populate({path: "challengesinprogress", model: Challenge})
-        .populate({path: "items", model: Item});
+        .populate({ path: "skillscompleted", model: Skill })
+        .populate({ path: "skillsinprogress", model: Skill })
+        .populate({ path: "challengescompleted", model: Challenge })
+        .populate({ path: "challengesinprogress", model: Challenge })
+        .populate({ path: "items", model: Item });
 
       if (!user) {
         return res.status(409).json({ response: "error", error: "Invalid user" });
@@ -131,6 +131,12 @@ class UserController {
           description: 'User created successfully.'
            }
         #swagger.produces = ['application/json']
+        #swagger.parameters['email'] = {
+          in:'query',
+          required:false,
+          type:'string',
+          description:'name of the user'
+        }
         #swagger.parameters['username'] = {
           in:'query',
           required:false,
@@ -158,16 +164,23 @@ class UserController {
         }]
     */
     try {
+      const email = req.body.email;
       const username = req.body.username;
       const password = req.body.password;
 
       const userExists = await User.findOne({ username });
+      const emailExists = await User.findOne({ email });
 
       if (userExists) {
-        res.status(400).json({response: "error", error: "User already exists"});
+        res.status(400).json({ response: "error", error: "User already exists" });
+      }
+
+      if (emailExists) {
+        res.status(400).json({ response: "error", error: "Email is taken" });
       }
 
       const user = await User.create({
+        email,
         username,
         password,
       });
@@ -180,7 +193,7 @@ class UserController {
         });
       } else {
         log.warn(`Cannot find user with query:  ${req.query}`);
-        res.status(404).json({response: "error", error: "Cannot find user"});
+        res.status(404).json({ response: "error", error: "Cannot find user" });
       }
     }
     catch (err) {
@@ -194,7 +207,7 @@ class UserController {
       const userExists = await User.findOne({ discordid: req.body.discordid });
 
       if (userExists) {
-        res.status(400).json({response: "error", error: "User already exists"});
+        res.status(400).json({ response: "error", error: "User already exists" });
         return;
       }
 
@@ -203,7 +216,7 @@ class UserController {
       // Extract the data from the chosen difficulty
       if (!await difficulty[req.body.difficulty.toLowerCase()]) {
         console.log(`Invalid difficulty ${req.body.difficulty}`);
-        res.status(400).json({response: "error", error: `Invalid difficulty ${req.body.difficulty}`});
+        res.status(400).json({ response: "error", error: `Invalid difficulty ${req.body.difficulty}` });
         return;
       }
       const completed = await difficulty[req.body.difficulty.toLowerCase()].completed || [];
@@ -233,7 +246,7 @@ class UserController {
           });
           task.save();
         }
-        const itemObjects = await Item.find({_id: {$in : items}});
+        const itemObjects = await Item.find({ _id: { $in: items } });
 
         res.status(201).json({
           response: "success",
@@ -242,7 +255,7 @@ class UserController {
         });
       } else {
         log.warn(`Cannot create user:  ${req.query}`);
-        res.status(404).json({response: "error", error: "User already exists"});
+        res.status(404).json({ response: "error", error: "User already exists" });
       }
     }
     catch (err) {
@@ -294,7 +307,7 @@ class UserController {
 
       user.save();
 
-      res.status(200).json({response: "success", error: ""});
+      res.status(200).json({ response: "success", error: "" });
     }
     catch (err) {
       console.log(err);
@@ -304,16 +317,18 @@ class UserController {
 
   async updateUser(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.body.userid, {"$set":{
-        character: req.body.character,
-        difficulty: req.body.difficulty,
-        timezone: req.body.timezone,
-        baselocation: req.body.baselocation,
-      }});
+      const user = await User.findByIdAndUpdate(req.body.userid, {
+        "$set": {
+          character: req.body.character,
+          difficulty: req.body.difficulty,
+          timezone: req.body.timezone,
+          baselocation: req.body.baselocation,
+        }
+      });
 
       user.save();
 
-      res.status(200).json({response: "success", error: ""});
+      res.status(200).json({ response: "success", error: "" });
     }
     catch (err) {
       console.log(err);
@@ -329,7 +344,7 @@ class UserController {
 
       user.save();
 
-      res.status(200).json({response: "success", error: ""});
+      res.status(200).json({ response: "success", error: "" });
     }
     catch (err) {
       console.log(err);
@@ -345,7 +360,7 @@ class UserController {
 
       user.save();
 
-      res.status(200).json({response: "success", error: ""});
+      res.status(200).json({ response: "success", error: "" });
     }
     catch (err) {
       console.log(err);
@@ -397,13 +412,13 @@ class UserController {
       const userChallenges = user.get("challengescompleted").concat(user.get("challengesinprogress"));
 
       const skills = await Skill.find({
-        _id: {$nin : userSkills}, //skill not in progress or completed
-        $expr: {$setIsSubset: ["$requires", completed]}, //All requirements met
+        _id: { $nin: userSkills }, //skill not in progress or completed
+        $expr: { $setIsSubset: ["$requires", completed] }, //All requirements met
       });
 
       const challenges = await Challenge.find({
-        _id: {$nin : userChallenges}, //challenge not in progress or completed
-        $expr: {$setIsSubset: ["$requires", completed]},//All requirements met
+        _id: { $nin: userChallenges }, //challenge not in progress or completed
+        $expr: { $setIsSubset: ["$requires", completed] },//All requirements met
       });
 
       res.status(200).json({
@@ -424,11 +439,11 @@ class UserController {
       const user = await User.findById(req.headers["userid"]);
 
       const skills = await Skill.find({
-        _id: {$in : user.get("skillsinprogress")},
+        _id: { $in: user.get("skillsinprogress") },
       });
 
       const challenges = await Challenge.find({
-        _id: {$in : user.get("challengesinprogress")},
+        _id: { $in: user.get("challengesinprogress") },
       });
 
       res.status(200).json({
@@ -449,11 +464,11 @@ class UserController {
       const user = await User.findById(req.headers["userid"]);
 
       const skills = await Skill.find({
-        _id: {$in : user.get("skillscompleted")},
+        _id: { $in: user.get("skillscompleted") },
       });
 
       const challenges = await Challenge.find({
-        _id: {$in : user.get("challengescompleted")},
+        _id: { $in: user.get("challengescompleted") },
       });
 
       res.status(200).json({
@@ -474,7 +489,7 @@ class UserController {
 
       if (user.get("skillsinprogress").length +
         user.get("challengesinprogress").length > 24) {
-        res.status(201).json({response: "error", errmsg: "Max 24 skills in progress"});
+        res.status(201).json({ response: "error", errmsg: "Max 24 skills in progress" });
         return;
       }
 
@@ -482,7 +497,7 @@ class UserController {
         .concat(user.get("challengesinprogress"))
         .map(v => v.toString())
         .includes(req.body.tostart.toString())) {
-        res.status(202).json({response: "error", errmsg: "Already in progress"});
+        res.status(202).json({ response: "error", errmsg: "Already in progress" });
         return;
       }
 
@@ -521,7 +536,7 @@ class UserController {
         task.save();
       }
 
-      res.status(200).json({response: "success"});
+      res.status(200).json({ response: "success" });
     }
     catch (err) {
       console.log(err);
@@ -533,13 +548,14 @@ class UserController {
     try {
       //complete without XP
       const skill = await Skill.findById(req.body.toskip);
-      const items = await Item.find({requires : req.body.toskip});
+      const items = await Item.find({ requires: req.body.toskip });
 
       if (skill) {
         const user = await User.findByIdAndUpdate(req.body.userid, {
           $addToSet: {
             skillscompleted: req.body.toskip,
-            items: items},
+            items: items
+          },
         });
 
         user.save();
@@ -547,14 +563,15 @@ class UserController {
         const user = await User.findByIdAndUpdate(req.body.userid, {
           $addToSet: {
             challengescompleted: req.body.toskip,
-            items: items},
+            items: items
+          },
         });
 
         user.save();
       }
 
-      const skills = await Skill.find({requires: skill.get("_id")});
-      const challenges = await Challenge.find({requires: skill.get("_id")});
+      const skills = await Skill.find({ requires: skill.get("_id") });
+      const challenges = await Challenge.find({ requires: skill.get("_id") });
 
       res.status(200).json({
         response: "success",
@@ -579,20 +596,20 @@ class UserController {
       if (skill) {
         //complete without XP
         const user = await User.findByIdAndUpdate(req.body.userid, {
-          $pullAll: { skillscompleted: child.get("requires"), skillsinprogress: child.get("requires")},
+          $pullAll: { skillscompleted: child.get("requires"), skillsinprogress: child.get("requires") },
         });
 
         user.save();
       } else {
         //complete without XP
         const user = await User.findByIdAndUpdate(req.body.userid, {
-          $pullAll: { challengescompleted: child.get("requires"), challengesinprogress: child.get("requires")},
+          $pullAll: { challengescompleted: child.get("requires"), challengesinprogress: child.get("requires") },
         });
 
         user.save();
       }
 
-      res.status(200).json({response: "success"});
+      res.status(200).json({ response: "success" });
     }
     catch (err) {
       console.log(err);
@@ -600,9 +617,9 @@ class UserController {
     }
   }
 
-  async cancel(req,res) {
+  async cancel(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.body.userid,{
+      const user = await User.findByIdAndUpdate(req.body.userid, {
         $pull: {
           skillsinprogress: req.body.tocancel,
           challengesinprogress: req.body.tocancel
@@ -612,17 +629,19 @@ class UserController {
       user.save();
 
       await Task.findOneAndUpdate({
-        $and: [{userID: req.body.userid},
-          {completed: false},
-          {cancelled: false},
-          {$or : [
-            {skillID: req.body.tocancel},
-            {challengeID: req.body.tocancel}
-          ]}
+        $and: [{ userID: req.body.userid },
+          { completed: false },
+          { cancelled: false },
+          {
+            $or: [
+              { skillID: req.body.tocancel },
+              { challengeID: req.body.tocancel }
+            ]
+          }
         ]
       }, { cancelled: true });
 
-      res.status(200).json({response: "success"});
+      res.status(200).json({ response: "success" });
     }
     catch (err) {
       console.log(err);
@@ -636,14 +655,14 @@ class UserController {
         $and: [{
           $or: [{
             skillID: req.body.toerase,
-            challengeID: { $exists:false }
-          },{
+            challengeID: { $exists: false }
+          }, {
             challengeID: req.body.toerase,
             skillID: { $exists: false },
           }]
-        },{
+        }, {
           completed: true
-        },{
+        }, {
           userID: req.body.userid,
         }],
       });
@@ -659,7 +678,7 @@ class UserController {
         xpChange = -child.get("xp");
       }
 
-      const user = await User.findByIdAndUpdate(req.body.userid,{
+      const user = await User.findByIdAndUpdate(req.body.userid, {
         $pull: {
           skillscompleted: req.body.toerase,
           challengescompleted: req.body.toerase
@@ -669,7 +688,7 @@ class UserController {
 
       user.save();
 
-      res.status(200).json({response: "success"});
+      res.status(200).json({ response: "success" });
     }
     catch (err) {
       console.log(err);
@@ -688,7 +707,7 @@ class UserController {
       user["xpHistory"].push(user["xp"]);
       user.save();
 
-      res.status(200).json({response: "success"});
+      res.status(200).json({ response: "success" });
     }
     catch (err) {
       console.log(err);
@@ -708,7 +727,7 @@ class UserController {
 
       user.save();
 
-      res.status(200).json({response: "success"});
+      res.status(200).json({ response: "success" });
     } catch (err) {
       console.log(err);
       res.status(400).json({ response: "Failed toggling reminderSent" });
@@ -724,7 +743,7 @@ class UserController {
       }
     });
     const numUsers = users.length;
-    res.status(201).json({response: "success", users: numUsers});
+    res.status(201).json({ response: "success", users: numUsers });
   }
 }
 

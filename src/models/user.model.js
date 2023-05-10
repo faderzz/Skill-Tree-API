@@ -18,17 +18,21 @@ const Schema = mongoose.Schema;
  * @param gender - the gender of the in-game character
  */
 const UserSchema = new Schema({
+  email: {
+    type: String,
+    required: false
+  },
   username: {
     type: String,
     required: false
   },
   password: {
     type:String,
-    required: false,
+    required: false
   },
   discordid: {
     type: String,
-    required: false,
+    required: false
   },
   xp:{
     type:Number,
