@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.post("/deleteUser",auth, UserController.deleteUser);
 router.get("/profile", auth, UserController.profile);
-router.post("/register", auth, UserController.register);
+router.post("/register", UserController.register);
 router.post("/registerDiscord", auth, UserController.registerDiscord);
-router.post("/login", auth, UserController.authUser);
+router.post("/login", UserController.authUser);
 router.get("/loginDiscord", auth, UserController.authUserDiscord);
 router.post("/updateUser", auth, UserController.updateUser);
 router.post("/updateXPHistory", auth, UserController.updateXPHistory);
