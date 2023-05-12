@@ -108,7 +108,7 @@ UserSchema.methods.matchPassword = async function(enteredPassword) {
 };
 
 // will encrypt password everytime its saved
-UserSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function(next) {
   if (!this.isModified("password")) {
     next();
   }

@@ -111,10 +111,12 @@ class UserController {
 
       if (user && (await user.matchPassword(password))) {
         // TODO: make the secret configurable
+        const token = jwt.sign(JSON.stringify({username: user.username, email: user.email, id: user._id}), "skilltest");
+        
         res.json({
           _id: user._id,
           username: user.username,
-          token: jwt.sign({username: user.username, email: user.email, id: user._id}, "skilltest")
+          token: token
         });
       } else {
         res.status(401).json({ response: "error", error: "cannot find user" });
@@ -190,12 +192,13 @@ class UserController {
       });
 
       if (user) {
+        const token = jwt.sign(JSON.stringify({username: user.username, email: user.email, id: user._id}), "skilltest");
         res.status(201).json({
           response: "success",
           _id: user._id,
           username: user.username,
           // TODO: make secret configurable
-          token: jwt.sign({username: user.username, email: user.email, id: user._id}, "skilltest")
+          token: token
         });
       } else {
         log.warn(`Cannot find user with query:  ${req.query}`);
