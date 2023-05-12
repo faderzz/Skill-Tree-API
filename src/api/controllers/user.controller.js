@@ -7,6 +7,8 @@ const Item = require("../../models/item.model");
 const Challenge = require("../../models/challenge.model");
 const difficultyConfig = require("../../config/difficulty.config");
 
+const jwt = require("jsonwebtoken");
+
 class UserController {
   async deleteUser(req, res) {
     try {
@@ -108,9 +110,11 @@ class UserController {
       const user = await User.findOne({ username });
 
       if (user && (await user.matchPassword(password))) {
+        // TODO: make the secret configurable
         res.json({
           _id: user._id,
           username: user.username,
+          token: jwt.sign(user, "skilltest")
         });
       } else {
         res.status(401).json({ response: "error", error: "cannot find user" });
@@ -190,6 +194,8 @@ class UserController {
           response: "success",
           _id: user._id,
           username: user.username,
+          // TODO: make secret configurable
+          token: jwt.sign(user, "skilltest")
         });
       } else {
         log.warn(`Cannot find user with query:  ${req.query}`);
