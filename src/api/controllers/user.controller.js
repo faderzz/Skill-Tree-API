@@ -114,7 +114,7 @@ class UserController {
         res.json({
           _id: user._id,
           username: user.username,
-          token: jwt.sign(user, "skilltest")
+          token: jwt.sign({username: user.username, email: user.email, id: user._id}, "skilltest")
         });
       } else {
         res.status(401).json({ response: "error", error: "cannot find user" });
@@ -195,7 +195,7 @@ class UserController {
           _id: user._id,
           username: user.username,
           // TODO: make secret configurable
-          token: jwt.sign(user, "skilltest")
+          token: jwt.sign({username: user.username, email: user.email, id: user._id}, "skilltest")
         });
       } else {
         log.warn(`Cannot find user with query:  ${req.query}`);

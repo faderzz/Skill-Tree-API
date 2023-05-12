@@ -103,7 +103,7 @@ const UserSchema = new Schema({
   },
 }, { collection: config.isDevelopment ? "UsersDev" : "Users" });
 
-UserSchema.methods.matchPassword = async function (enteredPassword) {
+UserSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
