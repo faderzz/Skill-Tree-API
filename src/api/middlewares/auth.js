@@ -1,7 +1,7 @@
 // const crypto = require("crypto");
 // const asyncHandler = require("express-async-handler");
 const config = require("../../config");
-const expressjwt = require("express-jwt");
+const { expressjwt } = require("express-jwt");
 
 // module.exports = asyncHandler((req, res, next) => {
 //   if (!req.headers.api_key) {
