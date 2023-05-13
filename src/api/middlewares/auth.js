@@ -42,9 +42,9 @@ module.exports = expressjwt({
   algorithms: ["HS256"],
   credentialsRequired: true,
   getToken: function fromHeader(req) {
-    if (!req.headers.api_key) return null;
+    if (!req.headers.authorization && !req.headers.api_key) return null;
     if (
-      req.headers.api_key.split(" ")[0] === "Bearer"
+      req.headers.authorization.split(" ")[0] === "Bearer"
     ) {
       return req.headers.authorization.split(" ")[1];
     } else if (req.headers.api_key === config.apiKey) {
