@@ -325,8 +325,10 @@ class UserController {
   }
 
   async updateUser(req, res) {
+    const id = req.auth.id || req.body.id; 
+    
     try {
-      const user = await User.findByIdAndUpdate(req.body.userid, {
+      const user = await User.findByIdAndUpdate(id, {
         "$set": {
           character: req.body.character,
           difficulty: req.body.difficulty,
