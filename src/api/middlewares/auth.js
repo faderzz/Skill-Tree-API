@@ -40,12 +40,11 @@ module.exports = expressjwt({
   // TODO: make the sercret configurable
   secret: "skilltest",
   algorithms: ["HS256"],
-  credentialsRequired: true,
-  getToken: function fromHeader(req) {
+  credentialsRequired: false,
+  getToken: (req) => {
     if (!req.headers.authorization && !req.headers.api_key) return null;
-    if (
-      req.headers.authorization.split(" ")[0] === "Bearer"
-    ) {
+
+    if (req.headers.authorization.split(" ")[0] === "Bearer") {
       return req.headers.authorization.split(" ")[1];
     } else if (req.headers.api_key === config.apiKey) {
       return "";

@@ -30,9 +30,11 @@ class UserController {
   }
 
   async profile(req, res) {
+    const id = req.auth?.id || req.headers["id"];
+
     try {
       // TODO: verify if the header is present
-      const user = await User.findById(req.headers["id"])
+      const user = await User.findById(id)
         .populate({ path: "skillscompleted", model: Skill })
         .populate({ path: "skillsinprogress", model: Skill })
         .populate({ path: "challengescompleted", model: Challenge })
@@ -111,8 +113,8 @@ class UserController {
 
       if (user && (await user.matchPassword(password))) {
         // TODO: make the secret configurable
-        const token = jwt.sign(JSON.stringify({username: user.username, email: user.email, id: user._id}), "skilltest");
-        
+        const token = jwt.sign(JSON.stringify({ username: user.username, email: user.email, id: user._id }), "skilltest");
+
         res.json({
           _id: user._id,
           username: user.username,
@@ -178,11 +180,11 @@ class UserController {
       const emailExists = await User.findOne({ email });
 
       if (userExists) {
-        res.status(400).json({ response: "error", error: "User already exists" });
+        return res.status(400).json({ response: "error", error: "User already exists" });
       }
 
       if (emailExists) {
-        res.status(400).json({ response: "error", error: "Email is taken" });
+        return res.status(400).json({ response: "error", error: "Email is taken" });
       }
 
       const user = await User.create({
@@ -192,7 +194,7 @@ class UserController {
       });
 
       if (user) {
-        const token = jwt.sign(JSON.stringify({username: user.username, email: user.email, id: user._id}), "skilltest");
+        const token = jwt.sign(JSON.stringify({ username: user.username, email: user.email, id: user._id }), "skilltest");
         res.status(201).json({
           response: "success",
           _id: user._id,
@@ -325,8 +327,10 @@ class UserController {
   }
 
   async updateUser(req, res) {
-    const id = req.auth.id || req.body.id; 
-    
+    const id = req.auth?.id || req.body.id;
+    if (!id) {
+      return res.status(400).json({ response: "user ID is required" });
+    }
     try {
       const user = await User.findByIdAndUpdate(id, {
         "$set": {
